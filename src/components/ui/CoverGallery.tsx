@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export type GalleryImage = { src: string; alt: string };
@@ -32,6 +33,13 @@ export function CoverGallery({
   const openerRef = useRef<HTMLButtonElement | null>(null);
 
   const many = images.length > 1;
+
+  /* The card applies transform: translateY(-4px) on hover, and a transformed
+     ancestor becomes the containing block for position: fixed — so the dialog
+     was being positioned inside the card and clipped by its overflow-hidden.
+     Portalling to <body> takes it out of that stacking context entirely. */
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   /* Advance only while pointing at the card, and never when the viewer has
      asked for reduced motion. */
@@ -134,7 +142,7 @@ export function CoverGallery({
         )}
       </div>
 
-      {open && (
+      {open && mounted && createPortal(
         <div
           role="dialog"
           aria-modal="true"
@@ -201,7 +209,8 @@ export function CoverGallery({
           >
             <ChevronRight className="size-5" />
           </button>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

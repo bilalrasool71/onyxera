@@ -510,7 +510,11 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* No global `scroll-behavior: smooth`. Next scrolls to the top on every
+       route change, and with smooth set that becomes an animated scroll from
+       wherever the reader was — interrupted by the new page rendering, it lands
+       part-way down. Anchors that want easing ask for it per call instead.
+       scroll-padding-top still offsets in-page anchors below the fixed header. */
     scroll-padding-top: 6rem;
     -webkit-tap-highlight-color: transparent;
   }

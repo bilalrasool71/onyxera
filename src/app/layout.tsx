@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Michroma, Montserrat, Schibsted_Grotesk } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { RouteProgress } from "@/components/ui/RouteProgress";
+import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { themeBootScript } from "@/components/ui/ThemeToggle";
 import { Footer } from "@/components/layout/Footer";
 import { site } from "@/lib/site";
@@ -156,6 +157,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        <ScrollToTop />
 
         <script
           type="application/ld+json"

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { SocialIcon } from "@/components/ui/SocialIcon";
 import { services } from "@/lib/data/services";
@@ -144,16 +144,10 @@ export function Footer() {
           <p>
             © {year} {site.name}. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
-            <span>{site.hours}</span>
-            <a
-              href="#top"
-              className="group inline-flex items-center gap-1.5 transition-colors duration-300 hover:text-accent"
-            >
-              Back to top
-              <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" />
-            </a>
-          </div>
+          {/* No "Back to top" link here any more — the floating control does
+              that job from anywhere on the page, and it also pointed at #top,
+              an id that does not exist in the document. */}
+          <span>{site.hours}</span>
         </div>
       </div>
     </footer>
