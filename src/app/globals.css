@@ -1,26 +1,943 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   ONYXERA TECH — GLOBAL DESIGN SYSTEM
+
+   Three layers, in order:
+     1. PALETTE   fixed brand colours, taken from the logo. Never change.
+     2. SEMANTIC  role tokens (bg / fg / line / accent) that flip per theme.
+     3. UTILITIES Tailwind classes generated from the semantic layer.
+
+   Components only ever use layer 3. That is what makes light mode a
+   token swap rather than a rewrite.
+   ========================================================================== */
+
+@theme {
+  /* ---------- Typography ---------- */
+  /* Headings. Schibsted Grotesk: editorial authority, six weights, normal width.
+     Michroma is the brand primary but is a logotype face: single weight and
+     1.63x wider than a normal sans, which is what forced a 0.62 display scale
+     when it carried headings. It now sets eyebrows and section labels — short,
+     letterspaced, uppercase strings, which is what it is actually good at. */
+  --font-display: var(--font-schibsted-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-wordmark: var(--font-michroma), ui-sans-serif, system-ui, sans-serif;
+  /* Brand secondary — Montserrat. Carries every heading below h2 and all body. */
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  /* Deliberately the same stack as --font-sans: `font-label` is not a third
+     face, it is how the label tier keeps body type *inside* a context that has
+     switched away from it. `h1`/`h2` and `.btn` set --font-display, so
+     Footer's ColHeading (an <h2> carrying `font-label`) renders Montserrat
+     only because this token exists. Deleting it would silently flip those
+     labels to Schibsted Grotesk. Everywhere else `font-label` is a no-op that
+     restates the inherited body font — the tier is really carried by size,
+     tracking and case, so do not add call sites expecting a visual change. */
+  --font-label: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+
+  /* ---------- Type scale ----------
+     ADDITIVE ONLY. Tailwind's own steps are load-bearing here (text-sm x35,
+     text-lg x19, text-base x14, text-xs x13), so these insert *between* the
+     defaults rather than redefining them. Repointing a default step would
+     silently resize every existing call site.
+
+     The `-plus` suffix reads "one half-step above the named default":
+
+       3xs       0.5625rem
+       2xs       0.625rem
+       2xs-plus  0.6875rem   between 2xs (0.625)  and xs (0.75)
+       xs-plus   0.8125rem   between xs  (0.75)   and sm (0.875)
+       sm-plus   0.9375rem   between sm  (0.875)  and base (1)
+
+     Pairing a line-height is the whole point of naming them. An arbitrary
+     `text-[0.625rem]` emits a bare font-size and leaves the element inheriting
+     leading from an ancestor; a named step emits
+     `line-height: var(--tw-leading, var(--text-*--line-height))`. A call site
+     that already sets `leading-*` still wins, through --tw-leading — so the
+     sizes carrying `leading-relaxed` today are unaffected by these values.
+
+     Display type stays as per-site `clamp()`: it is fluid against the viewport
+     and does not reduce to a fixed rung on a ramp. */
+  --text-3xs: 0.5625rem;
+  --text-3xs--line-height: 1.45;
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 1.4;
+  --text-2xs-plus: 0.6875rem;
+  --text-2xs-plus--line-height: 1.4;
+  --text-xs-plus: 0.8125rem;
+  --text-xs-plus--line-height: 1.45;
+  --text-sm-plus: 0.9375rem;
+  --text-sm-plus--line-height: 1.5;
+
+  /* ---------- PALETTE: Deep Navy — brand primary #0B1F33 ----------
+     Trust, authority, professionalism. navy-900 is the brand value itself. */
+  --color-navy-50: #eff3f8;
+  --color-navy-100: #dae3ee;
+  --color-navy-200: #b5c6dc;
+  --color-navy-300: #8aa3c2;
+  --color-navy-400: #5c7ba1;
+  --color-navy-500: #3c5a7e;
+  --color-navy-600: #2a4462;
+  --color-navy-700: #1d334c;
+  --color-navy-800: #14283d;
+  --color-navy-900: #0b1f33;
+  --color-navy-950: #061420;
+
+  /* ---------- PALETTE: Blue — brand secondary #6A9BD1 ----------
+     Digital, modern, growth. The arrow in the mark. blue-400 is the brand
+     value; darker steps exist because #6A9BD1 cannot carry text on white. */
+  --color-blue-50: #f1f6fc;
+  --color-blue-100: #dfeaf7;
+  --color-blue-200: #c4d9ef;
+  --color-blue-300: #9fc0e2;
+  --color-blue-400: #6a9bd1;
+  --color-blue-500: #4f81bc;
+  --color-blue-600: #3e68a1;
+  --color-blue-700: #335483;
+  --color-blue-800: #2d466a;
+  --color-blue-900: #253a56;
+
+  /* ---------- PALETTE: Base — brand background #F4F6F5 ----------
+     Named `canvas`, not `base`: a `--color-base` token makes Tailwind emit
+     `.text-base{color:...}`, which silently replaces the built-in `text-base`
+     font-size utility. Never name a colour after a font-size step. */
+  --color-canvas: #f4f6f5;
+
+  /* ---------- Radii ----------
+     The whole ramp is overridden, tail included. Tailwind's defaults for the
+     upper steps (3xl 1.5rem, 4xl 2rem) are *smaller* than this scale's 2xl,
+     so leaving them alone would make `rounded-3xl` round a corner less than
+     `rounded-2xl`. Keep this list ascending if you extend it. */
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
+  --radius-3xl: 2.75rem;
+  --radius-4xl: 3.5rem;
+
+  /* ---------- Motion ---------- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* The one animation token. Reach for `animate-float` rather than writing
+     `animate-[float_7s_ease-in-out_infinite]` by hand: the CSS keyword
+     `ease-in-out` is cubic-bezier(0.42, 0, 0.58, 1), a different curve from
+     --ease-in-out-soft, so a hand-written shorthand quietly leaves the system.
+     There is no --animate-marquee: Marquee sets its duration per instance and
+     builds its own shorthand, which references the @keyframes block below. */
+  --animate-float: float 7s var(--ease-in-out-soft) infinite;
 }
+
+/* ==========================================================================
+   BRAND FILLS — one value, both themes
+
+   `.band-accent` and `.card-brand` are brand surfaces, not themed surfaces:
+   they must read as *the* brand blue against the navy ground and against the
+   off-white one alike, so they carry a single value and are never overridden
+   per theme. Declared on bare `:root` so the colour is never defined only
+   inside a media or [data-theme] block.
+
+   Values sit on the brand blue ramp (#6A9BD1, hue 211°, HSL sat 0.53), darkened
+   until white type clears AA — not the desaturated slate they replaced:
+
+     old  #45719f  hue 211°, sat 0.39   ← reads slate, off-brand
+     new  #3573b6  hue 211°, sat 0.55   white on it = 4.91:1
+     new  #2a5f9e  hue 213°, sat 0.58   white on it = 6.50:1
+
+   Gradient endpoints are the worst case: each sRGB channel moves monotonically
+   between them, so every intermediate stop sits between 4.91:1 and 6.50:1.
+   ========================================================================== */
+
+:root {
+  --brand-surface: #3573b6;
+  --brand-surface-deep: #2a5f9e;
+  --brand-surface-fg: #ffffff;
+  --brand-line: #ffffff3d;
+}
+
+/* ==========================================================================
+   SEMANTIC LAYER — dark is the brand default
+   ========================================================================== */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Deep Navy is the ground, exactly as the dark logo lockup sits on it. */
+  --bg: var(--color-navy-900);
+  --surface: var(--color-navy-800);
+
+  /* Supporting copy on this ground was pitched from the navy ramp (navy-100 /
+     navy-200), which put the section intro under every heading at 9.6:1 — legible
+     but visibly grey next to a white heading. The rungs are now near-white and
+     the ladder is compressed into the top of the range, each step still
+     distinguishable when two tiers sit in the same block:
+
+       fg        #ffffff   16.69:1 on --bg    — headings
+       fg-body   #eef3fb   14.98:1            1.11× step below --fg
+       fg-muted  #dfe9f7   13.62:1            1.10× step, section intros
+       fg-subtle #c9d7ec   11.46:1            1.19× step, labels/captions
+       fg-faint  #a7bbd6    8.52:1            1.34× step, the quiet tier
+
+     --fg-ghost is a decorative fill (ghost numerals, inactive glyphs), not
+     text, and stays where it is. */
+  --fg: #ffffff;
+  --fg-body: #eef3fb;
+  --fg-muted: #dfe9f7;
+  --fg-subtle: #c9d7ec;
+  --fg-faint: #a7bbd6;
+  /* DECORATION ONLY — 1.39:1 against --bg by design. This is the fill for
+     oversized watermark numerals sitting behind content. Never use it for text
+     a reader is meant to read; reach for --fg-faint (8.5:1 dark / 4.8:1 light). */
+  --fg-ghost: #24384f;
+
+  --line: #ffffff1a;
+  --line-strong: #ffffff2e;
+  /* ---- Danger / validation ----
+     Measured against the card surface a form sits on. Dark #ff9d9d on
+     navy-800 #14283d = 7.54:1 (8.40:1 on the page ground); the border line
+     clears the 3:1 that WCAG 1.4.11 requires to bound a control. */
+  --danger: #ff9d9d;
+  --danger-line: #ff9d9db8;
+  --glass: #ffffff0d;
+  --glass-strong: #ffffff1a;
+
+  /* Metric-card surface. `--surface` (navy-800) is only 1.11:1 against the
+     navy-900 ground, so a stat strip built on the default `.card` all but
+     disappears. This is a blue-tinted glass at 1.43:1 with a brand-blue edge —
+     a panel you can actually see. Consumed by `.card-stat`. */
+  --stat-surface: #1c3a59;
+  --stat-surface-2: #16314f;
+  --stat-border: #6a9bd166;
+
+  --accent: var(--color-blue-400);
+  --accent-strong: var(--color-blue-300);
+  --accent-icon: var(--color-blue-400);
+  --accent-quiet: var(--color-blue-500);
+
+  /* Primary CTA: brand blue on navy, with navy type on top. */
+  --btn-fill: linear-gradient(100deg, #5b8cc6 0%, #7fb0de 48%, #5b8cc6 100%);
+  --btn-fg: var(--color-navy-900);
+
+  /* The white half of the "one blue, one white" CTA pair. Navy type on white
+     is 16.69:1 in both themes. On this ground the pill already has an edge, so
+     the border token matches the fill and the ring is a no-op. */
+  --btn-white-fill: #ffffff;
+  --btn-white-fg: var(--color-navy-900);
+  --btn-white-fill-hover: #dfe9f7;
+  --btn-white-border: #ffffff;
+
+  /* Gradient lifted from the arrow in the mark. */
+  --accent-ramp: linear-gradient(
+    100deg,
+    #4f81bc 0%,
+    #8fb6e0 26%,
+    #cfe2f6 48%,
+    #6a9bd1 68%,
+    #3e68a1 100%
+  );
+
+  --grid-line: #ffffff0a;
+  --dot: #ffffff1a;
+  --ambient-opacity: 1;
+
+  --elev-soft: 0 1px 2px #00000040, 0 12px 32px -12px #00000080;
+  --elev-lifted: 0 2px 4px #0000004d, 0 28px 60px -20px #000000b3;
+  --elev-brand: 0 0 0 1px #6a9bd133, 0 18px 48px -18px #6a9bd159;
+}
+
+/* ---------- Light theme ----------
+   Duplicated into the media query below so the site still honours a system
+   preference when JavaScript is unavailable. Keep the two blocks in sync. */
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Brand background #F4F6F5, with pure white for raised surfaces. */
+  --bg: var(--color-canvas);
+  --surface: #ffffff;
+
+  --fg: var(--color-navy-900);
+  --fg-body: var(--color-navy-800);
+  --fg-muted: var(--color-navy-500);
+  --fg-subtle: #46617f;
+  --fg-faint: #52708f;
+  --fg-ghost: #c9d4e1;
+
+  --line: #0b1f331a;
+  --line-strong: #0b1f332e;
+  /* Light #c81e2a on white = 5.71:1, on the canvas = 5.26:1. A raw palette
+     red-400 measured only 2.87:1 here, which is why validation text was
+     unreadable in the light theme. */
+  --danger: #c81e2a;
+  --danger-line: #c81e2ab8;
+  --glass: #0b1f330a;
+  --glass-strong: #0b1f3314;
+
+  /* Metric cards on the light ground had a white surface on a #F4F6F5 canvas —
+     effectively no card at all. The brand secondary carries it instead: a blue
+     tint running 1.14:1 at the top of the 165deg gradient to 1.19:1 at the
+     bottom, with a brand-blue edge.
+
+     Quote the *range*, not the deep end. The start colour was #e6eefa, which
+     measures 1.076:1 — less separation than the plain white `.card` (1.085:1)
+     this was introduced to replace, so the fill did no work across the top half
+     and only --stat-border held the card together. #dce8f8 clears that
+     white-card baseline while staying lighter than --stat-surface-2, so the
+     gradient still runs light to dark.
+
+     Text is unaffected: both tiers are quoted at the deep end, which is the
+     worst case and has not moved. Navy type 12.9:1, --fg-subtle 5.0:1. */
+  --stat-surface: #dce8f8;
+  --stat-surface-2: #d5e4f5;
+  --stat-border: #6a9bd1b3;
+
+  /* #6A9BD1 is only 2.7:1 on this ground, so text-bearing accents step down
+     the ramp. The brand blue survives as fills, icons and rules. */
+  --accent: var(--color-blue-700);
+  --accent-strong: var(--color-blue-800);
+  --accent-icon: var(--color-blue-600);
+  --accent-quiet: var(--color-blue-500);
+
+  --btn-fill: linear-gradient(100deg, #2c4e80 0%, #4a78ae 50%, #2c4e80 100%);
+  --btn-fg: #ffffff;
+
+  /* Same white pill, but a white fill on the #F4F6F5 canvas has no edge of its
+     own, so the border token becomes a navy hairline here. */
+  --btn-white-fill: #ffffff;
+  --btn-white-fg: var(--color-navy-900);
+  --btn-white-fill-hover: #eef3fa;
+  --btn-white-border: #0b1f3338;
+
+  --accent-ramp: linear-gradient(
+    100deg,
+    #24405f 0%,
+    #335483 28%,
+    #4f81bc 50%,
+    #335483 72%,
+    #24405f 100%
+  );
+
+  --grid-line: #0b1f330d;
+  --dot: #0b1f331a;
+  --ambient-opacity: 0.6;
+
+  --elev-soft: 0 1px 2px #0b1f330f, 0 12px 32px -12px #0b1f3324;
+  --elev-lifted: 0 2px 4px #0b1f3314, 0 28px 60px -20px #0b1f332e;
+  --elev-brand: 0 0 0 1px #4f81bc33, 0 18px 48px -18px #4f81bc47;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    /* Brand background #F4F6F5, with pure white for raised surfaces. */
+    --bg: var(--color-canvas);
+    --surface: #ffffff;
+
+    --fg: var(--color-navy-900);
+    --fg-body: var(--color-navy-800);
+    --fg-muted: var(--color-navy-500);
+    --fg-subtle: #46617f;
+    --fg-faint: #52708f;
+    --fg-ghost: #c9d4e1;
+
+    --line: #0b1f331a;
+    --line-strong: #0b1f332e;
+    /* Light #c81e2a on white = 5.71:1, on the canvas = 5.26:1. A raw palette
+       red-400 measured only 2.87:1 here, which is why validation text was
+       unreadable in the light theme. */
+      --danger: #c81e2a;
+      --danger-line: #c81e2ab8;
+    --glass: #0b1f330a;
+    --glass-strong: #0b1f3314;
+
+    /* Metric cards on the light ground had a white surface on a #F4F6F5 canvas —
+       effectively no card at all. The brand secondary carries it instead: a
+       blue tint running 1.14:1 at the top of the 165deg gradient to 1.19:1 at
+       the bottom, with a brand-blue edge.
+
+       Quote the *range*, not the deep end. The start colour was #e6eefa, which
+       measures 1.076:1 — less separation than the plain white `.card`
+       (1.085:1) this was introduced to replace, so the fill did no work across
+       the top half and only --stat-border held the card together. #dce8f8
+       clears that white-card baseline while staying lighter than
+       --stat-surface-2, so the gradient still runs light to dark.
+
+       Text is unaffected: both tiers are quoted at the deep end, which is the
+       worst case and has not moved. Navy type 12.9:1, --fg-subtle 5.0:1. */
+    --stat-surface: #dce8f8;
+    --stat-surface-2: #d5e4f5;
+    --stat-border: #6a9bd1b3;
+
+    /* #6A9BD1 is only 2.7:1 on this ground, so text-bearing accents step down
+       the ramp. The brand blue survives as fills, icons and rules. */
+    --accent: var(--color-blue-700);
+    --accent-strong: var(--color-blue-800);
+    --accent-icon: var(--color-blue-600);
+    --accent-quiet: var(--color-blue-500);
+
+    --btn-fill: linear-gradient(100deg, #2c4e80 0%, #4a78ae 50%, #2c4e80 100%);
+    --btn-fg: #ffffff;
+
+    /* Same white pill, but a white fill on the #F4F6F5 canvas has no edge of
+       its own, so the border token becomes a navy hairline here. */
+    --btn-white-fill: #ffffff;
+    --btn-white-fg: var(--color-navy-900);
+    --btn-white-fill-hover: #eef3fa;
+    --btn-white-border: #0b1f3338;
+
+    --accent-ramp: linear-gradient(
+      100deg,
+      #24405f 0%,
+      #335483 28%,
+      #4f81bc 50%,
+      #335483 72%,
+      #24405f 100%
+    );
+
+    --grid-line: #0b1f330d;
+    --dot: #0b1f331a;
+    --ambient-opacity: 0.6;
+
+    --elev-soft: 0 1px 2px #0b1f330f, 0 12px 32px -12px #0b1f3324;
+    --elev-lifted: 0 2px 4px #0b1f3314, 0 28px 60px -20px #0b1f332e;
+    --elev-brand: 0 0 0 1px #4f81bc33, 0 18px 48px -18px #4f81bc47;
+}
+}
+
+/* ==========================================================================
+   Expose the semantic layer as Tailwind utilities.
+   `inline` emits `var(--fg-muted)` at the use site, so a theme swap on
+   <html> repaints instantly with no rebuild and no `dark:` variants.
+   ========================================================================== */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-danger: var(--danger);
+  --color-danger-line: var(--danger-line);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+
+  --color-fg: var(--fg);
+  --color-fg-body: var(--fg-body);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-fg-faint: var(--fg-faint);
+  --color-fg-ghost: var(--fg-ghost);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-icon: var(--accent-icon);
+  --color-accent-quiet: var(--accent-quiet);
+
+  /* Brand fill as utilities, for anything that needs a blue surface without
+     the full `.card-brand` chrome (an open FAQ row, a selected tab). White
+     type on either is >= 4.9:1. Not named after a font-size step, so no
+     collision with a built-in utility. */
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-surface-deep: var(--brand-surface-deep);
+  --color-brand-line: var(--brand-line);
+
+  --shadow-soft: var(--elev-soft);
+  --shadow-lifted: var(--elev-lifted);
+  --shadow-brand: var(--elev-brand);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Swapping the palette re-tints every element that has a colour transition.
+   Animating that takes 400ms during which text sits halfway between the two
+   themes — light grey on a light ground, effectively invisible. The toggle
+   sets this class for one frame so the change is instant. */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
+/* The logo ships as two files and CSS picks one, so the correct lockup is
+   painted on first frame — no JavaScript and no swap flicker. Naming follows
+   the artwork: `logo-white` is the version for a white ground. */
+.logo-on-dark { display: block; }
+.logo-on-light { display: none; }
+
+[data-theme="light"] .logo-on-dark { display: none; }
+[data-theme="light"] .logo-on-light { display: block; }
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .logo-on-dark { display: none; }
+  :root:not([data-theme="dark"]) .logo-on-light { display: block; }
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   ========================================================================== */
+
+/* Declared at top level, not inside `@theme`, so it survives with no
+   --animate-marquee token: Marquee.tsx reaches it through the arbitrary
+   `animate-[marquee_var(--dur)_linear_infinite]` it needs for a per-instance
+   duration. Not dead — deleting it stops every logo strip. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(1.5deg);
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg-body);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+    text-rendering: optimizeLegibility;
+    /* Eases the cross-fade when the theme is toggled. */
+    transition:
+      background-color 0.4s var(--ease-out-soft),
+      color 0.4s var(--ease-out-soft);
+  }
+
+  /* Michroma carries the display tier only. It is a wide, single-weight face:
+     at sentence length it outruns its container, so h3 and below fall to
+     Montserrat, which is what the brand lists as the secondary font. */
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+    text-wrap: balance;
+  }
+
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-blue-400);
+    color: var(--color-navy-900);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border-radius: 99px;
+    border: 2px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-quiet);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* ==========================================================================
+   COMPONENT PRIMITIVES
+   ========================================================================== */
+
+@layer components {
+  /* ---- Layout shell ---- */
+  .shell {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .shell {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .section {
+    padding-block: 5.5rem;
+  }
+  @media (min-width: 768px) {
+    .section {
+      padding-block: 7.5rem;
+    }
+  }
+
+  /* ---- The signature blue gradient, taken from the arrow in the mark ---- */
+  .accent-text {
+    background-image: var(--accent-ramp);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .accent-surface {
+    background-image: var(--accent-ramp);
+  }
+
+  .accent-line {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      var(--accent-icon),
+      transparent
+    );
+  }
+
+  /* ---- Eyebrow / label ---- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-wordmark);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-image: linear-gradient(90deg, transparent, var(--accent-icon));
+  }
+
+  .eyebrow-plain::before {
+    display: none;
+  }
+
+  /* ---- Buttons ---- */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    padding: 0.875rem 1.5rem;
+    white-space: nowrap;
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft),
+      background-color 0.35s var(--ease-out-soft),
+      border-color 0.35s var(--ease-out-soft),
+      color 0.35s var(--ease-out-soft);
+  }
+
+  .btn:active {
+    transform: translateY(1px) scale(0.985);
+  }
+
+  /* Brand blue is the call-to-action colour. The fill and its type colour are
+     both tokens: light blue + navy type on the dark ground, deep blue + white
+     type on the light one, so contrast holds either way. */
+  .btn-primary {
+    color: var(--btn-fg);
+    background-image: var(--btn-fill);
+    background-size: 200% 100%;
+    background-position: 0% 0;
+    box-shadow: var(--elev-brand);
+  }
+
+  .btn-primary:hover {
+    background-position: 100% 0;
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 0 1px #6a9bd166,
+      0 22px 50px -16px #6a9bd199;
+  }
+
+  .btn-lg {
+    padding: 1.0625rem 2rem;
+    font-size: 0.9375rem;
+  }
+
+  .btn-secondary {
+    color: var(--fg);
+    background-color: var(--glass);
+    border: 1px solid var(--line-strong);
+    backdrop-filter: blur(8px);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--glass-strong);
+    border-color: var(--accent-icon);
+    color: var(--accent-strong);
+    transform: translateY(-2px);
+  }
+
+  /* The white half of every CTA pair — one blue button, one white one.
+     The edge is an inset ring rather than a border so the box stays exactly
+     the size of `.btn-primary`, which has none: a real 1px border would make
+     the white button 2px taller than the blue one standing next to it. */
+  .btn-white {
+    color: var(--btn-white-fg);
+    background-color: var(--btn-white-fill);
+    box-shadow:
+      inset 0 0 0 1px var(--btn-white-border),
+      var(--elev-soft);
+  }
+
+  .btn-white:hover {
+    background-color: var(--btn-white-fill-hover);
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 0 0 1px var(--btn-white-border),
+      var(--elev-lifted);
+  }
+
+
+  /* ---- Cards ---- */
+  .card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    background-color: var(--surface);
+    background-image: linear-gradient(
+      165deg,
+      var(--glass) 0%,
+      transparent 62%
+    );
+    transition:
+      transform 0.5s var(--ease-out-soft),
+      border-color 0.5s var(--ease-out-soft),
+      box-shadow 0.5s var(--ease-out-soft),
+      background-color 0.4s var(--ease-out-soft);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--accent-icon) 40%, transparent);
+    box-shadow: var(--elev-lifted);
+  }
+
+  /* Hairline that lights up in brand blue on hover */
+  .card-glow::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      var(--accent),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-out-soft);
+  }
+
+  .card-glow:hover::after {
+    opacity: 1;
+  }
+
+  /* Metric / stat card. The default `.card` sits on `--surface`, which is
+     1.11:1 against the dark ground and 1.03:1 against the light one — the
+     numbers float in space with no panel behind them. This is a brand-tinted
+     glass with a defined blue edge, so the strip reads as cards in both themes.
+
+     Declared after `.card` on purpose: `cn()` is a plain join with no
+     tailwind-merge, so `cn("card", "card-stat")` resolves by stylesheet order,
+     not argument order. It also stands alone if used without `.card`, and
+     leaves `transform` untouched so `.card-hover` still supplies the lift. */
+  .card-stat {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--stat-border);
+    background-color: var(--stat-surface);
+    background-image: linear-gradient(
+      165deg,
+      var(--stat-surface) 0%,
+      var(--stat-surface-2) 100%
+    );
+    box-shadow: var(--elev-soft);
+    transition:
+      transform 0.5s var(--ease-out-soft),
+      border-color 0.5s var(--ease-out-soft),
+      box-shadow 0.5s var(--ease-out-soft),
+      background-color 0.4s var(--ease-out-soft);
+  }
+
+  .card-stat:hover {
+    border-color: var(--accent-icon);
+    box-shadow: var(--elev-brand);
+  }
+
+  /* Full-bleed brand band. White type needs <= 0.183 relative luminance to
+     clear AA, and the brand blue #6A9BD1 sits at 0.311 — white on it is only
+     2.91:1. So the band steps *down* the brand ramp rather than *off* it: same
+     211° hue, same chroma, lower lightness. See the `--brand-surface` block. */
+  .band-accent {
+    background-image: linear-gradient(
+      168deg,
+      var(--brand-surface) 0%,
+      var(--brand-surface-deep) 100%
+    );
+    color: var(--brand-surface-fg);
+  }
+
+  /* Brand-filled card — process steps, service call-outs. Shares the band's
+     fill so the two brand blues on a page are one colour, and so white body
+     type clears AA everywhere on it: 4.91:1 at the light end of the gradient,
+     6.50:1 at the dark end. */
+  .card-brand {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--brand-line);
+    background-image: linear-gradient(
+      158deg,
+      var(--brand-surface) 0%,
+      var(--brand-surface-deep) 100%
+    );
+    color: var(--brand-surface-fg);
+    transition:
+      transform 0.5s var(--ease-out-soft),
+      box-shadow 0.5s var(--ease-out-soft);
+  }
+
+  .card-brand:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px -18px #0b1f3399;
+  }
+
+  /* ---- Backgrounds ---- */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .dot-bg {
+    background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+
+  /* Case-study covers stay dark in both themes — they read as artwork, and
+     the white overlays printed on them depend on a dark ground. */
+  .cover-art {
+    color-scheme: dark;
+  }
+
+  .cover-art .dot-bg {
+    background-image: radial-gradient(#ffffff14 1px, transparent 1px);
+  }
+
+  /* ---- Edge fades ---- */
+  .fade-x {
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+  }
+
+  .fade-b {
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+
+@layer utilities {
+  /* Scroll reveal — driven by a tiny IntersectionObserver hook */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.85s var(--ease-out-soft),
+      transform 0.85s var(--ease-out-soft);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .reveal-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ambient {
+    opacity: var(--ambient-opacity);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
