@@ -17,6 +17,7 @@ import { Counter } from "@/components/ui/Counter";
 import { Accordion } from "@/components/ui/Accordion";
 import { ButtonLink } from "@/components/ui/Button";
 import type { CaseStudy } from "@/lib/data/case-studies";
+import { CoverGallery } from "@/components/ui/CoverGallery";
 import { clients } from "@/lib/data/agency";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -69,14 +70,17 @@ export function ClientLogos({
 
       <Marquee duration="72s">
         {clients.map((c) => (
+          /* Logo and name share ONE white card rather than a bare tile with the
+             name floating below it. The marks are JPEGs with their backgrounds
+             baked in — Toyota grey, the chemist yellow — so letting each fill
+             its own tile edge to edge put those colours straight onto the blue
+             band and they fought each other. Contained and padded inside a
+             common card, the card is the constant and the artwork sits in it. */
           <span
             key={c.name}
-            className="mx-[clamp(0.75rem,1.9vw,3rem)] flex w-[clamp(9rem,15vw,26rem)] shrink-0 flex-col items-center gap-4 md:gap-5"
+            className="mx-3 flex w-[13.5rem] shrink-0 flex-col items-center gap-3 rounded-xl bg-white px-5 py-5 shadow-soft md:w-[15rem]"
           >
-            {/* Each mark is square and fills its tile edge to edge, so the
-                logo's own background becomes the tile — no mismatched inner
-                border where artwork is grey or yellow rather than white. */}
-            <span className="block size-[clamp(4.5rem,7.5vw,9rem)] shrink-0 overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-white/25">
+            <span className="flex h-14 w-full items-center justify-center md:h-16">
               <img
                 src={c.logo}
                 alt=""
@@ -84,18 +88,13 @@ export function ClientLogos({
                 height={250}
                 loading="lazy"
                 decoding="async"
-                className="size-full object-contain"
+                className="max-h-full max-w-[80%] object-contain"
               />
             </span>
-            {/* The name is the label here, so the image is decorative and
-                carries an empty alt — otherwise both get announced.
-
-                A fixed two-line box rather than `whitespace-nowrap`: the item is
-                now only as wide as the tile needs, and "Department of Education
-                SA" has to wrap somewhere. Holding the box height constant keeps
-                every tile on one line across the row whether its name wraps or
-                not. */}
-            <span className="line-clamp-2 h-12 w-full text-center font-display text-sm leading-snug text-white md:text-base">
+            {/* The name is the label, so the image is decorative and carries an
+                empty alt — otherwise both get announced. Two clamped lines keeps
+                every card the same height whether the name wraps or not. */}
+            <span className="line-clamp-2 w-full text-center font-display text-[0.8125rem] leading-snug font-medium text-navy-900">
               {c.name}
             </span>
           </span>
@@ -387,16 +386,23 @@ export function CaseStudyCard({
         >
           {/* A screenshot of the delivered work when we have one; the abstract
               tint underneath remains the fallback. */}
-          {study.coverImage && (
-            <img
-              src={study.coverImage.src}
-              alt={study.coverImage.alt}
-              width={1200}
-              height={750}
-              loading="lazy"
-              decoding="async"
-              className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
-            />
+          {/* A set cycles on hover and opens a lightbox; a lone cover stays a
+              plain image. Seven of the ten studies have neither, and fall
+              through to the abstract tint behind this. */}
+          {study.gallery && study.gallery.length > 1 ? (
+            <CoverGallery images={study.gallery} />
+          ) : (
+            study.coverImage && (
+              <img
+                src={study.coverImage.src}
+                alt={study.coverImage.alt}
+                width={1200}
+                height={750}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+              />
+            )
           )}
           <div className="dot-bg absolute inset-0 opacity-40" />
           <span

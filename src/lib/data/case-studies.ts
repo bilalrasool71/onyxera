@@ -27,6 +27,10 @@ export type CaseStudy = {
   /** Optional screenshot of the delivered work. Replaces the abstract cover
       when present — a real interface beats brand geometry. */
   coverImage?: { src: string; alt: string };
+  /** Optional image set. With two or more the card cycles them on hover and
+      opens a lightbox on click; with fewer it stays a static cover. Only two
+      engagements have a real set, so the card degrades rather than faking one. */
+  gallery?: { src: string; alt: string }[];
   /* Two-stop tint used for the abstract cover — stays inside the brand range */
   cover: { from: string; to: string; glyph: string };
 };
@@ -34,6 +38,13 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "mobile-amusements",
+    gallery: [
+      { src: "/images/work/mobile-amusements/1.jpg", alt: "A Mobile Amusements ferris wheel set up at an event in South Australia" },
+      { src: "/images/work/mobile-amusements/2.jpg", alt: "The Carnival Express ride on site" },
+      { src: "/images/work/mobile-amusements/3.jpg", alt: "Tea cup ride at a Mobile Amusements event" },
+      { src: "/images/work/mobile-amusements/4.jpg", alt: "The Trippa ride in operation" },
+      { src: "/images/work/mobile-amusements/5.jpg", alt: "Jumping castles set up for a family event" },
+    ],
     coverImage: {
       src: "/images/work/mobile-amusements.jpg",
       alt: "A Mobile Amusements ferris wheel set up at an event in South Australia",
@@ -353,6 +364,11 @@ export const caseStudies: CaseStudy[] = [
 
   {
     slug: "matrimonial-platform",
+    gallery: [
+      { src: "/images/work/matrimonial-platform/1.jpg", alt: "The matrimonial platform hero" },
+      { src: "/images/work/matrimonial-platform/2.jpg", alt: "The trust and privacy section of the platform" },
+      { src: "/images/work/matrimonial-platform/3.jpg", alt: "The consultation-led matchmaking journey" },
+    ],
     coverImage: {
       src: "/images/work/matrimonial-platform.jpg",
       alt: "The matrimonial platform hero, built around trust and a private, consultation-led journey",
