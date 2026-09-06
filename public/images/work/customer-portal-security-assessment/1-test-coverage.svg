@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 470" width="1400" height="470" role="img"
+     aria-label="The customer portal and its APIs, and the seven areas assessed against them">
+  <!--
+    Case study 01, "What We Did?" — the seven areas assessed, in the brief's own
+    wording. Fixed hex rather than CSS tokens: served through an <img>, so the
+    page's custom properties are out of reach. Sits on the proof card's white.
+  -->
+  <defs>
+    <marker id="c1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6a9bd1"/>
+    </marker>
+    <style>
+      .t   { font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+      .hd  { font-size: 21px; font-weight: 700; fill: #0b1f33; }
+      .li  { font-size: 15px; fill: #14283d; }
+      .cap { font-size: 12px; font-weight: 700; fill: #4f81bc; letter-spacing: 1.6px; }
+      .sub { font-size: 14px; fill: #c4d9ef; }
+    </style>
+  </defs>
+  <rect width="1400" height="470" fill="#ffffff"/>
+
+  <!-- the system under test -->
+  <rect x="60" y="140" width="290" height="200" rx="16" fill="#0b1f33"/>
+  <text class="t cap" x="205" y="184" text-anchor="middle" style="fill:#9fc0e2">UNDER TEST</text>
+  <text class="t hd" x="205" y="224" text-anchor="middle" style="fill:#ffffff">Customer portal</text>
+  <text class="t hd" x="205" y="252" text-anchor="middle" style="fill:#ffffff">and APIs</text>
+  <text class="t sub" x="205" y="288" text-anchor="middle">Login · Account access</text>
+  <text class="t sub" x="205" y="310" text-anchor="middle">Request submission</text>
+
+  <line x1="350" y1="240" x2="440" y2="240" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#c1)"/>
+
+  <text class="t cap" x="470" y="70">ASSESSED</text>
+
+  <!-- seven areas, two columns -->
+  <g>
+    <rect x="470" y="90" width="430" height="54" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="496" y="123">Authentication and session controls</text>
+    <rect x="470" y="162" width="430" height="54" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="496" y="195">Role based access</text>
+    <rect x="470" y="234" width="430" height="54" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="496" y="267">API endpoints</text>
+    <rect x="470" y="306" width="430" height="54" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="496" y="339">Input validation</text>
+
+    <rect x="930" y="90" width="410" height="54" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="956" y="123">Sensitive data exposure</text>
+    <rect x="930" y="162" width="410" height="54" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="956" y="195">Application dependencies</text>
+    <rect x="930" y="234" width="410" height="54" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="956" y="267">Common OWASP vulnerabilities</text>
+  </g>
+</svg>

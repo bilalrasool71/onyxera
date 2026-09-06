@@ -1,34 +1,129 @@
 import type { Service } from "./types";
-import { BarChart3, Blocks, Cable, CreditCard, RefreshCcw, Smartphone } from "lucide-react";
+import {
+  Blocks,
+  Bot,
+  Boxes,
+  BrainCircuit,
+  Cable,
+  Cloud,
+  Code2,
+  LineChart,
+  Network,
+  RefreshCcw,
+  Smartphone,
+  Users,
+} from "lucide-react";
 
 export const web_application: Service = /* ------------------------------------------------------------------ */
   {
-    slug: "web-application",
-    name: "Web Application Development",
-    navLabel: "Web Design & Applications",
+    /* Brief: "URL change: development solutions". The old /services/web-application
+       is 301'd to this in firebase.json — it is indexed, so it must not 404. */
+    slug: "development-solutions",
+    name: "Development Solutions",
+    navLabel: "Development Solutions",
     icon: Blocks,
     tagline: "Products that hold up under real load",
     summary:
       "Scalable web platforms and custom applications built around how your business operates.",
+    heroCta: "Build Your Solution",
+    whatYouGet: {
+      title: "The right solution, Built Around",
+      highlight: " Your Business",
+      body:
+        "From choosing what to build to selecting the right technology, everything is planned around your needs with no unnecessary features or wasted spend.",
+    },
+    stackIntro:
+      "A proven technology stack selected to build reliable, scalable development solutions.",
+    processHeading: {
+      title: "How Your Project Comes",
+      highlight: " Together",
+      end: "?",
+      body:
+        "A clear four step process that takes you from an idea or business problem to a working digital solution.",
+    },
+    faqHeading: {
+      title: "Digital Products,",
+      highlight: " Answered Straight",
+    },
     hero: {
-      eyebrow: "Web Application Development",
-      headline: "Web application development built around",
-      highlight: " your business",
+      eyebrow: "Development Solutions",
+      headline: "Digital Products And Systems",
+      highlight: " Built For Your Business",
       sub:
-        "From SaaS platforms and business portals to dashboards, APIs and custom applications, we build secure, scalable software designed around how your business actually works.",
+        "Design, development and integration across websites, web applications, CRM, ERP and business systems, built to support the way your business operates.",
     },
     metrics: [
       { value: "4", label: "Development Stages" },
       { value: "1", label: "Dedicated Team" },
       { value: "1", label: "Scalable Foundation" },
     ],
+    capabilitiesHeading: {
+      title: "Inside Development",
+      highlight: " Solutions",
+      body:
+        "From development solutions to enterprise systems, we build digital solutions that connect your customers, people, processes and data.",
+    },
     capabilities: [
-      { icon: Blocks, title: "SaaS Platforms", body: "Scalable software built for growing businesses." },
-      { icon: BarChart3, title: "Data Heavy Dashboards", body: "Complex data made simple to understand." },
-      { icon: Cable, title: "APIs & Integrations", body: "Connect your tools and systems seamlessly." },
-      { icon: CreditCard, title: "Payments & Subscriptions", body: "Secure payment flows built into your platform." },
-      { icon: Smartphone, title: "Progressive Web Apps", body: "App like experiences, accessible from the web." },
-      { icon: RefreshCcw, title: "Legacy Modernisation", body: "Upgrade outdated systems without disrupting operations." },
+      {
+        icon: Blocks,
+        title: "Web Applications",
+        body: "Build high performance web applications, portals and dashboards tailored to your business workflows. Create secure, scalable digital experiences that simplify complex processes and improve productivity.",
+      },
+      {
+        icon: Code2,
+        title: "Custom Software",
+        body: "Develop purpose built software around your unique business requirements and processes. Replace disconnected tools and manual workflows with scalable software designed specifically for your organisation.",
+      },
+      {
+        icon: Boxes,
+        title: "ERP Platforms",
+        body: "Connect finance, operations, procurement, inventory and other core functions through one unified platform. Improve visibility, control and efficiency across your entire business.",
+      },
+      {
+        icon: Users,
+        title: "CRM Platforms",
+        body: "Build powerful CRM systems that centralise customer data, sales pipelines and communication. Give your teams better visibility, automation and control throughout the customer journey.",
+      },
+      {
+        icon: Cloud,
+        title: "SaaS Engineering",
+        body: "Design and develop scalable SaaS platforms for B2B and consumer markets. Build secure multi tenant products with subscriptions, billing, analytics and enterprise capabilities.",
+      },
+      {
+        icon: Smartphone,
+        title: "Mobile Applications",
+        body: "Create intuitive mobile applications for iOS, Android and cross platform environments. Deliver fast, secure and reliable mobile experiences connected to your wider digital ecosystem.",
+      },
+      {
+        icon: BrainCircuit,
+        title: "AI Systems & LLMs",
+        body: "Build practical AI systems using LLMs, RAG and intelligent knowledge retrieval. Connect AI with your business data to automate information processing and improve decision making.",
+      },
+      {
+        icon: Bot,
+        title: "AI Agents & Automation",
+        body: "Develop intelligent AI agents that can execute tasks and connect with your business systems. Automate repetitive workflows across communication, operations, customer service and internal processes.",
+      },
+      {
+        icon: Cable,
+        title: "API & System Integration",
+        body: "Connect your software, CRM, ERP, SaaS platforms and third party systems through reliable integrations. Build secure APIs and data flows that allow your technology to work as one connected ecosystem.",
+      },
+      {
+        icon: Network,
+        title: "Cloud & DevOps Core",
+        body: "Build secure, scalable cloud infrastructure that keeps your applications reliable and ready to grow. Automate deployment, infrastructure and operational processes for faster and more dependable delivery.",
+      },
+      {
+        icon: RefreshCcw,
+        title: "Software Modernization",
+        body: "Transform outdated software, legacy databases and monolithic systems into modern technology environments. Improve performance, maintainability and scalability while protecting critical business functionality.",
+      },
+      {
+        icon: LineChart,
+        title: "BI & Real Time Analytics",
+        body: "Turn fragmented business data into clear dashboards, reports and actionable insights. Connect your systems and deliver real time visibility into the metrics that matter most.",
+      },
     ],
     deliverables: [
       "Technical Architecture Document",
@@ -65,50 +160,58 @@ export const web_application: Service = /* -------------------------------------
       },
     ],
     stack: [
-      "TypeScript",
-      "Next.js",
       "React",
+      "Next.js",
+      "TypeScript",
       "Node.js",
+      "Python",
+      "Salesforce",
+      "HubSpot",
+      "Microsoft Dynamics 365",
+      "SAP",
       "PostgreSQL",
-      "Prisma",
       "AWS",
+      "Shopify",
+      "NET",
+      "REST APIs",
+      "GraphQL",
+      "Angular",
       "Docker",
-      "Playwright",
-      "Stripe",
+      "Flutter",
     ],
     faqs: [
       {
-        q: "I am not technical — can you help me figure out what I actually need?",
-        a: "Yes. We start with your business, goals and current processes, then recommend the right solution without unnecessary technical complexity.",
+        q: "Can you design and build a complete website for our business?",
+        a: "Yes. We handle strategy, UX, UI design, development, CMS, integrations and launch, creating a website around your business goals and customer journey.",
       },
       {
-        q: "Do I need a website, web application or something else?",
-        a: "Not every business needs a complex application. We help you understand what will actually solve the problem before recommending what to build.",
+        q: "Can you build a custom web application?",
+        a: "Yes. We build customer portals, employee portals, dashboards, booking platforms, marketplaces, SaaS platforms and custom business applications.",
       },
       {
-        q: "How much does a custom web application cost?",
-        a: "It depends on the features, integrations and complexity involved. We define the scope first, then provide a clear proposal based on what your business actually needs.",
+        q: "Can you implement or customise a CRM?",
+        a: "Yes. We can help select, implement, customise, migrate, integrate and automate CRM platforms such as Salesforce, HubSpot, Microsoft Dynamics 365, Zoho and Pipedrive.",
       },
       {
-        q: "Can you build something from just my idea?",
-        a: "Yes. You can come to us with an idea, rough concept or business problem. We can help turn it into a practical plan and working application.",
+        q: "Can you implement an ERP system?",
+        a: "Yes. We provide ERP consulting, implementation, customisation, integration, migration, reporting and automation across platforms such as SAP, Oracle, NetSuite, Odoo and Microsoft Dynamics 365.",
       },
       {
-        q: "Can you improve our existing website or software?",
-        a: "Yes. We can review what you already have and recommend whether it should be improved, integrated, modernised or rebuilt.",
+        q: "Can you connect our different business systems?",
+        a: "Yes. We integrate websites, CRM, ERP, payment systems, APIs and other business tools so information can move between systems without unnecessary manual work.",
       },
       {
-        q: "What happens after the application is launched?",
-        a: "We can provide documentation, handover, maintenance and ongoing support so your business is not left alone with the software.",
+        q: "Can you build custom software for our business?",
+        a: "Yes. When existing platforms do not fit your processes, we design and develop custom software around your requirements, workflows, data and future growth.",
       },
     ],
     seo: {
-      title: "Web Application Development Services",
+      title: "Digital Development Solutions",
       description:
-        "Custom web application development for SaaS, business platforms, dashboards and integrations. Build the right solution with OnyxEra Tech.",
-      ogTitle: "Web Application Development Built Around Your Business",
+        "Build websites, web applications, CRM, ERP and custom software with digital development solutions designed around your business needs and processes.",
+      ogTitle: "Digital Development Solutions | OnyxEra Tech",
       ogDescription:
-        "Custom web applications, SaaS platforms, dashboards and integrations built around your business needs.",
+        "Build websites, web applications, CRM, ERP and custom software with digital development solutions designed around your business needs and processes.",
       keywords: [
         "custom web application development",
         "web application development services",
@@ -123,23 +226,13 @@ export const web_application: Service = /* -------------------------------------
       ],
       heroAlt: "web application development services by OnyxEra Tech",
     },
-    images: {
-      hero: {
-        src: "/images/web-application-hero.png",
-        alt: "web application development services by OnyxEra Tech",
-      },
-      stack: {
-        src: "/images/web-application-stack.png",
-        alt: "web application development technology stack",
-      },
-    },
     heroStats: [
-      { value: "4–6 Weeks", label: "Typical timeline for focused web applications" },
-      { value: "3–5 Milestones", label: "Clear progress from planning to launch" },
-      { value: "2–4 Review Cycles", label: "Structured feedback before final delivery" },
+      { value: "6+ Digital Capabilities", label: "Design, development, CRM, ERP, integration and automation." },
+      { value: "15+ Platforms & Technologies", label: "Built with proven tools suited to your requirements." },
+      { value: "1 Technology Partner", label: "From the first idea to implementation and ongoing growth." },
     ],
     problem: {
-      title: "Not sure what website your business actually needs?",
+      title: "Not sure what your business actually needs?",
       sub: "Starting online is easy. Knowing what to build is the hard part.",
       points: [
         "Don't know where to start",
@@ -148,11 +241,17 @@ export const web_application: Service = /* -------------------------------------
         "Worried about wasting money",
       ],
       solution:
-        "We understand your business first, then build the right digital solution around it.",
+        "We understand your business first, then build the right development solution around it.",
     },
     cta: {
-      title: "Have an idea? Let's build the right thing.",
-      body: "Tell us the problem. We'll define the right web application, scope the work and show you what comes next.",
+      eyebrow: "Digital Products, Platforms & Business Systems",
+      title: "Have an idea? Let’s build the right thing.",
+      body: "Tell us the problem. We’ll define the right solution, scope the work and show you what comes next.",
+      /* "Get Free Consultation → Contact us form aye ga" and
+         "Explore More → homepage pe baaqi services pe chala jaye ga user". */
+      primaryLabel: "Get Free Consultation",
+      secondaryLabel: "Explore More",
+      secondaryHref: "/#services",
     },
     /* Empty on purpose. The brief supplies no client quotes for this service —
        the three that used to sit here were invented, and the brief marks the
@@ -163,5 +262,10 @@ export const web_application: Service = /* -------------------------------------
        three real case studies (SnowAds, the Laravel VPS/API deployment and the
        matrimonial platform) are not in that file yet, so there is no honest
        slug to point at — re-point this once they are added. */
-    timeline: "4–6 weeks",
+    /* Not a duration. The same discipline covers a two-week job and a
+       six-month one, so a range printed here is either meaningless or a
+       promise nobody agreed to. What is true of every engagement is that the
+       schedule is settled in the proposal, before the client commits — so
+       that is what the card says. Keep all five services on this line. */
+    timeline: "Agreed before we start",
   };

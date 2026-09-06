@@ -2,10 +2,12 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Michroma, Montserrat, Schibsted_Grotesk } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
+import { RevealObserver } from "@/components/ui/RevealObserver";
 import { RouteProgress } from "@/components/ui/RouteProgress";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { themeBootScript } from "@/components/ui/ThemeToggle";
 import { Footer } from "@/components/layout/Footer";
+import { graph, organizationSchema, websiteSchema } from "@/lib/schema";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -16,6 +18,10 @@ const michroma = Michroma({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
+  /* Only dresses  — an 11px uppercase label, never the LCP
+     element. Preloaded, it took 12KB of the critical path ahead of the hero
+     for text nobody reads first. Fetched at normal priority instead. */
+  preload: false,
 });
 
 /* Display face for headings. Commissioned for a Nordic news group, so it reads
@@ -39,7 +45,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: `${site.name} | ${site.tagline}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -55,13 +61,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} | ${site.tagline}`,
     description: site.description,
     url: site.url,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} | ${site.tagline}`,
     description: site.description,
   },
   /* No `robots` key on purpose. index/follow is already the crawler default, so
@@ -79,31 +85,16 @@ export const viewport: Viewport = {
 };
 
 /* Google Analytics 4. `afterInteractive` keeps it off the critical path so it
-   cannot delay first paint. Note this sets the _ga cookies described in the
-   Cookie Policy — keep the two in step. */
-const GA_MEASUREMENT_ID = "G-5ZLFDQZ95F";
+   cannot delay first paint.
 
-const orgSchema = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: site.name,
-  description: site.description,
-  url: site.url,
-  email: site.email,
-  telephone: site.phone,
-  /* Links the site to the verified social profiles. Google reads this when
-     associating a Business Profile with a website. */
-  sameAs: site.socials.map((s) => s.href),
-  /* Both locations, so search engines see the real footprint. */
-  address: site.offices.map((o) => ({
-    "@type": "PostalAddress",
-    streetAddress: o.line1,
-    addressLocality: o.locality,
-    ...(o.region ? { addressRegion: o.region } : {}),
-    postalCode: o.postalCode,
-    addressCountry: o.countryCode,
-  })),
-};
+   The tag was briefly held back until the visitor's first scroll or tap, which
+   is cheaper again, but it means a session that ends before anyone touches the
+   page goes unrecorded. Loading it with the page instead: every visit counts,
+   which is the point of having analytics at all.
+
+   Note this sets the _ga cookies described in the Cookie Policy — keep the two
+   in step. */
+const GA_MEASUREMENT_ID = "G-5ZLFDQZ95F";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -148,6 +139,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="grid-bg fade-b absolute inset-x-0 top-0 h-[70vh] opacity-60" />
         </div>
 
+        <RevealObserver />
         <RouteProgress />
         <Navbar />
         {/* `tabIndex={-1}` so the skip link actually moves focus here, not just
@@ -159,9 +151,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <ScrollToTop />
 
+        {/* The company and the site, emitted once for every page. Each page's
+            own structured data references these two by @id rather than
+            repeating them, which is what makes the crawler read twenty-five
+            pages as one entity — and keeps those references resolvable on a
+            page reached directly from search, rather than only alongside the
+            home page. */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+          dangerouslySetInnerHTML={{ __html: graph([organizationSchema(), websiteSchema()]) }}
         />
 
         <Script

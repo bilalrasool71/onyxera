@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 660" width="1400" height="660" role="img"
+     aria-label="Architecture: a PHP ERP connected through a Python integration layer to shipping, Microsoft 365 and OCR services">
+  <!--
+    The ERP integration architecture, drawn from the brief. Every box and label
+    is the brief's own wording; nothing here is invented.
+
+    Fixed hex rather than the site's CSS tokens: this file is served through an
+    <img>, so it has no access to the page's custom properties. The palette is
+    the brand's, and it sits on the white card the proof gallery gives it.
+  -->
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6a9bd1"/>
+    </marker>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#3c5a7e"/>
+    </marker>
+    <style>
+      .t   { font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+      .hd  { font-size: 21px; font-weight: 700; fill: #0b1f33; }
+      .sub { font-size: 14px; fill: #3c5a7e; }
+      .li  { font-size: 14.5px; fill: #14283d; }
+      .cap { font-size: 12px; font-weight: 700; fill: #4f81bc; letter-spacing: 1.6px; }
+      .wht { fill: #ffffff; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="660" fill="#ffffff"/>
+
+  <!-- ============ the existing ERP, kept ============ -->
+  <rect x="60" y="180" width="240" height="230" rx="16" fill="#0b1f33"/>
+  <text class="t cap" x="180" y="222" text-anchor="middle" fill="#9fc0e2">EXISTING SYSTEM</text>
+  <text class="t hd wht" x="180" y="262" text-anchor="middle">PHP ERP</text>
+  <text class="t sub" x="180" y="292" text-anchor="middle" fill="#c4d9ef">Kept as the central</text>
+  <text class="t sub" x="180" y="313" text-anchor="middle" fill="#c4d9ef">system. No rebuild.</text>
+  <line x1="105" y1="340" x2="255" y2="340" stroke="#ffffff" stroke-opacity="0.22"/>
+  <text class="t sub" x="180" y="368" text-anchor="middle" fill="#9fc0e2">Orders · Suppliers</text>
+  <text class="t sub" x="180" y="389" text-anchor="middle" fill="#9fc0e2">Customers · Documents</text>
+
+  <!-- ============ integration layer ============ -->
+  <rect x="400" y="130" width="250" height="330" rx="16" fill="#eff3f8" stroke="#6a9bd1" stroke-width="2"/>
+  <text class="t cap" x="525" y="172" text-anchor="middle">INTEGRATION LAYER</text>
+  <text class="t hd" x="525" y="208" text-anchor="middle">Python</text>
+  <text class="t hd" x="525" y="234" text-anchor="middle">microservices</text>
+  <text class="t sub" x="525" y="266" text-anchor="middle">Modular. Structured</text>
+  <text class="t sub" x="525" y="287" text-anchor="middle">JSON interfaces.</text>
+  <line x1="440" y1="314" x2="610" y2="314" stroke="#b5c6dc"/>
+  <text class="t li" x="525" y="342" text-anchor="middle">Token management</text>
+  <text class="t li" x="525" y="366" text-anchor="middle">Retry logic · Idempotency</text>
+  <text class="t li" x="525" y="390" text-anchor="middle">Error handling</text>
+  <text class="t li" x="525" y="414" text-anchor="middle">Secure env vars</text>
+  <text class="t li" x="525" y="438" text-anchor="middle">Cron safe operations</text>
+
+  <!-- ERP <-> layer -->
+  <line x1="300" y1="295" x2="400" y2="295" stroke="#3c5a7e" stroke-width="2.5"
+        marker-start="url(#a2)" marker-end="url(#a2)"/>
+  <text class="t cap" x="350" y="282" text-anchor="middle">JSON</text>
+
+  <!-- ============ shipping ============ -->
+  <rect x="760" y="130" width="580" height="150" rx="14" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+  <text class="t cap" x="790" y="164">SHIPPING AUTOMATION</text>
+  <text class="t hd" x="790" y="196">FedEx · UPS</text>
+  <text class="t li" x="790" y="228">Label generation · Pickup scheduling</text>
+  <text class="t li" x="790" y="254">Tracking · Address validation</text>
+  <line x1="650" y1="205" x2="760" y2="205" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- ============ microsoft 365 ============ -->
+  <rect x="760" y="305" width="580" height="122" rx="14" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+  <text class="t cap" x="790" y="339">MICROSOFT 365</text>
+  <text class="t hd" x="790" y="371">Microsoft Graph</text>
+  <text class="t li" x="790" y="403">Outlook Mail · Calendar · Attachments</text>
+  <line x1="650" y1="366" x2="760" y2="366" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- ============ OCR ============ -->
+  <rect x="760" y="452" width="580" height="122" rx="14" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+  <text class="t cap" x="790" y="486">CUSTOM OCR</text>
+  <text class="t hd" x="790" y="518">Tesseract · Poppler</text>
+  <text class="t li" x="790" y="550">Supplier and customer PDFs to structured data</text>
+  <line x1="650" y1="437" x2="705" y2="437" stroke="#6a9bd1" stroke-width="2.5"/>
+  <path d="M705 437 Q730 437 730 465 L730 500 Q730 513 745 513 L760 513"
+        fill="none" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- ============ OCR result mapped back into the ERP ============ -->
+  <path d="M760 574 L760 612 Q760 624 746 624 L194 624 Q180 624 180 612 L180 410"
+        fill="none" stroke="#3c5a7e" stroke-width="2.5" stroke-dasharray="7 7" marker-end="url(#a2)"/>
+  <text class="t cap" x="470" y="614" text-anchor="middle">EXTRACTED DATA MAPPED BACK INTO THE ERP</text>
+</svg>

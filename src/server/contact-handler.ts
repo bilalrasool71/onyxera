@@ -60,6 +60,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ok: true,
     message:
-      "Thanks for reaching out. One of the team will reply within four business hours — usually sooner.",
+      "Thanks for reaching out. One of the team will reply within four business hours, usually sooner.",
   });
 }

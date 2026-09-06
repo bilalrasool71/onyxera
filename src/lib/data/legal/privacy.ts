@@ -78,7 +78,7 @@ export const privacySections: LegalSection[] = [
     ],
   },
   {
-    heading: "Cross-border data transfers",
+    heading: "Cross border data transfers",
     body: [
       "Some of our technology and service providers may be located outside of Australia. This means personal information may be processed or stored internationally.",
       "Where this is the case, we take reasonable steps to ensure that appropriate safeguards are in place and that your information continues to be afforded appropriate protection under applicable privacy requirements.",
@@ -97,14 +97,14 @@ export const privacySections: LegalSection[] = [
     heading: "Cookies and analytics",
     body: [
       "We use cookies and similar technologies on our website to make the website work, to understand how visitors use it, to improve performance, to measure marketing activity and to support security.",
-      "You may control and/or delete cookies as desired — for details see aboutcookies.org. You may also restrict or block cookies through your browser settings and any cookie controls available on our website.",
+      "You may control and/or delete cookies as desired. For details see aboutcookies.org. You may also restrict or block cookies through your browser settings and any cookie controls available on our website.",
     ],
   },
   {
     heading: "How we safeguard your information",
     body: [
       "We have implemented reasonable technical, administrative and organisational measures to protect personal information against unauthorised access, loss, misuse, alteration or disclosure.",
-      "Such measures may include control of access, authentication, secure infrastructure, encryption where appropriate, back-ups, monitoring, security testing, confidentiality obligations and secure deletion.",
+      "Such measures may include control of access, authentication, secure infrastructure, encryption where appropriate, backups, monitoring, security testing, confidentiality obligations and secure deletion.",
       "Absolutely no online system is 100% secure. We therefore continually monitor and improve our security practices in light of the information we process.",
     ],
     needsReview: true,
@@ -121,7 +121,7 @@ export const privacySections: LegalSection[] = [
     heading: "How long we hold information",
     body: [
       "We will only keep personal information for as long as reasonably necessary to fulfil our services, maintain business records, resolve disputes, enforce agreements or comply with legal and regulatory obligations.",
-      "Information no longer needed may be securely deleted, destroyed or de-identified.",
+      "Information no longer needed may be securely deleted, destroyed or deidentified.",
     ],
   },
   {
@@ -150,7 +150,7 @@ export const privacySections: LegalSection[] = [
     heading: "How to complain about privacy",
     body: [
       "If you are concerned about how we have handled your personal information, please contact us in the first instance so that we can investigate and deal with the matter.",
-      `Privacy contact — OnyxEra Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
+      `Privacy contact. OnyxEra Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
       "Please give us all the information we need to understand your concern. We will consider your message and respond in a timely manner.",
       "If you are not satisfied with our response, you can contact the Office of the Australian Information Commissioner (OAIC) or another relevant privacy regulator.",
     ],
@@ -163,7 +163,7 @@ export const privacySections: LegalSection[] = [
     ],
   },
   {
-    heading: "Third-party websites",
+    heading: "Third party websites",
     body: [
       "Our website may include links to third party websites, platforms or services.",
       "We are not responsible for the privacy or security practices of any third party. We recommend you read their privacy policies before you provide personal information.",

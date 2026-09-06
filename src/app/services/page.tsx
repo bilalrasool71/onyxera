@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Clock } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { CtaBand, FaqSection } from "@/components/sections/Shared";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { services } from "@/lib/data/services";
+import { site } from "@/lib/site";
 import { numberWord, titleCaseWord } from "@/lib/utils";
 import { generalFaqs } from "@/lib/data/agency";
+import { graph, pageSchema } from "@/lib/schema";
 
 /* Derived, so the count and the list cannot drift from the data again. */
 const COUNT = numberWord(services.length);
@@ -15,9 +17,24 @@ const NAMES = services.map((s) => s.navLabel);
 const NAME_LIST = `${NAMES.slice(0, -1).join(", ")} and ${NAMES.at(-1)}`;
 
 export const metadata: Metadata = {
+  /* Title, description and Open Graph copy come from the SEO brief.
+     `absolute` because the brief writes each title in full, including the
+     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     print the company name twice. */
+  title: { absolute: "Digital Solutions | OnyxEra Tech" },
+  description:
+    "Explore OnyxEra Tech services across digital development, SEO, digital marketing, automation and cyber security, built around your business and growth.",
   alternates: { canonical: "/services" },
-  title: "Services",
-  description: `${titleCaseWord(COUNT)} disciplines under one roof: ${NAME_LIST}.`,
+  openGraph: {
+    title: "Digital Solutions | OnyxEra Tech",
+    description:
+      "Explore OnyxEra Tech services across digital development, SEO, digital marketing, automation and cyber security, built around your business and growth.",
+    url: "/services",
+    /* Declaring `openGraph` at all replaces the file-based
+       opengraph-image convention rather than merging with it, so the card
+       has to name the image itself. */
+    images: ["/opengraph-image.png"],
+  },
 };
 
 const pairings = [
@@ -42,13 +59,40 @@ const pairings = [
 export default function ServicesPage() {
   return (
     <>
+      {/* The trail matches the breadcrumb the reader can see on this page. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: graph(
+            pageSchema({
+              path: "/services",
+              name: "Services",
+              description: `${titleCaseWord(COUNT)} disciplines under one roof: ${NAME_LIST}.`,
+              type: "CollectionPage",
+              crumbs: [{ label: "Services", path: "/services" }],
+              /* Names every service page as part of this collection, which is
+                 the OnyxEra Tech -> Services -> Individual Service link the
+                 brief asks for. */
+              extra: {
+                mainEntity: {
+                  "@type": "ItemList",
+                  itemListElement: services.map((s, i) => ({
+                    "@type": "ListItem",
+                    position: i + 1,
+                    name: s.name,
+                    url: `${site.url}/services/${s.slug}`,
+                  })),
+                },
+              },
+            }),
+          ) }}
+      />
       <PageHeader
         eyebrow="Services"
         crumbs={[{ label: "Home", href: "/" }, { label: "Services" }]}
         title={
           <>
-            {titleCaseWord(COUNT)} disciplines.
-            <span className="accent-text"> One accountable team</span>.
+            Digital Solutions
+            <span className="accent-text"> For Your Business</span>
           </>
         }
         intro="Each of these is a full practice with its own specialists. Take one, or take several and let them reinforce each other."
@@ -96,23 +140,19 @@ export default function ServicesPage() {
                       </li>
                     </ul>
 
-                    {/* `timeline` is optional (SEO publishes none), so the
-                        whole list is gated: a Timeline label with nothing
-                        under it read as a rendering fault. The two-column
-                        grid went with it — the second cell was removed long
-                        ago and the row was sitting half empty on every card. */}
-                    {service.timeline && (
-                      <dl className="mt-7 border-t border-line pt-6">
-                        <div>
-                          <dt className="flex items-center gap-1.5 font-label text-[0.625rem] tracking-wide text-fg-faint uppercase">
-                            <Clock className="size-3" /> Timeline
-                          </dt>
-                          <dd className="mt-1.5 font-display text-sm font-medium text-fg-body">
-                            {service.timeline}
-                          </dd>
-                        </div>
-                      </dl>
-                    )}
+                    {/* Closes the card with what it is for. A duration used to
+                        stand here, but the same discipline covers a two-week
+                        job and a six-month one, so any figure was either
+                        meaningless or a promise nobody had agreed to.
+
+                        Not a link: the whole card is already the anchor, and a
+                        second one inside it would be a nested interactive.
+                        This is the label for the arrow in the corner, and it
+                        moves with the card's own hover. */}
+                    <div className="mt-7 flex items-center gap-1.5 border-t border-line pt-6 font-display text-sm font-medium text-accent">
+                      Explore More
+                      <ArrowRight className="size-4 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5" />
+                    </div>
                   </Link>
                 </Reveal>
               );
@@ -135,9 +175,16 @@ export default function ServicesPage() {
             intro="Services bought separately tend to quietly undo each other. These are the combinations our clients get the most out of."
           />
 
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2">
+          {/* Borders, not a `gap-px` grid over a tinted parent — see the note
+              on the same pattern in services/[slug]/page.tsx. Fractional column
+              widths made those 1px gaps paint inconsistently. */}
+          <div className="mt-14 grid overflow-hidden rounded-2xl border border-line md:grid-cols-2">
             {pairings.map((p, i) => (
-              <Reveal key={p.title} delay={i * 70} className="bg-bg">
+              <Reveal
+                key={p.title}
+                delay={i * 70}
+                className="-mt-px -ml-px border-t border-l border-line bg-bg"
+              >
                 <div className="h-full p-8 transition-colors duration-300 hover:bg-surface md:p-9">
                   <h3 className="accent-text font-display text-lg font-medium">{p.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-fg-subtle">{p.body}</p>
@@ -168,8 +215,8 @@ export default function ServicesPage() {
             <span className="accent-text"> actually need</span>?
           </>
         }
-        intro="That is a completely normal place to start. Describe the problem in plain language and we will tell you which discipline solves it — even if the honest answer is none of them."
-        primaryLabel="Book a 30-minute call"
+        intro="That is a completely normal place to start. Describe the problem in plain language and we will tell you which discipline solves it, even if the honest answer is none of them."
+        primaryLabel="Book a 30 minute call"
       />
     </>
   );

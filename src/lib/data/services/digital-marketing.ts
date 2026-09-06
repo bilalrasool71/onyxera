@@ -10,10 +10,36 @@ export const digital_marketing: Service = /* -----------------------------------
     tagline: "From clicks to customers",
     summary:
       "Paid ads, social media and conversion strategies built to turn attention into qualified leads and measurable business growth.",
+    heroCta: "Get Your Marketing Strategy",
+    capabilitiesHeading: {
+      title: "From Clicks To",
+      highlight: " Customers",
+      body:
+        "Paid ads, social media and conversion strategies built to turn attention into qualified leads and measurable business growth.",
+    },
+    whatYouGet: {
+      title: "A Clear Plan.",
+      highlight: " Measurable Growth",
+      body:
+        "Every campaign has a defined strategy, clear deliverables and measurable goals, so you know where your budget is going and what it is expected to achieve.",
+    },
+    stackIntro:
+      "We turn your marketing goals into a clear execution plan designed to attract, convert and retain the right customers.",
+    processHeading: {
+      title: "A Clear Plan From Start To",
+      highlight: " Scale",
+      body:
+        "A structured marketing process that turns your goals into clear actions, measurable results and smarter growth decisions.",
+    },
+    /* Brief: "A ans S capital" — Answered Straight, both capitalised. */
+    faqHeading: {
+      title: "Digital Marketing,",
+      highlight: " Answered Straight",
+    },
     hero: {
       eyebrow: "Digital Marketing",
-      headline: "Digital marketing that turns",
-      highlight: "attention into growth.",
+      headline: "Digital Marketing That Turns",
+      highlight: " Attention Into Growth",
       sub:
         "We connect your ads, content, landing pages and tracking to turn marketing spend into qualified leads and measurable growth.",
     },
@@ -53,7 +79,7 @@ export const digital_marketing: Service = /* -----------------------------------
       "Meta Ads",
       "LinkedIn Ads",
       "GA4",
-      "Server-Side GTM",
+      "Server Side GTM",
       "HubSpot",
       "Klaviyo",
       "Segment",
@@ -69,12 +95,14 @@ export const digital_marketing: Service = /* -----------------------------------
       { q: "What happens if my campaigns are not generating leads?", a: "We identify where the problem is, whether it is the audience, offer, creative, landing page or campaign, then focus on fixing the weakest point." },
     ],
     seo: {
-      title: "Digital Marketing Services & Performance Marketing",
+      /* Kept under 60 characters with " | OnyxEra Tech" appended by the
+         title template, which is what Google prints. */
+      title: "Digital Marketing Services",
       description:
-        "Grow your business with digital marketing, Google Ads, Meta Ads, social media and performance marketing focused on qualified leads and revenue.",
-      ogTitle: "Digital Marketing Built To Drive Business Growth",
+        "Grow your business with Google Ads, Meta Ads, social media and performance marketing focused on qualified leads, conversions and measurable growth.",
+      ogTitle: "Digital Marketing Services | OnyxEra Tech",
       ogDescription:
-        "Drive qualified traffic, generate leads and improve conversions with digital marketing, paid advertising, social media and performance marketing.",
+        "Grow your business with Google Ads, Meta Ads, social media and performance marketing focused on qualified leads, conversions and measurable growth.",
       /* Primary keyword first, then the brief's secondary list in its order. */
       keywords: [
         "digital marketing",
@@ -91,7 +119,7 @@ export const digital_marketing: Service = /* -----------------------------------
       heroAlt: "Digital marketing services by OnyxEra Tech",
     },
     problem: {
-      title: "Your marketing is spending. But is it selling?",
+      title: "Getting Clicks, but not Enough Customers?",
       sub: "When campaigns, landing pages and tracking work separately, budgets get wasted and it becomes difficult to see what is actually driving leads and revenue.",
       /* The brief lists one set of four symptoms and the service page renders
          both this block and `painPoints`. The four live in `painPoints`, which
@@ -103,8 +131,11 @@ export const digital_marketing: Service = /* -----------------------------------
         "We turn marketing spend into qualified leads, better conversions and measurable revenue.",
     },
     cta: {
-      title: "Ready to turn your marketing into growth?",
+      title: "Ready to Turn Your Marketing into Growth?",
       body: "Tell us what is not working. We will identify the gaps, build a clear plan to generate better leads and measurable results.",
+      primaryLabel: "Discuss Project",
+      secondaryLabel: "Get Marketing Strategy",
+      note: "Typical reply within 4 business hours",
     },
     /* Empty on purpose. The three entries that were here — named people at
        Fieldstone SaaS, Bloomstate and Ardent Coffee Co., with ROAS and cost
@@ -114,5 +145,10 @@ export const digital_marketing: Service = /* -----------------------------------
        `initials` without inventing a person; it belongs with that client's
        case study rather than here. */
     testimonials: [],
-    timeline: "3-month minimum",
+    /* Not a duration. The same discipline covers a two-week job and a
+       six-month one, so a range printed here is either meaningless or a
+       promise nobody agreed to. What is true of every engagement is that the
+       schedule is settled in the proposal, before the client commits — so
+       that is what the card says. Keep all five services on this line. */
+    timeline: "Agreed before we start",
   };

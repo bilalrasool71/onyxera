@@ -78,17 +78,17 @@ export function Logo({ className, size = "md" }: LogoProps) {
   return (
     <span className={cn("inline-flex shrink-0 select-none items-center", className)}>
       <img
-        src="/logo-black.png"
+        src="/logo-black.webp"
         alt=""
-        width={530}
-        height={128}
+        width={420}
+        height={101}
         className={cn("logo-on-dark", h)}
       />
       <img
-        src="/logo-white.png"
+        src="/logo-white.webp"
         alt=""
-        width={536}
-        height={129}
+        width={420}
+        height={101}
         className={cn("logo-on-light", h)}
       />
       <span className="sr-only">OnyxEra Tech</span>

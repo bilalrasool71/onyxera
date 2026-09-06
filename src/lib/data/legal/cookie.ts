@@ -54,7 +54,7 @@ export const cookieSections: LegalSection[] = [
     needsReview: true,
   },
   {
-    heading: "Third-party cookies",
+    heading: "Third party cookies",
     body: [
       "We may permit other parties to place cookies or similar technologies via the services they provide on our website. These can include analytics, embedded content, advertising or other website functionality.",
       "Third party providers have separate privacy policies and terms.",

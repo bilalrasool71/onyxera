@@ -16,10 +16,24 @@ import { cookieSections } from "@/lib/data/legal";
    - Whether GA4 should load before consent is a decision for whoever owns
      layout.tsx. Nothing on this page claims it does not any more. */
 export const metadata: Metadata = {
-  title: "Cookie Policy",
+  /* Title, description and Open Graph copy come from the SEO brief.
+     `absolute` because the brief writes each title in full, including the
+     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     print the company name twice. */
+  title: { absolute: "Cookie Policy | OnyxEra Tech" },
   description:
-    "How OnyxEra Tech uses cookies: what keeps the site working, what remembers your settings, and the Google Analytics cookies that measure how the site is used.",
+    "Learn how OnyxEra Tech uses cookies and similar technologies to operate, improve and understand website usage and digital interactions online.",
   alternates: { canonical: "/cookie-policy" },
+  openGraph: {
+    title: "Cookie Policy | OnyxEra Tech",
+    description:
+      "Learn how OnyxEra Tech uses cookies and similar technologies to operate, improve and understand website usage and digital interactions online.",
+    url: "/cookie-policy",
+    /* Declaring `openGraph` at all replaces the file-based
+       opengraph-image convention rather than merging with it, so the card
+       has to name the image itself. */
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function Page() {

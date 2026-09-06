@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import {
   ClientLogos,
   CtaBand,
@@ -16,39 +18,87 @@ import {
   originStory,
 } from "@/lib/data/agency";
 import { services } from "@/lib/data/services";
+import { graph, pageSchema } from "@/lib/schema";
 import { numberWord, titleCaseWord } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/about" },
-  title: "About",
+  /* Title, description and Open Graph copy come from the SEO brief.
+     `absolute` because the brief writes each title in full, including the
+     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     print the company name twice. */
+  title: { absolute: "About OnyxEra Tech" },
   description:
-    "From websites and software to AI automation and performance marketing, OnyxEra Tech connects technology with growth to help businesses scale smarter.",
+    "Learn about OnyxEra Tech, our experience, approach and vision for helping businesses build better technology, automate work and achieve sustainable growth.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "About OnyxEra Tech",
+    description:
+      "Learn about OnyxEra Tech, our experience, approach and vision for helping businesses build better technology, automate work and achieve sustainable growth.",
+    url: "/about",
+    /* Declaring `openGraph` at all replaces the file-based
+       opengraph-image convention rather than merging with it, so the card
+       has to name the image itself. */
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: graph(
+            pageSchema({
+              path: "/about",
+              name: "About",
+              description:
+                "From websites and software to AI automation and performance marketing, OnyxEra Tech connects technology with growth to help businesses scale smarter.",
+              type: "AboutPage",
+              crumbs: [{ label: "About", path: "/about" }],
+            }),
+          ) }}
+      />
       {/* ---------------- hero ---------------- */}
       <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-20">
+        <div className="shell">
+          {/* Services, Contact and every case study already show a trail;
+              this page was the only second-level page without one, which the
+              structured breadcrumb beside it would have contradicted. Same
+              markup as PageHeader's, since this page builds its own hero. */}
+          <Reveal immediate>
+            <nav aria-label="Breadcrumb" className="mb-8">
+              <ol className="flex flex-wrap items-center gap-1.5 font-label text-[0.6875rem] tracking-wide text-fg-faint">
+                <li className="flex items-center gap-1.5">
+                  <Link href="/" className="transition-colors duration-300 hover:text-accent">
+                    Home
+                  </Link>
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <ChevronRight className="size-3 text-fg-faint" />
+                  <span className="text-accent">About</span>
+                </li>
+              </ol>
+            </nav>
+          </Reveal>
+        </div>
         <div className="shell grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <div>
-            <Reveal>
+            <Reveal immediate>
               <span className="eyebrow">About OnyxEra</span>
             </Reveal>
-            <Reveal delay={80}>
-              <h1 className="mt-6 text-[clamp(2.5rem,6.4vw,4.75rem)] text-fg">
-                We build it. Automate it.
-                <span className="accent-text"> Grow it.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={150}>
+            {/* Unwrapped on purpose — see the note on the home page's h1. */}
+            <h1 className="mt-6 text-[clamp(2.5rem,6.4vw,4.75rem)] text-fg">
+              We Build It. Automate It.
+              <span className="accent-text"> Grow It.</span>
+            </h1>
+            <Reveal delay={150} immediate>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-fg-muted">
                 From websites and software to AI automation and performance
                 marketing, we connect technology with growth to help businesses
                 scale smarter.
               </p>
             </Reveal>
-            <Reveal delay={220}>
+            <Reveal delay={220} immediate>
               <div className="mt-9 flex flex-wrap gap-3">
                 <ButtonLink href="/contact" size="lg" withArrow>
                   Start a conversation
@@ -61,17 +111,21 @@ export default function AboutPage() {
           </div>
 
           {/* Supplied photograph, staged from the launch checklist document. */}
-          <Reveal delay={120}>
-            <div className="card relative aspect-4/3 overflow-hidden">
-              <img
-                src="/images/about-hero.jpg"
-                alt="OnyxEra Tech — built on experience, one connected team"
-                width={736}
-                height={736}
-                className="size-full object-cover"
-              />
-            </div>
-          </Reveal>
+          {/* No `Reveal`, and fetched at high priority: at 736px square this
+              photograph is the largest thing in this page's fold, which makes
+              it the LCP element — and Chromium will not credit an element that
+              was mid-animation, or still at opacity 0 waiting on hydration,
+              when it was first painted. */}
+          <div className="card relative aspect-4/3 overflow-hidden">
+            <img
+              src="/images/about-hero.webp"
+              alt="OnyxEra Tech, built on experience, one connected team"
+              width={736}
+              height={736}
+              fetchPriority="high"
+              className="size-full object-cover"
+            />
+          </div>
         </div>
       </section>
 
@@ -226,7 +280,7 @@ export default function AboutPage() {
         }
         intro="Whether you need a website, software, AI automation, SEO or a complete digital growth solution, start with the problem."
         primaryLabel="Start a project"
-        secondaryHref="/services"
+        secondaryHref="/our-portfolio"
         secondaryLabel="See what we build"
       />
     </>

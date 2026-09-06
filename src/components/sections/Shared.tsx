@@ -61,26 +61,34 @@ export function ClientLogos({
   label?: string;
 }) {
   return (
-    <section className="band-accent relative overflow-hidden py-12 md:py-16">
+    /* Brief: "Do not place them in white boxes" and "logo should be made bigger
+       ... we want to make logo prominent", with the name kept under the mark.
+
+       The per-logo white card is gone, which only became possible once the
+       source JPEGs (Toyota grey, the chemist yellow) were replaced with
+       background-free PNGs of the same names.
+
+       The strip is light in BOTH themes rather than the brand blue band it was:
+       every one of these marks is dark navy, black or mid-blue ink, so on blue
+       — or on the navy ground in dark mode — the logos would be the thing that
+       disappears. A light strip is also what the supplied reference shows. */
+    <section className="relative overflow-hidden bg-canvas py-12 md:py-16">
       <div className="shell">
-        <p className="mb-10 text-center font-label text-[0.75rem] font-semibold tracking-[0.22em] text-white uppercase">
+        <p className="mb-10 text-center font-label text-[0.75rem] font-semibold tracking-[0.22em] text-navy-500 uppercase">
           {label}
         </p>
       </div>
 
       <Marquee duration="72s">
         {clients.map((c) => (
-          /* Logo and name share ONE white card rather than a bare tile with the
-             name floating below it. The marks are JPEGs with their backgrounds
-             baked in — Toyota grey, the chemist yellow — so letting each fill
-             its own tile edge to edge put those colours straight onto the blue
-             band and they fought each other. Contained and padded inside a
-             common card, the card is the constant and the artwork sits in it. */
           <span
             key={c.name}
-            className="mx-3 flex w-[13.5rem] shrink-0 flex-col items-center gap-3 rounded-xl bg-white px-5 py-5 shadow-soft md:w-[15rem]"
+            className="mx-6 flex w-[11rem] shrink-0 flex-col items-center gap-3.5 md:mx-8 md:w-[12.5rem]"
           >
-            <span className="flex h-14 w-full items-center justify-center md:h-16">
+            {/* ~1.6x the old box height, and the mark may now run the full
+                width of its cell. Those two things are what make it read as
+                prominent with no card behind it. */}
+            <span className="flex h-20 w-full items-center justify-center md:h-24">
               <img
                 src={c.logo}
                 alt=""
@@ -88,12 +96,12 @@ export function ClientLogos({
                 height={250}
                 loading="lazy"
                 decoding="async"
-                className="max-h-full max-w-[80%] object-contain"
+                className="max-h-full max-w-full object-contain"
               />
             </span>
             {/* The name is the label, so the image is decorative and carries an
                 empty alt — otherwise both get announced. Two clamped lines keeps
-                every card the same height whether the name wraps or not. */}
+                every cell the same height whether the name wraps or not. */}
             <span className="line-clamp-2 w-full text-center font-display text-[0.8125rem] leading-snug font-medium text-navy-900">
               {c.name}
             </span>
@@ -111,48 +119,102 @@ export function ClientLogos({
 export function MetricStrip({
   metrics,
   className,
+  narrow = false,
 }: {
-  metrics: { value: string; label: string }[];
+  metrics: { value: string; label?: string }[];
   className?: string;
+  /** Set when the strip sits in a column rather than across the page. */
+  narrow?: boolean;
 }) {
-  /* Kept mutually exclusive — two competing `sm:grid-cols-*` utilities would
-     be resolved by stylesheet order rather than by class order. */
+  /* Columns follow the count. Every branch is a whole literal string and the
+     branches are mutually exclusive: two competing `sm:grid-cols-*` utilities
+     would be resolved by stylesheet order rather than by class order.
+
+     The one-metric case is the reason this is a switch rather than a constant.
+     A single card in a three-column track sat in the left third with two empty
+     thirds beside it — a hole, on the page where the result is the whole point.
+     It now runs the full width and centres its own figure. */
+  /* `narrow` differs in one place: four across. Full width that is four
+     comfortable cards, but in a page column it is four cards of about 165px,
+     and every caption wrapped to three lines. Two by two in the same column
+     gives each card roughly 350px and the captions sit on one line. */
   const columns =
-    metrics.length === 4 ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3";
+    metrics.length === 1
+      ? "grid-cols-1"
+      : metrics.length === 2
+        ? "sm:grid-cols-2"
+        : metrics.length === 4
+          ? narrow
+            ? "sm:grid-cols-2"
+            : "sm:grid-cols-2 lg:grid-cols-4"
+          : "sm:grid-cols-3";
+
+  /* The figure tier is sized to what is actually in it. This strip carries two
+     different kinds of value: real figures ("140+", "94%", "No. 1"), and on the
+     case study pages a short phrase ("Technical recovery", "AI search
+     readiness"). At the display size a phrase wrapped to three ragged lines and
+     swamped its own caption, so anything past a few characters steps down to a
+     heading tier instead. Every branch is a whole literal class string: cn() is
+     a plain join with no tailwind-merge, so overlapping sizes would be settled
+     by stylesheet order rather than argument order. */
+  const valueSize = (value: string) =>
+    value.length <= 6
+      ? "text-[2.125rem] leading-none tracking-tight tabular-nums md:text-[2.625rem]"
+      : value.length <= 15
+        ? "text-[1.375rem] leading-tight tracking-tight md:text-[1.625rem]"
+        : "text-[1.125rem] leading-snug tracking-tight md:text-[1.3125rem]";
 
   return (
+    /* The card is the `Reveal` itself rather than a child of it. A `dl` may
+       wrap each dt/dd pair in one `div`, and no more — two nested divs and the
+       pairs stop counting as list items at all, which is what `Reveal` plus an
+       inner card added up to.
+
+       `.card-stat`, not `.card`: the default surface is 1.11:1 against the
+       dark ground and 1.03:1 against the light one, so the figures floated with
+       no panel behind them. `.card-stat` is the brand-tinted glass with a blue
+       edge, and it stands alone — the two are mutually exclusive rather than
+       one overriding the other, which matters because `cn()` is a plain join
+       with no tailwind-merge. It leaves `transform` alone, so `.card-hover`
+       still supplies the lift. */
     <dl className={cn("grid gap-4", columns, className)}>
       {metrics.map((m, i) => (
-        <Reveal key={m.label} delay={i * 90} className="h-full">
-          {/* `.card-stat`, not `.card`: the default surface is 1.11:1 against
-              the dark ground and 1.03:1 against the light one, so the figures
-              floated with no panel behind them. `.card-stat` is the brand-tinted
-              glass with a blue edge, and it stands alone — the two are mutually
-              exclusive rather than one overriding the other, which matters
-              because `cn()` is a plain join with no tailwind-merge. It leaves
-              `transform` alone, so `.card-hover` still supplies the lift. */}
-          <div className="card-stat card-hover group h-full px-6 py-8 text-center md:px-7 md:py-10">
-            <span
-              aria-hidden="true"
-              className="accent-line absolute inset-x-8 top-0 h-px"
+        <Reveal
+          /* Index, not `value`. Two figures on a page can legitimately read
+             the same — Development Solutions runs "1 Dedicated Team" beside
+             "1 Scalable Foundation" — and keying on the figure made React
+             treat them as one node. The list is static and never reorders, so
+             the index is a stable identity here. */
+          key={i}
+          delay={i * 90}
+          className="card-stat card-hover group h-full px-6 py-8 text-center md:px-7 md:py-10"
+        >
+          <span
+            aria-hidden="true"
+            className="accent-line absolute inset-x-8 top-0 h-px"
+          />
+          {/* The figure is the accessible name when there is no label. */}
+          <dt className="sr-only">{m.label ?? m.value}</dt>
+          <dd>
+            {/* Plain `--fg`, not `.accent-text`. The accent ramp bottoms out
+                at #3e68a1, which is 2.06:1 on the new stat surface — under
+                even the 3:1 floor large text gets. The card now carries the
+                brand colour and the figure carries the contrast: 11.67:1 in
+                dark, 14.29:1 in light. */}
+            <Counter
+              value={m.value}
+              className={cn(
+                "block font-display font-semibold text-fg",
+                valueSize(m.value),
+              )}
             />
-            <dt className="sr-only">{m.label}</dt>
-            <dd>
-              {/* Plain `--fg`, not `.accent-text`. The accent ramp bottoms out
-                  at #3e68a1, which is 2.06:1 on the new stat surface — under
-                  even the 3:1 floor large text gets. The card now carries the
-                  brand colour and the figure carries the contrast: 11.67:1 in
-                  dark, 14.29:1 in light. */}
-              <Counter
-                value={m.value}
-                className="block font-display text-[2.125rem] leading-none font-semibold tracking-tight text-fg tabular-nums md:text-[2.625rem]"
-              />
+            {m.label && (
               <span className="mt-3 block text-sm leading-snug text-fg-muted">
                 {m.label}
               </span>
-            </dd>
-          </div>
-        </Reveal>
+            )}
+        </dd>
+      </Reveal>
       ))}
     </dl>
   );
@@ -257,16 +319,6 @@ export function FaqSection({
   intro?: string;
   eyebrow?: string;
 }) {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  };
-
   return (
     <section className="section">
       <div className="shell grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
@@ -282,7 +334,7 @@ export function FaqSection({
           <Reveal delay={150}>
             <p className="mt-5 text-fg-muted">
               {intro ??
-                "If something is not answered here, ask us directly — you will get a straight answer rather than a sales call."}
+                "If something is not answered here, ask us directly. You will get a straight answer rather than a sales call."}
             </p>
           </Reveal>
           <Reveal delay={220}>
@@ -330,11 +382,6 @@ export function FaqSection({
           />
         </Reveal>
       </div>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
     </section>
   );
 }
@@ -374,7 +421,7 @@ export function CaseStudyCard({
   return (
     <Reveal delay={index * 90} className="h-full">
       <Link
-        href={`/work/${study.slug}`}
+        href={`/our-portfolio/${study.slug}`}
         className="card card-hover card-glow group flex h-full flex-col overflow-hidden"
       >
         {/* abstract cover — no stock photography, just brand geometry */}
@@ -448,14 +495,18 @@ export function CaseStudyCard({
           </p>
 
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-5">
-            {study.results.slice(0, 2).map((r) => (
-              <span key={r.label}>
+            {study.results.slice(0, 2).map((r, i) => (
+              /* Index, not `value` or `label`: `label` is optional, and two
+                 figures can read the same. Static list, never reordered. */
+              <span key={i}>
                 <span className="block font-display text-xl font-semibold text-accent">
                   {r.value}
                 </span>
-                <span className="mt-0.5 block text-[0.6875rem] text-fg-faint">
-                  {r.label}
-                </span>
+                {r.label && (
+                  <span className="mt-0.5 block text-[0.6875rem] text-fg-faint">
+                    {r.label}
+                  </span>
+                )}
               </span>
             ))}
           </div>
@@ -474,8 +525,12 @@ export function CtaBand({
   title,
   intro,
   primaryLabel = "Start a project",
-  secondaryHref = "/services",
+  /* Brief: "See what we build will land towards Our portfolio page". The work
+     index is that page, so the white half of the pair points there, not at the
+     services index it used to. */
+  secondaryHref = "/our-portfolio",
   secondaryLabel = "See what we build",
+  note,
 }: {
   eyebrow?: string;
   title?: ReactNode;
@@ -483,6 +538,8 @@ export function CtaBand({
   primaryLabel?: string;
   secondaryHref?: string;
   secondaryLabel?: string;
+  /** A short line under the buttons. Only rendered where a brief supplies one. */
+  note?: string;
 }) {
   return (
     <section className="section">
@@ -503,7 +560,7 @@ export function CtaBand({
               </h2>
               <p className="mt-6 text-base text-fg-muted md:text-lg">
                 {intro ??
-                  "Tell us what you are trying to solve. Thirty minutes, no pitch deck — and if we are not the right people, we will say so and point you somewhere better."}
+                  "Tell us what you are trying to solve. Thirty minutes, no pitch deck. If we are not the right people, we will say so and point you somewhere better."}
               </p>
 
               {/* One blue, one white — the site-wide CTA pairing. The white
@@ -520,12 +577,13 @@ export function CtaBand({
                 </ButtonLink>
               </div>
 
-              {/* A response-time SLA — "under 4 business hours" — used to sit
-                  here, on all 27 pages, with a second wording on the contact
-                  form and a third in the server handler. Nothing on the site
-                  supports the figure, so it is removed rather than restated. If
-                  the business confirms a real number, define it once in
-                  src/lib/site.ts and import it at both call sites. */}
+              {/* A response-time line used to sit here on all 27 pages, in three
+                  different wordings, with nothing on the site supporting the
+                  figure — so it was removed. It is back only where a brief
+                  actually states one, page by page, rather than as a default. */}
+              {note && (
+                <p className="mt-6 font-label text-xs text-fg-faint">{note}</p>
+              )}
             </div>
           </div>
         </Reveal>

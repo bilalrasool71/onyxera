@@ -23,22 +23,32 @@ type Variant = "wide" | "compact";
  * height — same width, same height, everywhere.
  *
  *   md (4 cols)   [0][1] / [2][3] / [ 4 ]
- *   lg (6 cols)   [0][1][2] / [3][4]
+ *   lg (6 cols)   [0][1][2] / [  3  ][  4  ]
  *
- * Five tiles never fill a row of two or three, so the short final row is nudged
- * inward instead of hanging off the left edge. Every class here is a literal:
- * Tailwind scans source as text, so an index may *pick* a class but never
- * build one.
+ * On lg the last two tiles span THREE columns each, not two. As span-2 pushed
+ * in with `lg:col-start-2` they were narrower than the three above them and
+ * floated in the middle of the band with dead track either side. At half the
+ * track each, the short final row is exactly as wide as the full row above it
+ * and the grid squares off.
+ *
+ * Every class here is a literal: Tailwind scans source as text, so an index may
+ * *pick* a class but never build one.
  */
-const CELL = "md:col-span-2";
+const cellSpan = [
+  "md:col-span-2 lg:col-span-2",
+  "md:col-span-2 lg:col-span-2",
+  "md:col-span-2 lg:col-span-2",
+  "md:col-span-2 lg:col-span-3",
+  "md:col-span-2 lg:col-span-3",
+];
 
 const cellOffset = [
   "",
   "",
   "",
-  /* lg: last row holds two tiles — start at column 2 so the pair sits centred. */
-  "lg:col-start-2",
-  /* md: last row holds one tile — centre it, then hand it back to flow at lg. */
+  "",
+  /* md only: that row holds one tile, so centre it — then hand it back to the
+     flow at lg, where it is half of a full-width pair. */
   "md:col-start-2 lg:col-start-auto",
 ];
 
@@ -158,6 +168,9 @@ export function ServicesGrid({
              component's own (0,1,0) class and wins on specificity rather than
              on order, which `cn()` cannot promise. */
           <SectionHeading
+            /* Split, so the supporting line and the compare link occupy the
+               right half instead of leaving the top-right of the band empty. */
+            layout="split"
             className="[&_.eyebrow]:text-[0.8125rem] [&_h2]:text-[clamp(2.35rem,5vw,3.85rem)]"
             eyebrow="What we do"
             title={
@@ -177,7 +190,7 @@ export function ServicesGrid({
               key={s.slug}
               service={s}
               index={i}
-              className={cn(CELL, cellOffset[i])}
+              className={cn(cellSpan[i], cellOffset[i])}
             />
           ))}
         </div>
@@ -191,7 +204,7 @@ export function ServicesGrid({
               </p>
               <p className="mt-2 text-sm leading-relaxed text-fg-subtle">
                 Describe the problem rather than the service. We will tell you
-                which discipline solves it — or that none of them do.
+                which discipline solves it, or that none of them do.
               </p>
             </div>
             {/* One blue, one white. */}

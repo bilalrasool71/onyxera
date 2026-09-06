@@ -83,17 +83,18 @@ export function Principles() {
                    is a plain join, so two competing `bg-` classes would resolve
                    by stylesheet order, not argument order. */
                 selected
-                  ? "border-white/30 bg-brand-surface text-white"
+                  ? "border-navy-900/25 bg-brand-surface text-brand-surface-fg"
                   : "border-transparent text-fg-body hover:border-accent-icon/50 hover:bg-glass hover:text-fg",
               )}
             >
               <span
                 className={cn(
                   "font-label text-[0.625rem] tracking-[0.2em] tabular-nums transition-colors duration-200",
-                  /* Full white, not white/70: anything under 100% drops below
-                     4.5:1 on this fill (white/90 measures 4.31:1). Size and
-                     tracking carry the hierarchy instead of opacity. */
-                  selected ? "text-white" : "text-fg-faint",
+                  /* The fill's own foreground, at full strength. White on it
+                     is 2.9:1; navy 900 is 7.4:1, and anything under 100% of
+                     that eats straight back into the margin. Size and tracking
+                     carry the hierarchy instead of opacity. */
+                  selected ? "text-brand-surface-fg" : "text-fg-faint",
                 )}
               >
                 {String(i + 1).padStart(2, "0")}

@@ -1,5 +1,18 @@
 import type { Service } from "./types";
-import { BarChart3, Boxes, BrainCircuit, Cable, ClipboardCheck, Workflow } from "lucide-react";
+import {
+  BadgeDollarSign,
+  BrainCircuit,
+  Cable,
+  ClipboardCheck,
+  FileSearch,
+  Headset,
+  Map,
+  MessageSquareHeart,
+  Network,
+  UserPlus,
+  Users,
+  Workflow,
+} from "lucide-react";
 
 export const automation: Service = /* ------------------------------------------------------------------ */
   {
@@ -9,11 +22,35 @@ export const automation: Service = /* ------------------------------------------
     icon: Workflow,
     tagline: "Give your team their week back",
     summary:
-      "AI-powered workflows and smart integrations that reduce manual work and improve efficiency.",
+      "AI powered workflows and smart integrations that reduce manual work and improve efficiency.",
+    heroCta: "Get Your Automation Assessment",
+    capabilitiesHeading: {
+      title: "From Manual Work To",
+      highlight: " Automated Workflows",
+      body:
+        "We connect the tools you already use, automate repetitive processes and introduce AI where it can create a practical business advantage.",
+    },
+    whatYouGet: {
+      title: "A Clear Automation Plan.",
+      highlight: " Real Business Impact",
+      body:
+        "Every workflow is mapped, prioritised and measured so you know what is being automated, why it matters and what it should save.",
+    },
+    stackIntro:
+      "We use proven automation tools that your team can understand, maintain and build on.",
+    /* The brief's own line for the ticked note under the stack list. */
+    stackNote:
+      "Your automation should belong to your business, not the person who built it.",
+    processHeading: {
+      title: "A Clear Path From Manual To",
+      highlight: " Automated",
+      body:
+        "A practical four step process that starts with understanding the work and ends with a workflow your team can trust.",
+    },
     hero: {
       eyebrow: "Automation & AI Workflows",
-      headline: "Automation that gives your team",
-      highlight: " time back",
+      headline: "Automation That Gives Your",
+      highlight: " Team Time Back",
       sub:
         "We automate repetitive processes so your team can spend less time on busywork and more time growing the business.",
     },
@@ -22,9 +59,9 @@ export const automation: Service = /* ------------------------------------------
        identical MetricStrip further down the page — see the note where
        `heroStats` used to sit. */
     metrics: [
-      { value: "1,900 hrs", label: "Median manual hours removed per year" },
-      { value: "3 to 7 Weeks", label: "Typical time to first automation" },
-      { value: "8 Months", label: "Average payback period" },
+      { value: "6+ Solution Areas", label: "Design, development, CRM, ERP, software and automation" },
+      { value: "15+ Platforms & Technologies", label: "Proven tools selected around your business requirements" },
+      { value: "100% Business Focused", label: "Every solution starts with your processes, goals and customers" },
     ],
     /* Unverified: the brief carries one problem section, and it is mapped to
        `problem` below. The page renders a second symptom list from these four,
@@ -32,19 +69,21 @@ export const automation: Service = /* ------------------------------------------
        steps across four tools"). Left in place because copying the brief's
        points here would print the same four bullets twice on one page — they
        need either real copy from the client or the section removing. */
-    images: {
-      hero: {
-        src: "/images/automation-hero.jpg",
-        alt: "AI automation and workflow services by OnyxEra Tech",
-      },
-    },
+    /* The brief's "AI Powered Automation Services", in its own order and
+       wording. Replaces the six that were here. */
     capabilities: [
-      { icon: Workflow, title: "Process Automation", body: "Automate repetitive workflows across the tools your team already uses." },
-      { icon: Cable, title: "Systems Integration", body: "Connect your CRM, ERP, finance and support systems so information moves automatically." },
-      { icon: BrainCircuit, title: "AI Assisted Workflows", body: "Use AI for tasks such as document extraction, classification, summarisation and drafting." },
-      { icon: Boxes, title: "Internal Business Tools", body: "Replace shared spreadsheets with practical tools built around your team's workflows." },
-      { icon: BarChart3, title: "Reporting Automation", body: "Turn recurring exports and manual reports into automated data flows and dashboards." },
-      { icon: ClipboardCheck, title: "Document Automation", body: "Automate quotes, invoices, contracts and compliance documents from creation to filing." },
+      { icon: Workflow, title: "Business Process Automation", body: "Automate repetitive tasks and streamline everyday business workflows." },
+      { icon: MessageSquareHeart, title: "AI Powered Customer Engagement", body: "Use AI to deliver faster and more personalised customer interactions." },
+      { icon: Network, title: "Enterprise Automation & RPA", body: "Automate complex processes and connect systems across your organisation." },
+      { icon: Cable, title: "n8n Workflow Automation & Integrations", body: "Connect your tools and automate workflows across your business." },
+      { icon: BrainCircuit, title: "AI Automation Consulting & Testing", body: "Identify practical AI opportunities and validate them before implementation." },
+      { icon: UserPlus, title: "Lead Nurturing Automation", body: "Automatically follow up, qualify and nurture leads across multiple channels." },
+      { icon: BadgeDollarSign, title: "Revenue Operations Automation", body: "Automate sales processes, CRM updates, lead routing and reporting." },
+      { icon: Headset, title: "AI Service Desk Automation", body: "Automate support enquiries, ticket routing and routine service requests." },
+      { icon: ClipboardCheck, title: "Finance Operations Automation", body: "Automate invoicing, payments, approvals and financial workflows." },
+      { icon: Users, title: "People Operations Automation", body: "Streamline recruitment, onboarding, HR requests and employee workflows." },
+      { icon: FileSearch, title: "Intelligent Document Processing", body: "Use AI to extract, classify and process business documents automatically." },
+      { icon: Map, title: "Automation Strategy", body: "Identify the right processes to automate and build a practical implementation roadmap." },
     ],
     deliverables: [
       "Process Mapping Workshop",
@@ -77,10 +116,10 @@ export const automation: Service = /* ------------------------------------------
     seo: {
       title: "Automation Services & AI Workflows",
       description:
-        "Automate repetitive work, connect your systems and reduce manual tasks with AI automation and workflow solutions built around your business.",
-      ogTitle: "Automation Built Around How Your Business Works",
+        "Automate repetitive work, connect business systems and improve efficiency with AI automation, workflow solutions and practical process automation.",
+      ogTitle: "Automation Services & AI Workflows | OnyxEra Tech",
       ogDescription:
-        "Connect your systems, automate repetitive work and use AI where it makes sense to create faster, more reliable business processes.",
+        "Automate repetitive work, connect business systems and improve efficiency with AI automation, workflow solutions and practical process automation.",
       keywords: [
         "automation services",
         "business process automation",
@@ -90,11 +129,13 @@ export const automation: Service = /* ------------------------------------------
       ],
       heroAlt: "AI automation and workflow services by OnyxEra Tech",
     },
-    /* No `heroStats`. It held the same three figures as `metrics`, and the
-       service page renders a MetricStrip for each — the page showed the
-       identical panel twice. The brief supplies one stat block, so it lives in
-       `metrics` (directly under the hero) and the optional second strip is
-       omitted rather than padded out with figures the brief does not give. */
+    /* The brief's "3 Core Outcomes". `metrics` above carries the figures; this
+       is the second strip, numbered, the same shape the SEO page uses. */
+    heroStats: [
+      { value: "01", label: "Save Time" },
+      { value: "02", label: "Reduce Errors" },
+      { value: "03", label: "Scale Operations" },
+    ],
     problem: {
       title: "Spending hours on work that could be automated?",
       sub: "Growing businesses often collect manual processes without realising how much time, money and attention they consume.",
@@ -110,6 +151,9 @@ export const automation: Service = /* ------------------------------------------
     cta: {
       title: "Ready to give your team time back?",
       body: "Tell us which process is slowing your business down. We will identify what can be automated, what it could save and what should happen next.",
+      primaryLabel: "Let’s Talk",
+      secondaryLabel: "Find What You Can Automate",
+      note: "Typical reply within 4 business hours",
     },
     /* Empty on purpose. This held three named quotes — Yusuf Demir at
        Brightpath Advisory, Helen Marsh at Kestrel Manufacturing, Andre Silva at
@@ -119,8 +163,13 @@ export const automation: Service = /* ------------------------------------------
        attributable quotes here when the client supplies them. */
     testimonials: [],
     /* Unverified: the brief's automation case studies (the PHP ERP integration,
-       the e-commerce recommendation work and the tax document automation) have
+       the ecommerce recommendation work and the tax document automation) have
        no slug in src/lib/data/case-studies.ts, so this still points at the
        placeholder entry. Repoint it once a real case study exists. */
-    timeline: "3–7 weeks",
+    /* Not a duration. The same discipline covers a two-week job and a
+       six-month one, so a range printed here is either meaningless or a
+       promise nobody agreed to. What is true of every engagement is that the
+       schedule is settled in the proposal, before the client commits — so
+       that is what the card says. Keep all five services on this line. */
+    timeline: "Agreed before we start",
   };

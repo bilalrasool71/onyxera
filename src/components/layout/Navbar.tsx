@@ -186,7 +186,7 @@ export function Navbar() {
         >
           <Link
             href="/"
-            aria-label={`${site.name} — home`}
+            aria-label={`${site.name} home`}
             className="transition-opacity duration-300 hover:opacity-80"
           >
             <Logo size="lg" />
@@ -208,9 +208,19 @@ export function Navbar() {
                 setDropdown(false);
               }}
             >
-              <button
-                type="button"
-                onClick={() => setDropdown((v) => !v)}
+              {/* A link, not a button. The panel below lists the five
+                  services, but /services is a page in its own right and this
+                  is the only thing on the header that points at it — as a
+                  button it swallowed the click and the page was unreachable
+                  from the navigation.
+
+                  The panel still opens on hover, from the wrapper above, and
+                  on focus for anyone arriving by keyboard: they land here, the
+                  panel opens, and Tab walks into it. Enter follows the link,
+                  which is what Enter on a link should do. */}
+              <Link
+                href="/services"
+                onFocus={openDropdown}
                 aria-expanded={dropdown}
                 aria-controls={SERVICES_MENU_ID}
                 className={cn(
@@ -225,7 +235,7 @@ export function Navbar() {
                     dropdown && "rotate-180",
                   )}
                 />
-              </button>
+              </Link>
 
               <div
                 id={SERVICES_MENU_ID}
@@ -289,7 +299,7 @@ export function Navbar() {
                             scope is known. */}
                         <p className="mt-2 text-[0.8125rem] leading-relaxed text-fg-subtle">
                           A couple of lines is enough. The lead who would run
-                          the work comes back with a recommendation — even if it
+                          the work comes back with a recommendation, even if it
                           is not us.
                         </p>
                         <div className="mt-auto pt-4">
@@ -308,7 +318,7 @@ export function Navbar() {
                                 site — the menu should not be a dead end that
                                 only offers a sales call. */}
                             <Link
-                              href="/work"
+                              href="/our-portfolio"
                               className="group flex items-center justify-center gap-1.5 text-[0.8125rem] font-medium text-fg-muted transition-colors duration-300 hover:text-accent"
                             >
                               See client results

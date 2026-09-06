@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { cn, numberWord, titleCaseWord } from "@/lib/utils";
 import { notFound } from "next/navigation";
-import { Check, Clock, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { PageHeader } from "@/components/sections/PageHeader";
+import { ServiceHeroVisual } from "@/components/sections/ServiceHeroVisual";
 import {
   CtaBand,
   DeliverablesList,
@@ -14,8 +15,9 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { getService, services } from "@/lib/data/services";
 
+import { graph, ORG_ID, pageSchema } from "@/lib/schema";
 import { site } from "@/lib/site";
-import { getCaseStudyByService } from "@/lib/data/case-studies";
+import { getCaseStudiesByService } from "@/lib/data/case-studies";
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -41,6 +43,10 @@ export async function generateMetadata({
       title: seo?.ogTitle ?? `${service.name} | ${site.name}`,
       description: seo?.ogDescription ?? service.summary,
       url: `/services/${service.slug}`,
+      /* Declaring `openGraph` here replaces the file-based
+         opengraph-image convention instead of merging with it, so the card
+         has to name the image itself. */
+      images: ["/opengraph-image.png"],
     },
     twitter: {
       card: "summary_large_image",
@@ -53,24 +59,54 @@ export async function generateMetadata({
 export default async function ServicePage({ params }: PageProps<"/services/[slug]">) {
   const { slug } = await params;
   const service = getService(slug);
-  /* Derived from serviceSlug, so a deleted study can never leave a
-     dangling pointer behind. Undefined for services with no real work
-     published yet, and the section below then does not render. */
-  const study = service ? getCaseStudyByService(service.slug) : undefined;
+  /* Derived from serviceSlug, so a deleted study can never leave a dangling
+     pointer behind. Empty for services with no real work published yet, and the
+     section below then does not render. Plural: SEO and Automation have three
+     engagements each and web application two, all of which used to be collapsed
+     to whichever happened to sit first in the data file. */
+  const studies = service ? getCaseStudiesByService(service.slug) : [];
   if (!service) notFound();
 
-  const Icon = service.icon;
   const hasDeliverables = service.deliverables.length > 0;
+  /* The left column of the "what you get" band. It used to appear only with a
+     deliverables list, which left SEO with a lone Tools card and no heading at
+     all. It now also appears for a service that supplies its own copy for it. */
+  const hasWhatYouGet = hasDeliverables || Boolean(service.whatYouGet);
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: service.name,
-    description: service.summary,
-    provider: { "@type": "Organization", name: site.name, url: site.url },
-    areaServed: "Worldwide",
-    serviceType: service.name,
-  };
+  /* Three nodes, not one: the page, its breadcrumb, and the service the page
+     is about. `hasOfferCatalog` lists the capabilities this page actually
+     documents — the brief is explicit that the markup may only name services
+     genuinely offered and supported by the page, so it is built from the same
+     array the page renders rather than from a keyword list. */
+  const schema = graph([
+    ...pageSchema({
+      path: `/services/${service.slug}`,
+      name: service.name,
+      description: service.summary,
+      crumbs: [
+        { label: "Services", path: "/services" },
+        { label: service.navLabel, path: `/services/${service.slug}` },
+      ],
+      extra: { mainEntity: { "@id": `${site.url}/services/${service.slug}#service` } },
+    }),
+    {
+      "@type": "Service",
+      "@id": `${site.url}/services/${service.slug}#service`,
+      name: service.name,
+      description: service.summary,
+      serviceType: service.name,
+      provider: { "@id": ORG_ID },
+      areaServed: site.offices.map((o) => o.country),
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: service.name,
+        itemListElement: service.capabilities.map((c) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: c.title, description: c.body },
+        })),
+      },
+    },
+  ]);
 
   return (
     <>
@@ -86,29 +122,32 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
           <>
             {service.hero.headline}{" "}
             <span className="accent-text">{service.hero.highlight}</span>
+            {service.hero.headlineEnd}
           </>
         }
         intro={service.hero.sub}
+        visual={<ServiceHeroVisual slug={service.slug} />}
       >
+        {/* Brief: "Add two CTAs in every hero section." The generic ask leads,
+            in brand blue; the discipline-specific offer sits beside it in white
+            — the "one blue, one white" pairing used everywhere else on the
+            site. The second label comes from the brief’s CTA table, so it reads
+            "Get A Free SEO Audit" here and "Find What You Can Automate" on
+            automation. The first is "Discuss Project" per the client’s later
+            call, replacing the "Get Free Consultation" the document listed. */}
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
           <ButtonLink href="/contact" size="lg" withArrow>
-            Discuss your project
+            {service.heroCtaPrimary ?? "Discuss Project"}
+          </ButtonLink>
+          <ButtonLink href="/contact" size="lg" variant="white">
+            {service.heroCta}
           </ButtonLink>
         </div>
 
-        <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3">
-          {service.timeline && (
-            <span className="flex items-center gap-2 text-sm text-fg-subtle">
-              <Clock className="size-4 text-accent-icon" />
-              Typical timeline{" "}
-              <span className="font-medium text-fg-body">{service.timeline}</span>
-            </span>
-          )}
-          <span className="flex items-center gap-2 text-sm text-fg-subtle">
-            <Icon className="size-4 text-accent-icon" />
-            {service.tagline}
-          </span>
-        </div>
+        {/* The "Typical timeline · tagline" row under the hero buttons is gone
+            at the client’s request. `timeline` stays in the service data —
+            nothing else reads it today, but it is a real figure per service and
+            deleting it would lose it. */}
       </PageHeader>
 
       {/* Self-hides when a service has no verified figures yet, rather than
@@ -127,7 +166,10 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
           <div className="shell grid gap-10 lg:grid-cols-[1fr_0.85fr] lg:gap-16">
             <div>
               <Reveal>
-                <h2 className="text-[clamp(2rem,4.4vw,3.25rem)] text-fg">
+                <span className="eyebrow">Problem</span>
+              </Reveal>
+              <Reveal delay={60}>
+                <h2 className="mt-5 text-[clamp(2rem,4.4vw,3.25rem)] text-fg">
                   {service.problem.title}
                 </h2>
               </Reveal>
@@ -205,17 +247,46 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
           <SectionHeading
             eyebrow="What we do"
             title={
-              <>
-                Inside
-                <span className="accent-text"> {service.name}</span>.
-              </>
+              service.capabilitiesHeading ? (
+                <>
+                  {service.capabilitiesHeading.title}
+                  <span className="accent-text">
+                    {service.capabilitiesHeading.highlight}
+                  </span>
+                  {service.capabilitiesHeading.end ?? "."}
+                </>
+              ) : (
+                <>
+                  Inside
+                  <span className="accent-text"> {service.name}</span>.
+                </>
+              )
             }
-            intro={`${titleCaseWord(numberWord(service.capabilities.length))} areas we cover in depth. You do not have to take all of them — most engagements start with two or three.`}
+            introWide
+            intro={
+              service.capabilitiesHeading?.body ??
+              `${titleCaseWord(numberWord(service.capabilities.length))} areas we cover in depth. You do not have to take all of them. Most engagements start with two or three.`
+            }
           />
 
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2 lg:grid-cols-3">
+          {/* Dividers are real borders on each cell, pulled together by a -1px
+                margin so neighbouring edges collapse into one line and the outer
+                ring tucks under the container’s own border.
+
+                This was a `gap-px` grid over a `bg-line` parent, where the
+                divider was the parent showing through a 1px gap. Three columns
+                across 1200px put the cells on fractional pixels (x = 116,
+                515.66, 915.33), so those 1px strips were painted at partial
+                coverage: some rendered, some vanished, and the section showed a
+                line before the last cell only. Borders snap to the pixel grid
+                and paint every time. */}
+          <div className="mt-14 grid overflow-hidden rounded-2xl border border-line md:grid-cols-2 lg:grid-cols-3">
             {service.capabilities.map((c, i) => (
-              <Reveal key={c.title} delay={i * 60} className="bg-bg">
+              <Reveal
+                key={c.title}
+                delay={i * 60}
+                className="-mt-px -ml-px border-t border-l border-line bg-bg"
+              >
                 <div className="group h-full p-8 transition-colors duration-300 hover:bg-surface">
                   <span className="grid size-11 place-items-center rounded-xl border border-line-strong bg-glass text-accent transition-all duration-300 group-hover:border-accent-icon/50 group-hover:text-accent">
                     <c.icon className="size-5" strokeWidth={1.6} />
@@ -243,41 +314,70 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         <div
           className={cn(
             "shell grid gap-14 lg:gap-16",
-            hasDeliverables ? "lg:grid-cols-[1fr_0.85fr]" : "lg:grid-cols-1",
+            hasWhatYouGet ? "lg:grid-cols-[1fr_0.85fr]" : "lg:grid-cols-1",
           )}
         >
-          {/* Only rendered with a real, client-supplied list. The heading below
-              promises these items are contractual, so an empty or invented list
-              would be a false promise. The stack column stands on its own. */}
-          {hasDeliverables && (
+          {hasWhatYouGet && (
           <div>
             <Reveal>
               <span className="eyebrow">What you get</span>
             </Reveal>
             <Reveal delay={80}>
+              {/* The brief's own wording where it supplies some, and the
+                  contract line otherwise. */}
               <h2 className="mt-5 text-[clamp(1.876rem,3.8vw,2.75rem)] text-fg">
-                Everything listed here is
-                <span className="accent-text"> in the contract</span>.
+                {service.whatYouGet ? (
+                  <>
+                    {service.whatYouGet.title}
+                    <span className="accent-text">
+                      {service.whatYouGet.highlight}
+                    </span>
+                    .
+                  </>
+                ) : (
+                  <>
+                    Everything listed here is
+                    <span className="accent-text"> in the contract</span>.
+                  </>
+                )}
               </h2>
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 max-w-xl text-fg-muted">
-                No line items that turn out to be optional extras later. If it is on
-                this list it is scoped, priced and delivered.
+                {service.whatYouGet
+                  ? service.whatYouGet.body
+                  : "No line items that turn out to be optional extras later. If it is on this list it is scoped, priced and delivered."}
               </p>
             </Reveal>
-            <div className="mt-10">
-              <DeliverablesList items={service.deliverables} />
-            </div>
+            {/* Only with a real, client-supplied list: the contract heading
+                promises these items are contractual, so an invented list would
+                be a false promise. */}
+            {hasDeliverables && (
+              <div className="mt-10">
+                <DeliverablesList items={service.deliverables} />
+              </div>
+            )}
           </div>
           )}
 
-          <Reveal delay={120} className={cn(!hasDeliverables && "lg:max-w-2xl")}>
-            <div className="card sticky top-28 p-8">
+          {/* No `lg:max-w-2xl`: alone in a single-column track the cap left
+              this card in the left half with an empty right half beside it, so
+              it runs full width there and only the paragraph keeps a measure.
+
+              `sticky` only makes sense with a taller column beside it to scroll
+              past — alone in the row it has nothing to stick against. Mutually
+              exclusive strings, since cn() does not merge. */}
+          <Reveal delay={120}>
+            <div
+              className={cn(
+                "card p-8",
+                hasWhatYouGet ? "sticky top-28" : "static",
+              )}
+            >
               <span className="eyebrow eyebrow-plain">Tools & stack</span>
-              <p className="mt-4 text-sm leading-relaxed text-fg-subtle">
-                We pick boring, well-supported tools on purpose. Everything below is
-                something your next hire can already use.
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-fg-subtle">
+                {service.stackIntro ??
+                  "We pick boring, well-supported tools on purpose. Everything below is something your next hire can already use."}
               </p>
               <ul className="mt-7 flex flex-wrap gap-2">
                 {service.stack.map((tool) => (
@@ -295,7 +395,8 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
                   <Check className="size-4" strokeWidth={2.5} />
                 </span>
                 <p className="text-xs leading-relaxed text-fg-subtle">
-                  You own every account, repository and licence we set up on your behalf.
+                  {service.stackNote ??
+                    "You own every account, repository and licence we set up on your behalf."}
                 </p>
               </div>
             </div>
@@ -313,13 +414,26 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
           <SectionHeading
             eyebrow="The process"
             title={
-              <>
-                How
-                <span className="accent-text"> {service.navLabel} </span>
-                engagements run.
-              </>
+              service.processHeading ? (
+                <>
+                  {service.processHeading.title}
+                  <span className="accent-text">
+                    {service.processHeading.highlight}
+                  </span>
+                  {service.processHeading.end ?? "."}
+                </>
+              ) : (
+                <>
+                  How
+                  <span className="accent-text"> {service.navLabel} </span>
+                  engagements run.
+                </>
+              )
             }
-            intro="Fixed phases with a defined deliverable at the end of each. You approve one before the next begins."
+            intro={
+              service.processHeading?.body ??
+              "Fixed phases with a defined deliverable at the end of each. You approve one before the next begins."
+            }
           />
           <div className="mt-14">
             <ProcessSteps steps={service.process} />
@@ -333,17 +447,25 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
           faqs={service.faqs}
           eyebrow="FAQ"
           title={
-            <>
-              {service.navLabel},
-              <span className="accent-text"> answered straight</span>.
-            </>
+            service.faqHeading ? (
+              <>
+                {service.faqHeading.title}
+                <span className="accent-text">{service.faqHeading.highlight}</span>
+                {service.faqHeading.end ?? "."}
+              </>
+            ) : (
+              <>
+                {service.navLabel},
+                <span className="accent-text"> answered straight</span>.
+              </>
+            )
           }
         />
       </div>
 
 
       {/* ---------------- proof ---------------- */}
-      {study && (
+      {studies.length > 0 && (
         <section className="section border-t border-line">
           <div className="shell">
             <SectionHeading
@@ -354,27 +476,41 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
                   <span className="accent-text"> in practice</span>.
                 </>
               }
-              intro="A real engagement in this discipline — what was broken, what we did, and what changed."
+              intro={
+                studies.length === 1
+                  ? "A real engagement in this discipline: what was broken, what we did, and what changed."
+                  : "Real engagements in this discipline: what was broken, what we did, and what changed."
+              }
             />
-            <div className="mt-14 grid gap-5 md:grid-cols-2 lg:max-w-2xl">
-              <CaseStudyCard study={study} />
+            {/* Same grid as the portfolio page, so a card is the same size and
+                shape wherever it appears. The old `lg:max-w-2xl` capped the row
+                at two columns because only one card could ever land in it; with
+                the full list that cap would strand the third card on its own
+                line. */}
+            <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {studies.map((c, i) => (
+                <CaseStudyCard key={c.slug} study={c} index={i} />
+              ))}
             </div>
           </div>
         </section>
       )}
 
       <CtaBand
-        eyebrow={service.navLabel}
+        eyebrow={service.cta?.eyebrow ?? service.navLabel}
         title={service.cta?.title ?? `Let’s talk about your ${service.navLabel}.`}
         intro={service.cta?.body ?? service.summary}
-        primaryLabel="Free consultation"
-        secondaryHref="/#services"
-        secondaryLabel="Explore more"
+        primaryLabel={service.cta?.primaryLabel ?? "Free consultation"}
+        secondaryHref={
+          service.cta?.secondaryHref ?? (service.cta?.secondaryLabel ? "/contact" : "/#services")
+        }
+        secondaryLabel={service.cta?.secondaryLabel ?? "Explore more"}
+        note={service.cta?.note}
       />
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: schema }}
       />
     </>
   );

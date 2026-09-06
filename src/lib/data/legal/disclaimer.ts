@@ -39,9 +39,9 @@ export const disclaimerSections: LegalSection[] = [
     needsReview: true,
   },
   {
-    heading: "Third-party platforms",
+    heading: "Third party platforms",
     body: [
-      "Our services may include third-party platforms, software, tools and services. Availability, policies and performance are not under our control and may change without notice.",
+      "Our services may include third party platforms, software, tools and services. Availability, policies and performance are not under our control and may change without notice.",
     ],
   },
   {
@@ -61,7 +61,7 @@ export const disclaimerSections: LegalSection[] = [
   {
     heading: "Contact",
     body: [
-      `OnyxEra Tech — ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
+      `OnyxEra Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
     ],
   },
 ];

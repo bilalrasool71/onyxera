@@ -12,15 +12,46 @@ import { Principles } from "@/components/sections/Principles";
 import { ClientStorySlider } from "@/components/sections/ClientStorySlider";
 import { Reveal } from "@/components/ui/Reveal";
 import { engagementSteps, homeFaqs } from "@/lib/data/agency";
+import { graph, pageSchema } from "@/lib/schema";
+import { site } from "@/lib/site";
 
 /* Self-referencing canonical; metadataBase resolves it against site.url. */
 export const metadata: Metadata = {
+  /* Title, description and Open Graph copy come from the SEO brief.
+     `absolute` because the brief writes each title in full, including the
+     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     print the company name twice. */
+  title: { absolute: "Build, Automate & Grow | OnyxEra Tech" },
+  description:
+    "Build, automate and grow with OnyxEra Tech through websites, software, AI automation, SEO, digital marketing and cyber security solutions for businesses.",
   alternates: { canonical: "/" },
+  openGraph: {
+    title: "Build, Automate & Grow | OnyxEra Tech",
+    description:
+      "Build, automate and grow with OnyxEra Tech through websites, software, AI automation, SEO, digital marketing and cyber security solutions for businesses.",
+    url: "/",
+    /* Declaring `openGraph` at all replaces the file-based
+       opengraph-image convention rather than merging with it, so the card
+       has to name the image itself. */
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function HomePage() {
   return (
     <>
+      {/* No breadcrumb: this is the root. WebSite and Organization come from
+          the layout, which emits them on every page. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: graph([
+            ...pageSchema({
+              path: "/",
+              name: `${site.name} | ${site.tagline}`,
+              description: site.description,
+            }),
+          ]) }}
+      />
       <Hero />
       <ClientLogos />
       <ServicesGrid />
@@ -40,6 +71,7 @@ export default function HomePage() {
                 <span className="accent-text"> Our Work</span>.
               </>
             }
+            introWide
             intro="We believe good work starts with clarity, moves with purpose and leaves your business in a better position than where we found it."
           />
 
@@ -122,8 +154,8 @@ export default function HomePage() {
         }
         intro="Tell us the problem. We’ll tell you which discipline solves it, scope the work and show you what comes next."
         primaryLabel="Free Consultation"
-        secondaryHref="/services"
-        secondaryLabel="Work with Us"
+        secondaryHref="/our-portfolio"
+        secondaryLabel="See what we build"
       />
     </>
   );

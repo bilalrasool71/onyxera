@@ -62,7 +62,7 @@ export const termsSections: LegalSection[] = [
     heading: "Information on this website",
     body: [
       "Client names, logos, trade marks and other third party materials are the property of their respective owners and are used with permission where applicable.",
-      "We strive to ensure that information on this site is accurate and up-to-date. The information provided on the website is for general informational purposes only and does not constitute a quote, offer, professional advice or warranty.",
+      "We strive to ensure that information on this site is accurate and up to date. The information provided on the website is for general informational purposes only and does not constitute a quote, offer, professional advice or warranty.",
       "Pricing, timelines, services and results are subject to change. The terms applicable to a client engagement are those in a signed proposal or agreement.",
     ],
     needsReview: true,
@@ -145,7 +145,7 @@ export const termsSections: LegalSection[] = [
       "Please contact us if you have any inquiries about these Terms and Conditions:",
     ],
     points: [
-      `OnyxEra Tech — ${AU_ADDRESS}`,
+      `OnyxEra Tech, ${AU_ADDRESS}`,
       `Email: ${site.email}`,
       `Phone: ${AU.phone}`,
       `Website: ${site.url}`,

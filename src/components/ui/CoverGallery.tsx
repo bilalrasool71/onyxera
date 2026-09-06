@@ -28,6 +28,14 @@ export function CoverGallery({
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
+  /* Only the first frame is in the markup until someone reaches for the rest.
+     Every image here is stacked at the same position, so `loading="lazy"`
+     cannot tell them apart — a card near the top of the page pulled its whole
+     set, five 1200x750 photographs, on a connection that had not finished the
+     fold yet. On a phone that is pure waste: the carousel advances on hover,
+     and a phone never hovers. Arming happens a beat before anything needs the
+     second frame, so nothing flashes. */
+  const [armed, setArmed] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const openerRef = useRef<HTMLButtonElement | null>(null);
@@ -82,17 +90,22 @@ export function CoverGallery({
 
   if (!images.length) return null;
 
+  const shown = armed || open ? images : images.slice(0, 1);
+
   return (
     <>
       <div
         className="absolute inset-0"
-        onMouseEnter={() => setHovering(true)}
+        onMouseEnter={() => {
+          setArmed(true);
+          setHovering(true);
+        }}
         onMouseLeave={() => {
           setHovering(false);
           setIndex(0);
         }}
       >
-        {images.map((img, i) => (
+        {shown.map((img, i) => (
           <img
             key={img.src}
             src={img.src}
@@ -118,7 +131,10 @@ export function CoverGallery({
             <button
               ref={openerRef}
               type="button"
-              aria-label={`Open image gallery — ${images.length} images`}
+              aria-label={`Open image gallery, ${images.length} images`}
+              /* Touch has no hover, so the lightbox is the only way in — arm
+                 on the press rather than waiting for the click. */
+              onPointerDown={() => setArmed(true)}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

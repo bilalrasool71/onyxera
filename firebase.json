@@ -30,6 +30,56 @@
     ],
     "redirects": [
       {
+        "source": "/work/sift-health",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/our-portfolio/sift-health",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/work/northbank-clearing-ledger",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/our-portfolio/northbank-clearing-ledger",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/work/engineering-product-store",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/our-portfolio/engineering-product-store",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/work/vps-api-deployment",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/our-portfolio/vps-api-deployment",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/work/matrimonial-platform",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/our-portfolio/matrimonial-platform",
+        "destination": "/",
+        "type": 301
+      },
+      {
         "source": "/privacy",
         "destination": "/privacy-policy",
         "type": 301
@@ -41,7 +91,82 @@
       },
       {
         "source": "/services/website-design",
-        "destination": "/services/web-application",
+        "destination": "/services/development-solutions",
+        "type": 301
+      },
+      {
+        "source": "/services/web-application",
+        "destination": "/services/development-solutions",
+        "type": 301
+      },
+      {
+        "source": "/work",
+        "destination": "/our-portfolio",
+        "type": 301
+      },
+      {
+        "source": "/work/:slug",
+        "destination": "/our-portfolio/:slug",
+        "type": 301
+      },
+      {
+        "source": "/services/seo",
+        "destination": "/services/seo-and-ai-seo",
+        "type": 301
+      },
+      {
+        "source": "/wp-admin",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-admin/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-content",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-content/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-includes",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-includes/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-json",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-json/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-login.php",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/xmlrpc.php",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/wp-cron.php",
+        "destination": "/",
         "type": 301
       }
     ]

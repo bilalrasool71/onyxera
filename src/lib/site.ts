@@ -7,7 +7,7 @@ export const site = {
   url: "https://onyxeratech.com",
   tagline: "We build it. Automate it. Grow it.",
   description:
-    "OnyxEra Tech builds AI automation, web and software development, and digital marketing under one roof — technology connected to real business growth.",
+    "OnyxEra Tech builds AI automation, web and software development, and digital marketing under one roof. Technology connected to real business growth.",
   email: "info@onyxeratech.com",
   salesEmail: "info@onyxeratech.com",
 
@@ -41,7 +41,11 @@ export const site = {
       line1: "7901 4th St N #31089",
       line2: "St. Petersburg, FL 33702",
       country: "USA",
-      phone: "+1 (321) 359-3590",
+      /* International format, same as the Australian and Singapore
+         numbers beside it on the contact page. Brackets and dashes are the
+         US domestic convention and made this the odd one out in a list of
+         three. */
+      phone: "+1 321 359 3590",
       phoneHref: "+13213593590",
       locality: "St. Petersburg",
       region: "FL",
@@ -64,11 +68,11 @@ export const site = {
     },
   ],
 
-  hours: "Mon – Fri, 9:00 – 18:00",
+  hours: "Mon to Fri, 9:00 to 18:00",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/company/onyxeratech/" },
     { label: "Facebook", href: "https://www.facebook.com/Onyxeratech/" },
-    { label: "Instagram", href: "https://www.instagram.com/onyxeratech/" },
+    { label: "Instagram", href: "https://www.instagram.com/onyxeratechofficial/" },
   ],
 } as const;
 
@@ -77,7 +81,7 @@ export const primaryOffice = site.offices[0];
 
 export const mainNav = [
   { label: "Services", href: "/services" },
-  { label: "Work", href: "/work" },
+  { label: "Our Portfolio", href: "/our-portfolio" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;

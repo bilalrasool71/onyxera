@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Pause, Play, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { Stars } from "@/components/ui/Stars";
 import { clientStories } from "@/lib/data/agency";
 import { cn } from "@/lib/utils";
 
@@ -100,21 +101,54 @@ export function ClientStorySlider({ className }: { className?: string }) {
                 aria-label={`${i + 1} of ${clientStories.length}`}
                 aria-hidden={!visible}
               >
-                <figure className="card card-hover card-glow flex h-full flex-col p-7 md:p-8">
-                  <Quote
-                    aria-hidden="true"
-                    className="size-7 shrink-0 text-accent-quiet"
-                    strokeWidth={1.6}
-                  />
-                  <blockquote className="mt-5 flex-1 text-[0.9375rem] leading-relaxed text-fg-body">
+                {/* Brief: white card, gold stars, and "use its original image"
+                    — the client's own mark, square, in place of the generic
+                    quote glyph the card used to open with. White in BOTH themes
+                    (see --quote-* in globals.css), so the shadow does the
+                    separating; a border token would vanish on the light
+                    canvas. */}
+                <figure
+                  className="flex h-full flex-col rounded-lg p-7 shadow-soft transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 md:p-8"
+                  style={{ backgroundColor: "var(--quote-surface)" }}
+                >
+                  <Stars className="shrink-0" />
+
+                  <blockquote
+                    className="mt-5 flex-1 text-[0.9375rem] leading-relaxed"
+                    style={{ color: "var(--quote-body)" }}
+                  >
                     {s.quote}
                   </blockquote>
-                  <figcaption className="mt-7 border-t border-line pt-5">
-                    <span className="block font-display text-base text-fg">
-                      {s.client}
-                    </span>
-                    <span className="mt-1.5 block font-label text-[0.6875rem] tracking-wide text-accent-icon">
-                      {s.project}
+
+                  <figcaption
+                    className="mt-7 flex items-center gap-3.5 border-t pt-5"
+                    style={{ borderColor: "var(--quote-line)" }}
+                  >
+                    {/* 1:1 as the reference specifies, but `object-contain`:
+                        these are wordmarks of very different proportions and a
+                        square crop would slice most of them in half. */}
+                    <img
+                      src={s.logo}
+                      alt=""
+                      width={96}
+                      height={96}
+                      loading="lazy"
+                      decoding="async"
+                      className="size-12 shrink-0 object-contain"
+                    />
+                    <span className="min-w-0">
+                      <span
+                        className="block font-display text-[0.9375rem] leading-snug font-medium"
+                        style={{ color: "var(--quote-fg)" }}
+                      >
+                        {s.client}
+                      </span>
+                      <span
+                        className="mt-1 block font-label text-[0.6875rem] tracking-wide"
+                        style={{ color: "var(--quote-meta)" }}
+                      >
+                        {s.project}
+                      </span>
                     </span>
                   </figcaption>
                 </figure>

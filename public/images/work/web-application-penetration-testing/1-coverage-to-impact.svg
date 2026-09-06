@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 505" width="1400" height="505" role="img"
+     aria-label="Ten areas covered by the penetration test on the left, mapped to business impact, and the seven items delivered on the right">
+  <!-- Case study 03 — the brief's ten test areas and seven deliverables, with
+       the line that distinguishes the engagement: each issue was mapped to its
+       potential business impact rather than listed as a raw finding. -->
+  <defs>
+    <marker id="f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6a9bd1"/>
+    </marker>
+    <style>
+      .t   { font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+      .li  { font-size: 14px; fill: #14283d; }
+      .cap { font-size: 12px; font-weight: 700; fill: #4f81bc; letter-spacing: 1.6px; }
+      .mid { font-size: 15px; font-weight: 700; fill: #0b1f33; }
+    </style>
+  </defs>
+  <rect width="1400" height="505" fill="#ffffff"/>
+
+  <!-- ten areas tested -->
+  <text class="t cap" x="60" y="58">PENETRATION TEST COVERAGE</text>
+  <g>
+    <rect x="60" y="78" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="82" y="107">Authentication</text>
+    <rect x="60" y="136" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="82" y="165">Authorisation</text>
+    <rect x="60" y="194" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="82" y="223">User roles</text>
+    <rect x="60" y="252" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="82" y="281">API endpoints</text>
+    <rect x="60" y="310" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="82" y="339">Session management</text>
+
+    <rect x="330" y="78" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="352" y="107">Input validation</text>
+    <rect x="330" y="136" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="352" y="165">File handling</text>
+    <rect x="330" y="194" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="352" y="223">Business logic</text>
+    <rect x="330" y="252" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="352" y="281">Sensitive data exposure</text>
+    <rect x="330" y="310" width="255" height="46" rx="9" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/><text class="t li" x="352" y="339">Third party integrations</text>
+  </g>
+
+  <!-- the mapping step -->
+  <rect x="625" y="176" width="180" height="120" rx="14" fill="#0b1f33"/>
+  <text class="t cap" x="715" y="212" text-anchor="middle" style="fill:#9fc0e2">MAPPED TO</text>
+  <text class="t mid" x="715" y="244" text-anchor="middle" style="fill:#ffffff">Business</text>
+  <text class="t mid" x="715" y="268" text-anchor="middle" style="fill:#ffffff">impact</text>
+  <line x1="585" y1="236" x2="625" y2="236" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#f1)"/>
+  <line x1="805" y1="236" x2="850" y2="236" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#f1)"/>
+
+  <!-- seven deliverables -->
+  <text class="t cap" x="850" y="58">DELIVERED</text>
+  <g>
+    <rect x="850" y="78" width="490" height="46" rx="9" fill="#eff3f8" stroke="#6a9bd1" stroke-width="1.5"/><text class="t li" x="874" y="107">Penetration testing report</text>
+    <rect x="850" y="136" width="490" height="46" rx="9" fill="#eff3f8" stroke="#6a9bd1" stroke-width="1.5"/><text class="t li" x="874" y="165">Technical vulnerability findings</text>
+    <rect x="850" y="194" width="490" height="46" rx="9" fill="#eff3f8" stroke="#6a9bd1" stroke-width="1.5"/><text class="t li" x="874" y="223">Executive risk summary</text>
+    <rect x="850" y="252" width="490" height="46" rx="9" fill="#eff3f8" stroke="#6a9bd1" stroke-width="1.5"/><text class="t li" x="874" y="281">Reproduction evidence</text>
+    <rect x="850" y="310" width="490" height="46" rx="9" fill="#eff3f8" stroke="#6a9bd1" stroke-width="1.5"/><text class="t li" x="874" y="339">Remediation recommendations</text>
+    <rect x="850" y="368" width="490" height="46" rx="9" fill="#eff3f8" stroke="#6a9bd1" stroke-width="1.5"/><text class="t li" x="874" y="397">Prioritised fix plan</text>
+    <rect x="850" y="426" width="490" height="46" rx="9" fill="#3573b6"/><text class="t li" x="874" y="455" style="fill:#ffffff">Retesting after remediation</text>
+  </g>
+
+  <text class="t cap" x="60" y="400" style="fill:#3c5a7e">NOT A RAW VULNERABILITY LIST</text>
+</svg>

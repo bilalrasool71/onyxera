@@ -8,10 +8,10 @@ import { site } from "@/lib/site";
      - "cancelation" -> "cancellation" (Australian English), five occurrences;
      - clause headings normalised to sentence case, matching the other
        policies in this folder. The source title-cases them inconsistently
-       ("Scope Of This Policy" but "Non-refundable services").
+       ("Scope Of This Policy" but "Non refundable services").
    Wording, order and the client's terms are otherwise untouched. In
    particular nothing here has been softened: the source asserts that deposits,
-   third-party costs and delivered services are non-refundable, and it says so
+   third party costs and delivered services are non refundable, and it says so
    in those words.
 
    Address, email and phone come from `site` through ./shared rather than being
@@ -26,8 +26,8 @@ import { site } from "@/lib/site";
        is not a typo fix, so it stays.
      - clause 02's heading, "No going forward", is an odd label for a
        cancellation clause. Kept verbatim; it is not obviously a typo.
-     - clause 04's "Non-refundable third party costs ... may also be
-       non-refundable" is circular as written.
+     - clause 04's "Non refundable third party costs ... may also be
+       non refundable" is circular as written.
 
    The document opens with an unnumbered lead paragraph. `LegalSection` needs a
    heading per entry, so that paragraph runs as the opening of clause 01; it
@@ -57,7 +57,7 @@ export const refundSections: LegalSection[] = [
     heading: "Return policy",
     body: [
       "Refunds may be considered if the relevant service has not yet begun by OnyxEra Tech, or if the signed client agreement expressly states a refund.",
-      "Payments are for professional services and as such, and because development time and resources have been provided, they are non-refundable once substantial work has been performed.",
+      "Payments are for professional services and as such, and because development time and resources have been provided, they are non refundable once substantial work has been performed.",
     ],
     needsReview: true,
   },
@@ -65,7 +65,7 @@ export const refundSections: LegalSection[] = [
     heading: "Deposits & payment",
     body: [
       "Project deposits and milestone payments secure resources and allow work to commence. These are usually linked to the scope of the project that has been agreed and are not always refundable once work has commenced.",
-      "Non-refundable third party costs such as hosting, software subscriptions, licences, advertising spend or other external services may also be non-refundable.",
+      "Non refundable third party costs such as hosting, software subscriptions, licences, advertising spend or other external services may also be non refundable.",
     ],
     needsReview: true,
   },
@@ -75,7 +75,7 @@ export const refundSections: LegalSection[] = [
        paragraph, and LegalPage renders every `body` paragraph *before* the
        bullets. Splitting the list out would lift that closing sentence above
        the colon that introduces the items. Kept as the client's prose. */
-    heading: "Non-refundable services",
+    heading: "Non refundable services",
     body: [
       "Some services may not be eligible for a refund once delivered or commenced. These include, but are not limited to: completed development work, design work, SEO work, marketing campaign management, automation setup, consulting, security assessments and other professional services.",
       "Where a service has an agreed cancellation or refund provision, the terms of that agreement shall apply.",

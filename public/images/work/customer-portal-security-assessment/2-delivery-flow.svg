@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 440" width="1400" height="440" role="img"
+     aria-label="Delivery flow: security assessment, vulnerability report, remediation plan, fix verification, and what each finding was documented with">
+  <!-- Case study 01, "What We Delivered?" — the brief's four stage flow, and
+       the five fields it says each finding carried. -->
+  <defs>
+    <marker id="d1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6a9bd1"/>
+    </marker>
+    <style>
+      .t   { font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+      .hd  { font-size: 19px; font-weight: 700; fill: #0b1f33; }
+      .li  { font-size: 14.5px; fill: #14283d; }
+      .cap { font-size: 12px; font-weight: 700; fill: #4f81bc; letter-spacing: 1.6px; }
+      .num { font-size: 13px; font-weight: 700; fill: #6a9bd1; }
+    </style>
+  </defs>
+  <rect width="1400" height="440" fill="#ffffff"/>
+
+  <!-- four stages -->
+  <g>
+    <rect x="60" y="70" width="290" height="130" rx="14" fill="#eff3f8" stroke="#6a9bd1" stroke-width="2"/>
+    <text class="t num" x="86" y="106">01</text>
+    <text class="t hd" x="86" y="140">Security</text>
+    <text class="t hd" x="86" y="166">Assessment</text>
+
+    <rect x="405" y="70" width="290" height="130" rx="14" fill="#eff3f8" stroke="#6a9bd1" stroke-width="2"/>
+    <text class="t num" x="431" y="106">02</text>
+    <text class="t hd" x="431" y="140">Vulnerability</text>
+    <text class="t hd" x="431" y="166">Report</text>
+
+    <rect x="750" y="70" width="290" height="130" rx="14" fill="#eff3f8" stroke="#6a9bd1" stroke-width="2"/>
+    <text class="t num" x="776" y="106">03</text>
+    <text class="t hd" x="776" y="140">Remediation</text>
+    <text class="t hd" x="776" y="166">Plan</text>
+
+    <rect x="1095" y="70" width="245" height="130" rx="14" fill="#0b1f33"/>
+    <text class="t num" x="1121" y="106" style="fill:#9fc0e2">04</text>
+    <text class="t hd" x="1121" y="140" style="fill:#ffffff">Fix</text>
+    <text class="t hd" x="1121" y="166" style="fill:#ffffff">Verification</text>
+  </g>
+
+  <line x1="350" y1="135" x2="405" y2="135" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#d1)"/>
+  <line x1="695" y1="135" x2="750" y2="135" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#d1)"/>
+  <line x1="1040" y1="135" x2="1095" y2="135" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#d1)"/>
+
+  <!-- what each finding carried -->
+  <line x1="550" y1="200" x2="550" y2="250" stroke="#b5c6dc" stroke-width="2" stroke-dasharray="6 6"/>
+  <rect x="60" y="255" width="1280" height="130" rx="14" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+  <text class="t cap" x="90" y="290">EACH FINDING DOCUMENTED WITH</text>
+  <text class="t li" x="90" y="330">Severity</text>
+  <text class="t li" x="90" y="358">Business impact</text>
+  <text class="t li" x="420" y="330">Technical evidence</text>
+  <text class="t li" x="420" y="358">Reproduction steps</text>
+  <text class="t li" x="800" y="330">Recommended remediation</text>
+</svg>

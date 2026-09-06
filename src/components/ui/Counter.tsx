@@ -13,8 +13,8 @@ import { useEffect, useRef, useState } from "react";
  *   "<200ms"    → "<" prefix, 200, "ms" suffix
  *   "+184%"     → "+" prefix
  *
- * Rejected: "1.6× → 3.8×" and "6–14 wks" (two numbers), "SOC 2" (letters in
- * the prefix — counting "SOC 0…2" is nonsense), "#1" is allowed since the
+ * Rejected: "1.6× → 3.8×" and "6 to 14 wks" (two numbers), "SOC 2" (letters in
+ * the prefix, counting "SOC 0…2" is nonsense), "#1" is allowed since the
  * prefix is punctuation.
  */
 type Parsed = {
@@ -30,8 +30,10 @@ const SHAPE = /^([^A-Za-z0-9]*)(\d[\d,]*(?:\.\d+)?)(.*)$/;
 export function parseMetric(raw: string): Parsed | null {
   const v = raw.trim();
   /* Transitions and ranges carry two values; a single counter cannot tell
-     that story, so leave them alone. */
-  if (/[→–]/.test(v)) return null;
+     that story, so leave them alone. The brief removed dashes from copy, so
+     ranges now read "4 to 6 Weeks" — the word form has to be caught here too,
+     or the guard silently stops firing on every range it used to reject. */
+  if (/[→–]/.test(v) || /\d\s+to\s+\d/.test(v)) return null;
 
   const m = SHAPE.exec(v);
   if (!m) return null;

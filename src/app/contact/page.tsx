@@ -3,16 +3,42 @@ import { Clock, Mail, MapPin, Phone, type LucideIcon } from "lucide-react";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
+import { graph, pageSchema } from "@/lib/schema";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/contact" },
-  title: "Contact",
+  /* Title, description and Open Graph copy come from the SEO brief.
+     `absolute` because the brief writes each title in full, including the
+     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     print the company name twice. */
+  title: { absolute: "Contact OnyxEra Tech" },
   description:
-    "Tell us what you are building, where you are stuck, or what you want to improve. We will help you find the clearest way forward.",
+    "Talk to OnyxEra Tech about websites, software, CRM, ERP, automation, SEO, digital marketing or cyber security for your business and growth goals.",
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: "Contact OnyxEra Tech",
+    description:
+      "Talk to OnyxEra Tech about websites, software, CRM, ERP, automation, SEO, digital marketing or cyber security for your business and growth goals.",
+    url: "/contact",
+    /* Declaring `openGraph` at all replaces the file-based
+       opengraph-image convention rather than merging with it, so the card
+       has to name the image itself. */
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function ContactPage() {
+  const schema = graph(
+    pageSchema({
+      path: "/contact",
+      name: "Contact",
+      description:
+        "Tell us what you are building, where you are stuck, or what you want to improve. We will help you find the clearest way forward.",
+      type: "ContactPage",
+      crumbs: [{ label: "Contact", path: "/contact" }],
+    }),
+  );
+
   /* Explicit type: without it the array widens to a union and `href` stops
      existing on the members that omit it. */
   const details: {
@@ -22,9 +48,12 @@ export default function ContactPage() {
     href?: string;
   }[] = [
     { icon: Mail, label: "Email", value: site.email, href: `mailto:${site.email}` },
+    /* Just the country. The "· Operating Location" / "· Mailing Address"
+       qualifier is off the page at the client’s request — `kind` stays in
+       site.ts, since the legal pages still have to state which is which. */
     ...site.offices.map((o) => ({
       icon: MapPin,
-      label: `${o.label} — ${o.kind}`,
+      label: o.label,
       value: `${o.line1}, ${o.line2}`,
     })),
     ...site.offices.map((o) => ({
@@ -38,13 +67,17 @@ export default function ContactPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: schema }}
+      />
       <PageHeader
         eyebrow="Contact"
         crumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
         title={
           <>
-            Let&rsquo;s talk about
-            <span className="accent-text"> what you&rsquo;re building</span>.
+            Let&rsquo;s Build
+            <span className="accent-text"> Something That Works</span>.
           </>
         }
         intro="Tell us what you’re building, where you’re stuck, or what you want to improve. We’ll help you find the clearest way forward."

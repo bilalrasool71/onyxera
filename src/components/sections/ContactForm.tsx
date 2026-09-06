@@ -101,7 +101,7 @@ export function ContactForm() {
 
     window.location.href =
       `mailto:${site.email}` +
-      `?subject=${encodeURIComponent(`Project enquiry — ${field("name")}`)}` +
+      `?subject=${encodeURIComponent(`Project enquiry from ${field("name")}`)}` +
       `&body=${encodeURIComponent(lines.join("\n"))}`;
 
     setStatus("sent");
@@ -121,7 +121,7 @@ export function ContactForm() {
           tabIndex={-1}
           className="mt-7 font-display text-2xl font-medium text-fg"
         >
-          Almost there — send it from your email client.
+          Almost there. Send it from your email client.
         </h2>
         <p className="mt-4 max-w-md text-[0.9375rem] leading-relaxed text-fg-muted">
           We have opened your email app with the message ready to go. Press send

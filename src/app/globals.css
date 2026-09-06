@@ -148,11 +148,36 @@
    between them, so every intermediate stop sits between 4.91:1 and 6.50:1.
    ========================================================================== */
 
+/* The one warm colour on the site. The brief asks for gold stars on the
+   testimonial card by name, so it is declared once, here, and consumed only by
+   Stars.tsx. Same value in both themes: the card it sits on is white in both. */
 :root {
-  --brand-surface: #3573b6;
-  --brand-surface-deep: #2a5f9e;
-  --brand-surface-fg: #ffffff;
-  --brand-line: #ffffff3d;
+  --star: #f5a623;
+}
+
+/* ---- Testimonial card ----
+   Brief: "Testimonials colors should be changed white". White in BOTH themes,
+   so these are fixed values rather than theme tokens — on the navy ground the
+   card is meant to stand out, and on the light ground it still separates from
+   the #F4F6F5 canvas. */
+:root {
+  --quote-surface: #ffffff;
+  --quote-fg: #14283d;
+  --quote-body: #46617f;
+  --quote-meta: #335483;
+  --quote-line: #0b1f3314;
+}
+
+:root {
+  /* Brief: "This card blue is not in our brandguideline" + "Remove gradient".
+     The fill is now the brand secondary itself, #6A9BD1, flat — no ramp and no
+     darkened stand-in. White type on it is only 2.91:1, so the type colour
+     moves to navy-900 instead, which measures 5.68:1 and clears AA. Same brand
+     blue the guideline names, and still readable. */
+  --brand-surface: var(--color-blue-400);
+  --brand-surface-deep: var(--color-blue-400);
+  --brand-surface-fg: var(--color-navy-900);
+  --brand-line: #0b1f3324;
 }
 
 /* ==========================================================================
@@ -215,8 +240,11 @@
   --accent-icon: var(--color-blue-400);
   --accent-quiet: var(--color-blue-500);
 
-  /* Primary CTA: brand blue on navy, with navy type on top. */
-  --btn-fill: linear-gradient(100deg, #5b8cc6 0%, #7fb0de 48%, #5b8cc6 100%);
+  /* Primary CTA: brand blue on navy, with navy type on top.
+     Brief: "Remove gradient" + "Start a conversion: brand guideline blue".
+     Flat #6A9BD1 exactly, not a ramp around it. Navy on it = 5.68:1. */
+  --btn-fill: linear-gradient(var(--color-blue-400), var(--color-blue-400));
+  --btn-fill-hover: linear-gradient(var(--color-blue-300), var(--color-blue-300));
   --btn-fg: var(--color-navy-900);
 
   /* The white half of the "one blue, one white" CTA pair. Navy type on white
@@ -227,15 +255,19 @@
   --btn-white-fill-hover: #dfe9f7;
   --btn-white-border: #ffffff;
 
-  /* Gradient lifted from the arrow in the mark. */
-  --accent-ramp: linear-gradient(
-    100deg,
-    #4f81bc 0%,
-    #8fb6e0 26%,
-    #cfe2f6 48%,
-    #6a9bd1 68%,
-    #3e68a1 100%
-  );
+  /* Brief: "Remove gradient". Single-stop fill — flat brand blue, so every
+     `.accent-text` / `.accent-surface` call site paints one colour. */
+  --accent-ramp: linear-gradient(var(--color-blue-400), var(--color-blue-400));
+
+  /* Hero visual. It has no panel behind it, so it paints straight onto the
+     navy ground and every value here is a light-on-dark one. */
+  --hv-wash: #6a9bd1;
+  --hv-line: #6a9bd159;
+  --hv-edge: #6a9bd18c;
+  --hv-fill: #12304e;
+  --hv-glyph: #9fc0e2;
+  --hv-pulse: #cfe2f6;
+  --hv-text: #dfe9f7;
 
   --grid-line: #ffffff0a;
   --dot: #ffffff1a;
@@ -292,14 +324,27 @@
   --stat-surface-2: #d5e4f5;
   --stat-border: #6a9bd1b3;
 
-  /* #6A9BD1 is only 2.7:1 on this ground, so text-bearing accents step down
-     the ramp. The brand blue survives as fills, icons and rules. */
-  --accent: var(--color-blue-700);
-  --accent-strong: var(--color-blue-800);
-  --accent-icon: var(--color-blue-600);
+  /* The brand secondary, #6A9BD1, exactly — the same value the dark theme
+     uses, on the client's instruction that the palette be applied as issued.
+
+     These accents used to step down the ramp here, because #6A9BD1 measures
+     2.7:1 against the #F4F6F5 canvas and WCAG AA asks 4.5:1 for text. Blue
+     headings and eyebrow labels on the light theme are therefore below that
+     bar and will read faint.
+
+     The filled button carries the brand blue as its fill with white on it, on
+     the client's instruction. Recorded plainly: that pairing measures 2.68:1,
+     where WCAG AA asks 4.5:1 for a control's label, and navy on the same fill
+     would have been 5.74:1. The label will read faint, and an accessibility
+     audit will raise it. Switching --btn-fg back to --color-navy-900 is the
+     whole fix if that day comes. */
+  --accent: var(--color-blue-400);
+  --accent-strong: var(--color-blue-500);
+  --accent-icon: var(--color-blue-400);
   --accent-quiet: var(--color-blue-500);
 
-  --btn-fill: linear-gradient(100deg, #2c4e80 0%, #4a78ae 50%, #2c4e80 100%);
+  --btn-fill: linear-gradient(var(--color-blue-400), var(--color-blue-400));
+  --btn-fill-hover: linear-gradient(var(--color-blue-500), var(--color-blue-500));
   --btn-fg: #ffffff;
 
   /* Same white pill, but a white fill on the #F4F6F5 canvas has no edge of its
@@ -309,14 +354,17 @@
   --btn-white-fill-hover: #eef3fa;
   --btn-white-border: #0b1f3338;
 
-  --accent-ramp: linear-gradient(
-    100deg,
-    #24405f 0%,
-    #335483 28%,
-    #4f81bc 50%,
-    #335483 72%,
-    #24405f 100%
-  );
+  --accent-ramp: linear-gradient(var(--color-blue-400), var(--color-blue-400));
+
+  /* Hero visual inverted for the light ground: the marks become deep blue on
+     white instead of pale blue on navy. Same drawing, both themes. */
+  --hv-wash: #4f81bc;
+  --hv-line: #33548359;
+  --hv-edge: #335483a3;
+  --hv-fill: #ffffff;
+  --hv-glyph: #2d466a;
+  --hv-pulse: #2c4e80;
+  --hv-text: #14283d;
 
   --grid-line: #0b1f330d;
   --dot: #0b1f331a;
@@ -370,14 +418,15 @@
     --stat-surface-2: #d5e4f5;
     --stat-border: #6a9bd1b3;
 
-    /* #6A9BD1 is only 2.7:1 on this ground, so text-bearing accents step down
-       the ramp. The brand blue survives as fills, icons and rules. */
-    --accent: var(--color-blue-700);
-    --accent-strong: var(--color-blue-800);
-    --accent-icon: var(--color-blue-600);
+    /* The brand secondary, #6A9BD1, exactly — see the note in the :root
+       light block above. */
+    --accent: var(--color-blue-400);
+    --accent-strong: var(--color-blue-500);
+    --accent-icon: var(--color-blue-400);
     --accent-quiet: var(--color-blue-500);
 
-    --btn-fill: linear-gradient(100deg, #2c4e80 0%, #4a78ae 50%, #2c4e80 100%);
+    --btn-fill: linear-gradient(var(--color-blue-400), var(--color-blue-400));
+    --btn-fill-hover: linear-gradient(var(--color-blue-500), var(--color-blue-500));
     --btn-fg: #ffffff;
 
     /* Same white pill, but a white fill on the #F4F6F5 canvas has no edge of
@@ -387,14 +436,17 @@
     --btn-white-fill-hover: #eef3fa;
     --btn-white-border: #0b1f3338;
 
-    --accent-ramp: linear-gradient(
-      100deg,
-      #24405f 0%,
-      #335483 28%,
-      #4f81bc 50%,
-      #335483 72%,
-      #24405f 100%
-    );
+    --accent-ramp: linear-gradient(var(--color-blue-400), var(--color-blue-400));
+
+    /* Hero visual inverted for the light ground — keep in step with the
+       [data-theme="light"] block above. */
+    --hv-wash: #4f81bc;
+    --hv-line: #33548359;
+    --hv-edge: #335483a3;
+    --hv-fill: #ffffff;
+    --hv-glyph: #2d466a;
+    --hv-pulse: #2c4e80;
+    --hv-text: #14283d;
 
     --grid-line: #0b1f330d;
     --dot: #0b1f331a;
@@ -437,11 +489,17 @@
   --color-accent-quiet: var(--accent-quiet);
 
   /* Brand fill as utilities, for anything that needs a blue surface without
-     the full `.card-brand` chrome (an open FAQ row, a selected tab). White
-     type on either is >= 4.9:1. Not named after a font-size step, so no
-     collision with a built-in utility. */
+     the full `.card-brand` chrome (an open FAQ row, a selected tab). Not
+     named after a font-size step, so no collision with a built-in utility.
+
+     Type on this fill must be `brand-surface-fg`, not white. The fill is
+     `--color-blue-400` (#6a9bd1) in both themes, and white on it measures
+     2.9:1 — it read as white-on-blue in a mockup and as illegible on a phone.
+     Navy 900 on the same fill is 7.4:1, which is what `.card-brand` and
+     `.band-accent` have always used. */
   --color-brand-surface: var(--brand-surface);
   --color-brand-surface-deep: var(--brand-surface-deep);
+  --color-brand-surface-fg: var(--brand-surface-fg);
   --color-brand-line: var(--brand-line);
 
   --shadow-soft: var(--elev-soft);
@@ -490,6 +548,127 @@
   }
 }
 
+/* ==========================================================================
+   SERVICE HERO VISUALS
+
+   Keyframes for the animated SVG that fills the right half of a service page
+   hero. Each service gets a different figure, but they share this vocabulary so
+   the five read as one family. Everything here is decorative: the global
+   prefers-reduced-motion block below collapses every duration to 0.01ms, which
+   leaves each figure parked in a composed final state rather than mid-move.
+   ========================================================================== */
+
+/* Signal running along a connector. */
+@keyframes svg-dash-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+/* A result card climbing the rankings, with a pause at the top. */
+@keyframes svg-rank-rise {
+  0%, 12% {
+    transform: translateY(0);
+  }
+  30%, 44% {
+    transform: translateY(-56px);
+  }
+  62%, 88% {
+    transform: translateY(-112px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* The two cards the climber displaces, moving the other way. */
+@keyframes svg-rank-fall {
+  0%, 12% {
+    transform: translateY(0);
+  }
+  30%, 88% {
+    transform: translateY(56px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* A scan line crossing a surface top to bottom. */
+@keyframes svg-sweep {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12%, 78% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(150px);
+    opacity: 0;
+  }
+}
+
+/* Something arriving: used for blocks assembling and threats being caught. */
+@keyframes svg-pop {
+  0%, 8% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  22%, 84% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+}
+
+/* A bar rising from its baseline. */
+@keyframes svg-bar-grow {
+  0% {
+    transform: scaleY(0.12);
+  }
+  55%, 88% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0.12);
+  }
+}
+
+/* Traffic falling into the top of a funnel. */
+@keyframes svg-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  18%, 62% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(74px);
+  }
+}
+
+@keyframes svg-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Quiet breathing for a node that is otherwise still. */
+@keyframes svg-glow {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @keyframes float {
   0%,
   100% {
@@ -497,6 +676,47 @@
   }
   50% {
     transform: translateY(-14px) rotate(1.5deg);
+  }
+}
+
+/* ---- Hero visual (HeroVisual.tsx) ----
+   Every spoke is the same 78px long, so one offset drives all five. The dash is
+   "9 69" (78 total), which puts exactly one lit segment on the wire at a time;
+   shifting the offset by 78 walks it end to end and repeats seamlessly. */
+@keyframes hv-flow {
+  from {
+    stroke-dashoffset: var(--hv-len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hv-core-halo {
+  0%,
+  100% {
+    opacity: 0.16;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes hv-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hv-node-breath {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
   }
 }
 
@@ -608,16 +828,22 @@
     }
   }
 
+  /* Brief: "Spacing between the sections should be minimized". Was 5.5rem /
+     7.5rem — the rhythm is kept, the gap is roughly a third tighter so the page
+     reads as one document rather than a stack of separated slides. */
   .section {
-    padding-block: 5.5rem;
+    padding-block: 3.5rem;
   }
   @media (min-width: 768px) {
     .section {
-      padding-block: 7.5rem;
+      padding-block: 5rem;
     }
   }
 
-  /* ---- The signature blue gradient, taken from the arrow in the mark ---- */
+  /* ---- Brand blue highlight, taken from the arrow in the mark ----
+     Brief: "Remove gradient". --accent-ramp is now a single-stop fill, so this
+     paints solid --accent while keeping the background-clip plumbing (and every
+     call site) untouched. */
   .accent-text {
     background-image: var(--accent-ramp);
     -webkit-background-clip: text;
@@ -694,13 +920,13 @@
   .btn-primary {
     color: var(--btn-fg);
     background-image: var(--btn-fill);
-    background-size: 200% 100%;
-    background-position: 0% 0;
     box-shadow: var(--elev-brand);
   }
 
+  /* The fill no longer slides (it is one colour), so hover steps the colour
+     itself rather than the background-position. */
   .btn-primary:hover {
-    background-position: 100% 0;
+    background-image: var(--btn-fill-hover);
     transform: translateY(-2px);
     box-shadow:
       0 0 0 1px #6a9bd166,
@@ -754,11 +980,8 @@
     border-radius: var(--radius-lg);
     border: 1px solid var(--line);
     background-color: var(--surface);
-    background-image: linear-gradient(
-      165deg,
-      var(--glass) 0%,
-      transparent 62%
-    );
+    /* Brief: "Remove gradient" — the 165deg glass sheen is gone; the card is a
+       flat --surface panel held by its border. */
     transition:
       transform 0.5s var(--ease-out-soft),
       border-color 0.5s var(--ease-out-soft),
@@ -807,12 +1030,8 @@
     overflow: hidden;
     border-radius: var(--radius-lg);
     border: 1px solid var(--stat-border);
+    /* Brief: "Remove gradient" — flat --stat-surface, no 165deg ramp. */
     background-color: var(--stat-surface);
-    background-image: linear-gradient(
-      165deg,
-      var(--stat-surface) 0%,
-      var(--stat-surface-2) 100%
-    );
     box-shadow: var(--elev-soft);
     transition:
       transform 0.5s var(--ease-out-soft),
@@ -831,11 +1050,7 @@
      2.91:1. So the band steps *down* the brand ramp rather than *off* it: same
      211° hue, same chroma, lower lightness. See the `--brand-surface` block. */
   .band-accent {
-    background-image: linear-gradient(
-      168deg,
-      var(--brand-surface) 0%,
-      var(--brand-surface-deep) 100%
-    );
+    background-color: var(--brand-surface);
     color: var(--brand-surface-fg);
   }
 
@@ -848,11 +1063,7 @@
     overflow: hidden;
     border-radius: var(--radius-lg);
     border: 1px solid var(--brand-line);
-    background-image: linear-gradient(
-      158deg,
-      var(--brand-surface) 0%,
-      var(--brand-surface-deep) 100%
-    );
+    background-color: var(--brand-surface);
     color: var(--brand-surface-fg);
     transition:
       transform 0.5s var(--ease-out-soft),
@@ -888,6 +1099,37 @@
     background-image: radial-gradient(#ffffff14 1px, transparent 1px);
   }
 
+  /* ---- Hero visual ----
+     `transform-box: fill-box` is required on every rotating or scaling SVG
+     child: without it `transform-origin: center` resolves against the SVG
+     viewport, not the element, and the rings orbit off-canvas. */
+  .hv-flow {
+    animation: hv-flow 4.5s var(--ease-in-out-soft) infinite;
+  }
+
+  .hv-core-halo {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hv-core-halo 6s var(--ease-in-out-soft) infinite;
+  }
+
+  .hv-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hv-ring-spin 90s linear infinite;
+  }
+
+  .hv-ring-rev {
+    animation-duration: 60s;
+    animation-direction: reverse;
+  }
+
+  .hv-node {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hv-node-breath 4.5s var(--ease-in-out-soft) infinite;
+  }
+
   /* ---- Edge fades ---- */
   .fade-x {
     mask-image: linear-gradient(
@@ -917,7 +1159,10 @@
       opacity 0.85s var(--ease-out-soft),
       transform 0.85s var(--ease-out-soft);
     transition-delay: var(--reveal-delay, 0ms);
-    will-change: opacity, transform;
+    /* No `will-change`. It was promoting every reveal on the page — 57 of
+       them on the heaviest — to its own compositor layer for the whole
+       session, to buy a one-off 0.85s transition. The paint cost outlived
+       the animation by the entire visit. */
   }
 
   .reveal-visible {
@@ -925,8 +1170,30 @@
     transform: none;
   }
 
+  /* The same entrance, minus the wait for JavaScript. `.reveal` cannot paint
+     until the bundle has hydrated and the observer has fired; this runs off
+     the stylesheet, so above-the-fold content animates from the first frame
+     and stays eligible for Largest Contentful Paint. Identical keyframes, so
+     the two paths look the same where they meet mid-page. */
+  .reveal-now {
+    animation: reveal-in 0.85s var(--ease-out-soft) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+
   .ambient {
     opacity: var(--ambient-opacity);
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -940,8 +1207,10 @@
     scroll-behavior: auto !important;
   }
 
-  .reveal {
+  .reveal,
+  .reveal-now {
     opacity: 1;
     transform: none;
+    animation: none;
   }
 }

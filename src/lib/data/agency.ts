@@ -22,14 +22,14 @@ import {
  * note in the README about confirming display permission.
  */
 export const clients: { name: string; logo: string }[] = [
-  { name: "Greyhound Racing SA", logo: "/clients/grsa.jpg" },
-  { name: "Toyota Dealers", logo: "/clients/toyota-dealers.jpg" },
-  { name: "Nebula IMS", logo: "/clients/nebula-ims.jpg" },
-  { name: "Master Plumbers", logo: "/clients/master-plumbers.jpg" },
-  { name: "Aussies Discount Chemist", logo: "/clients/aussie-discount-chemist.jpg" },
-  { name: "Esena Energy", logo: "/clients/esena-energy.jpg" },
-  { name: "Master Builders", logo: "/clients/master-builders.jpg" },
-  { name: "Department of Education SA", logo: "/clients/dept-of-edu-sa.jpg" },
+  { name: "Greyhound Racing SA", logo: "/clients/grsa.webp" },
+  { name: "Toyota Dealers", logo: "/clients/toyota-dealers.webp" },
+  { name: "Nebula IMS", logo: "/clients/nebula-ims.webp" },
+  { name: "Master Plumbers", logo: "/clients/master-plumbers.webp" },
+  { name: "Aussies Discount Chemist", logo: "/clients/aussie-discount-chemist.webp" },
+  { name: "Esena Energy", logo: "/clients/esena-energy.webp" },
+  { name: "Master Builders", logo: "/clients/master-builders.webp" },
+  { name: "Department of Education SA", logo: "/clients/dept-of-edu-sa.webp" },
 ];
 
 /* The four figures the client supplies, and the only four anywhere on the site.
@@ -146,11 +146,11 @@ export const generalFaqs = [
   },
   {
     q: "What if we are not happy with the work?",
-    a: "Every phase has a defined deliverable and an approval gate. If a phase misses the mark we fix it at our cost. If the relationship is not working, contracts can be ended at any phase boundary with no penalty — you keep everything produced up to that point.",
+    a: "Every phase has a defined deliverable and an approval gate. If a phase misses the mark we fix it at our cost. If the relationship is not working, contracts can be ended at any phase boundary with no penalty. You keep everything produced up to that point.",
   },
   {
     q: "Who will actually be working on our project?",
-    a: "A named lead plus two to four specialists, introduced by name in the proposal. The people you meet in the pitch are the people who do the work — we do not run a bait and switch between sales and delivery.",
+    a: "A named lead plus two to four specialists, introduced by name in the proposal. The people you meet in the pitch are the people who do the work. We do not run a bait and switch between sales and delivery.",
   },
 ];
 
@@ -199,7 +199,7 @@ export const originStory: {
   },
   {
     marker: "02",
-    eyebrow: "Singapore",
+    eyebrow: "The Realisation",
     title: "Technology needs understanding, not just implementation.",
     body: "Working across Singapore and other markets revealed a common gap: businesses were adopting technology without always getting the guidance, support or outcomes they actually needed.",
     icon: Globe2,
@@ -208,7 +208,7 @@ export const originStory: {
     marker: "03",
     eyebrow: "The Beginning",
     title: "Two journeys came together.",
-    body: "Different experiences, industries and perspectives led to one shared vision — create a digital partner that listens first, recommends honestly and builds around what the business truly needs.",
+    body: "Different experiences, industries and perspectives led to one shared vision: create a digital partner that listens first, recommends honestly and builds around what the business truly needs.",
     icon: Handshake,
   },
   {
@@ -294,39 +294,47 @@ export const clientStories: {
   client: string;
   project: string;
   quote: string;
+  /** The client’s own mark, square-cropped. Brief: "use its original image". */
+  logo: string;
 }[] = [
   {
     client: "Greyhound Racing SA",
+    logo: "/clients/grsa.webp",
     project: "Content Management & Digital Solutions",
     quote:
       "OnyxEra helped us improve how our content and digital systems were managed, giving our team a more reliable way to keep everything organised and up to date.",
   },
   {
     client: "Toyota Dealers",
+    logo: "/clients/toyota-dealers.webp",
     project: "Website Design & Lead Generation",
     quote:
       "The landing pages gave our marketing team a much stronger way to turn campaigns into enquiries. The experience was simple, focused and built around conversion.",
   },
   {
     client: "Nebula IMS",
+    logo: "/clients/nebula-ims.webp",
     project: "SaaS Platform Development & Support",
     quote:
       "OnyxEra helped us build and support a SaaS platform around our business needs, giving us the technology foundation to operate more efficiently as the product evolved.",
   },
   {
     client: "Master Plumbers South Australia",
+    logo: "/clients/master-plumbers.webp",
     project: "ERP & Business Management Solution",
     quote:
       "The new ERP brought customer management, HR and project management into one connected system, making it much easier to manage the business.",
   },
   {
     client: "Aussies Discount Chemist",
+    logo: "/clients/aussie-discount-chemist.webp",
     project: "Web Platform & Content Management",
     quote:
       "Having our website and content management brought together in one platform made the whole system easier to manage and maintain.",
   },
   {
     client: "Esena Energy",
+    logo: "/clients/esena-energy.webp",
     project: "Business Management Platform",
     quote:
       "Consolidating seven separate applications into one business management platform gave us a much simpler and more efficient way to run our operations.",
@@ -353,7 +361,7 @@ export const homeFaqs = [
   },
   {
     q: "What parts of our business can you automate?",
-    a: "Usually the repetitive work — lead capture, CRM updates, follow-ups, reporting, data movement and internal workflows. We identify the highest-value opportunities before recommending what to automate.",
+    a: "Usually the repetitive work: lead capture, CRM updates, follow ups, reporting, data movement and internal workflows. We identify the highest value opportunities before recommending what to automate.",
   },
   {
     q: "How do we know if our website or systems are actually secure?",

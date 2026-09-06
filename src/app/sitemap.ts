@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/services",
-    "/work",
+    "/our-portfolio",
     "/about",
     "/contact",
     "/privacy-policy",
@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const caseStudyRoutes = caseStudies.map((c) => ({
-    url: `${site.url}/work/${c.slug}`,
+    url: `${site.url}/our-portfolio/${c.slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));

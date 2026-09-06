@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 580" width="1400" height="580" role="img"
+     aria-label="Seven areas reviewed across the cloud environment, feeding a prioritised improvement plan running identity, access, infrastructure, monitoring and remediation">
+  <!-- Case study 02 — the brief's seven review areas above, and the prioritised
+       plan it names: Identity, Access, Infrastructure, Monitoring, Remediation. -->
+  <defs>
+    <marker id="e1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6a9bd1"/>
+    </marker>
+    <style>
+      .t   { font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+      .hd  { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .li  { font-size: 15px; fill: #14283d; }
+      .cap { font-size: 12px; font-weight: 700; fill: #4f81bc; letter-spacing: 1.6px; }
+      .num { font-size: 12px; font-weight: 700; fill: #9fc0e2; }
+    </style>
+  </defs>
+  <rect width="1400" height="580" fill="#ffffff"/>
+
+  <text class="t cap" x="60" y="60">REVIEWED, FROM INFRASTRUCTURE AND IDENTITY PERSPECTIVES</text>
+
+  <!-- seven review areas -->
+  <g>
+    <rect x="60" y="82" width="620" height="52" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="86" y="114">User permissions</text>
+    <rect x="60" y="150" width="620" height="52" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="86" y="182">Privileged accounts</text>
+    <rect x="60" y="218" width="620" height="52" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="86" y="250">Cloud security configurations</text>
+    <rect x="60" y="286" width="620" height="52" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="86" y="318">Access policies</text>
+
+    <rect x="720" y="82" width="620" height="52" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="746" y="114">Logging and monitoring</text>
+    <rect x="720" y="150" width="620" height="52" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="746" y="182">Publicly exposed resources</text>
+    <rect x="720" y="218" width="620" height="52" rx="10" fill="#f1f6fc" stroke="#c4d9ef" stroke-width="1.5"/>
+    <text class="t li" x="746" y="250">Third party integrations</text>
+  </g>
+
+  <line x1="700" y1="360" x2="700" y2="412" stroke="#6a9bd1" stroke-width="2.5" marker-end="url(#e1)"/>
+  <text class="t cap" x="700" y="392" text-anchor="middle">PRIORITISED IMPROVEMENT PLAN</text>
+
+  <!-- five stage plan; high risk first -->
+  <g>
+    <rect x="60" y="432" width="245" height="86" rx="12" fill="#0b1f33"/>
+    <text class="t num" x="86" y="464">01</text><text class="t hd" x="86" y="492">Identity</text>
+    <rect x="330" y="432" width="245" height="86" rx="12" fill="#14283d"/>
+    <text class="t num" x="356" y="464">02</text><text class="t hd" x="356" y="492">Access</text>
+    <rect x="600" y="432" width="245" height="86" rx="12" fill="#1d334c"/>
+    <text class="t num" x="626" y="464">03</text><text class="t hd" x="626" y="492">Infrastructure</text>
+    <rect x="870" y="432" width="245" height="86" rx="12" fill="#2a4462"/>
+    <text class="t num" x="896" y="464">04</text><text class="t hd" x="896" y="492">Monitoring</text>
+    <rect x="1140" y="432" width="200" height="86" rx="12" fill="#3573b6"/>
+    <text class="t num" x="1166" y="464">05</text><text class="t hd" x="1166" y="492">Remediation</text>
+  </g>
+  <line x1="305" y1="475" x2="330" y2="475" stroke="#6a9bd1" stroke-width="2.5"/>
+  <line x1="575" y1="475" x2="600" y2="475" stroke="#6a9bd1" stroke-width="2.5"/>
+  <line x1="845" y1="475" x2="870" y2="475" stroke="#6a9bd1" stroke-width="2.5"/>
+  <line x1="1115" y1="475" x2="1140" y2="475" stroke="#6a9bd1" stroke-width="2.5"/>
+
+  <text class="t cap" x="60" y="556" style="fill:#3c5a7e">HIGH RISK ISSUES ADDRESSED FIRST</text>
+</svg>
