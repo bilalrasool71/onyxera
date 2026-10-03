@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/sections/LegalPage";
 import { cookieSections } from "@/lib/data/legal";
+import { openGraph } from "@/lib/site";
 
 /* The title, intro and description below used to claim this site set no
    analytics or advertising cookies and that there was "nothing to consent to".
@@ -18,27 +19,25 @@ import { cookieSections } from "@/lib/data/legal";
 export const metadata: Metadata = {
   /* Title, description and Open Graph copy come from the SEO brief.
      `absolute` because the brief writes each title in full, including the
-     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     brand — leaving the layout's "%s | Onyxera Tech" template to run would
      print the company name twice. */
-  title: { absolute: "Cookie Policy | OnyxEra Tech" },
+  title: { absolute: "Cookie Policy | Onyxera Tech" },
   description:
-    "Learn how OnyxEra Tech uses cookies and similar technologies to operate, improve and understand website usage and digital interactions online.",
+    "Learn how Onyxera Tech uses cookies and similar technologies to operate, improve and understand website usage and digital interactions online.",
   alternates: { canonical: "/cookie-policy" },
-  openGraph: {
-    title: "Cookie Policy | OnyxEra Tech",
+  openGraph: openGraph({
+    title: "Cookie Policy | Onyxera Tech",
     description:
-      "Learn how OnyxEra Tech uses cookies and similar technologies to operate, improve and understand website usage and digital interactions online.",
+      "Learn how Onyxera Tech uses cookies and similar technologies to operate, improve and understand website usage and digital interactions online.",
     url: "/cookie-policy",
-    /* Declaring `openGraph` at all replaces the file-based
-       opengraph-image convention rather than merging with it, so the card
-       has to name the image itself. */
-    images: ["/opengraph-image.png"],
-  },
+  }),
 };
 
 export default function Page() {
   return (
     <LegalPage
+      path="/cookie-policy"
+      description="Learn how Onyxera Tech uses cookies and similar technologies to operate, improve and understand website usage and digital interactions online."
       eyebrow="Privacy"
       label="Cookie Policy"
       title={

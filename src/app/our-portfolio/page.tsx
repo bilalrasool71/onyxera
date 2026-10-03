@@ -5,26 +5,23 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { caseStudies } from "@/lib/data/case-studies";
 import { graph, pageSchema } from "@/lib/schema";
 import { numberWord, titleCaseWord } from "@/lib/utils";
+import { openGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   /* Title, description and Open Graph copy come from the SEO brief.
      `absolute` because the brief writes each title in full, including the
-     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     brand — leaving the layout's "%s | Onyxera Tech" template to run would
      print the company name twice. */
-  title: { absolute: "OnyxEra Tech Portfolio" },
+  title: { absolute: "Onyxera Tech Portfolio" },
   description:
-    "Explore OnyxEra Tech case studies across web development, SEO, digital marketing, automation and cyber security, with practical business outcomes.",
+    "Explore Onyxera Tech case studies across web development, SEO, digital marketing, automation and cyber security, with practical business outcomes.",
   alternates: { canonical: "/our-portfolio" },
-  openGraph: {
-    title: "OnyxEra Tech Portfolio",
+  openGraph: openGraph({
+    title: "Onyxera Tech Portfolio",
     description:
-      "Explore OnyxEra Tech case studies across web development, SEO, digital marketing, automation and cyber security, with practical business outcomes.",
+      "Explore Onyxera Tech case studies across web development, SEO, digital marketing, automation and cyber security, with practical business outcomes.",
     url: "/our-portfolio",
-    /* Declaring `openGraph` at all replaces the file-based
-       opengraph-image convention rather than merging with it, so the card
-       has to name the image itself. */
-    images: ["/opengraph-image.png"],
-  },
+  }),
 };
 
 /* Only figures the business has actually supplied. The former "$46M client

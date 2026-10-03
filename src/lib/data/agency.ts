@@ -125,7 +125,7 @@ export const engagementSteps = [
  * alone. One entry has been deleted rather than reworded: it asked "Do you
  * work with companies outside the US?" and answered that "roughly 40% of our
  * clients are in Europe, the UK and Australia". The percentage is supplied by
- * no document, and the question framed OnyxEra as a US business — it is an
+ * no document, and the question framed Onyxera as a US business — it is an
  * Australian one, and the US address is a mailing address only. Writing a
  * replacement would have meant inventing a second set of figures.
  *
@@ -135,22 +135,33 @@ export const engagementSteps = [
  * specialists". They are flagged for whoever owns /services rather than
  * rewritten from here.
  */
+/* The six the client supplies for the services page, in their order and
+   their wording. These replace ten shorter questions written in-house;
+   this list is read on /services and nowhere else. */
 export const generalFaqs = [
   {
-    q: "How quickly can you start?",
-    a: "We usually have capacity for a new engagement within two to four weeks. Discovery work and audits can often begin sooner, and genuine security incidents jump the queue.",
+    q: "Can you work with the systems we already have, or do we need to replace everything?",
+    a: "We start with what already works, identify the gaps between systems, then improve, integrate or replace only what creates measurable operational problems for your business right now.",
   },
   {
-    q: "Can you handle more than one service at once?",
-    a: "That is where we are strongest. A site redesigned without SEO input loses rankings; ads sent to an unconverting page waste budget. When services are combined we run them from one roadmap with one point of contact.",
+    q: "What happens if our website needs rebuilding but we cannot afford to lose existing search visibility?",
+    a: "We map existing URLs, rankings and content before development, then plan redirects, technical structure and migration carefully so the new [digital solution](/our-portfolio/snowads) protects valuable search equity throughout.",
   },
   {
-    q: "What if we are not happy with the work?",
-    a: "Every phase has a defined deliverable and an approval gate. If a phase misses the mark we fix it at our cost. If the relationship is not working, contracts can be ended at any phase boundary with no penalty. You keep everything produced up to that point.",
+    q: "How do we know whether automation will actually save our team time?",
+    a: "We examine the current process, people involved, frequency, errors and costs, then prioritise workflows where automation can remove repetitive work without creating unnecessary technical complexity for you.",
   },
   {
-    q: "Who will actually be working on our project?",
-    a: "A named lead plus two to four specialists, introduced by name in the proposal. The people you meet in the pitch are the people who do the work. We do not run a bait and switch between sales and delivery.",
+    q: "Can you connect our website, CRM, ERP and other business systems?",
+    a: "We can connect existing systems where practical, using APIs, integrations or custom development, while designing the workflow around your actual data, permissions and operational requirements across teams.",
+  },
+  {
+    q: "How do you decide whether we need a website, web application, CRM or custom software?",
+    a: "We begin with the business problem, users, workflows and data requirements, then recommend the simplest technology that solves it effectively without creating unnecessary development or maintenance complexity.",
+  },
+  {
+    q: "Can security be considered before we launch a new digital product?",
+    a: "Yes. [Security](/services/cyber-security) can be considered during planning and development, with access controls, application testing and infrastructure reviews helping identify risks before they become expensive problems for you.",
   },
 ];
 
@@ -213,9 +224,9 @@ export const originStory: {
   },
   {
     marker: "04",
-    eyebrow: "OnyxEra Today",
+    eyebrow: "Onyxera Today",
     title: "Technology built around people and progress.",
-    body: "From websites and software to AI, automation, marketing and cybersecurity, OnyxEra brings connected expertise together to help businesses work smarter, grow confidently and prepare for what's next.",
+    body: "From websites and software to AI, automation, marketing and cybersecurity, Onyxera brings connected expertise together to help businesses work smarter, grow confidently and prepare for what's next.",
     icon: Sparkles,
   },
 ];
@@ -302,7 +313,7 @@ export const clientStories: {
     logo: "/clients/grsa.webp",
     project: "Content Management & Digital Solutions",
     quote:
-      "OnyxEra helped us improve how our content and digital systems were managed, giving our team a more reliable way to keep everything organised and up to date.",
+      "Onyxera helped us improve how our content and digital systems were managed, giving our team a more reliable way to keep everything organised and up to date.",
   },
   {
     client: "Toyota Dealers",
@@ -316,7 +327,7 @@ export const clientStories: {
     logo: "/clients/nebula-ims.webp",
     project: "SaaS Platform Development & Support",
     quote:
-      "OnyxEra helped us build and support a SaaS platform around our business needs, giving us the technology foundation to operate more efficiently as the product evolved.",
+      "Onyxera helped us build and support a SaaS platform around our business needs, giving us the technology foundation to operate more efficiently as the product evolved.",
   },
   {
     client: "Master Plumbers South Australia",

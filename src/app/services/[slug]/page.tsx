@@ -13,11 +13,30 @@ import {
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import { StackBand } from "@/components/sections/StackBand";
 import { getService, services } from "@/lib/data/services";
 
 import { graph, ORG_ID, pageSchema } from "@/lib/schema";
-import { site } from "@/lib/site";
+import { openGraph, site } from "@/lib/site";
 import { getCaseStudiesByService } from "@/lib/data/case-studies";
+
+/* Each service's landing page, linked from the call to action under
+   "What we do". A service without one simply shows no call to action. */
+const PLATFORM_PAGE: Record<string, string> = {
+  automation: "/automation-solutions",
+  "cyber-security": "/cybersecurity-solutions",
+  "development-solutions": "/custom-development-solutions",
+  "digital-marketing": "/digital-marketing-services",
+  "seo-and-ai-seo": "/seo-services",
+};
+
+const SERVICE_IMAGE: Record<string, string> = {
+  "development-solutions": "/images/development-solutions-hero.webp",
+  "seo-and-ai-seo": "/images/seo-and-ai-seo-hero.webp",
+  "digital-marketing": "/images/digital-marketing-hero.webp",
+  "cyber-security": "/images/cyber-security-hero.webp",
+  "automation": "/images/automation-hero-visual.webp",
+};
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -38,16 +57,11 @@ export async function generateMetadata({
     keywords: seo?.keywords,
     alternates: { canonical: `/services/${service.slug}` },
     robots: { index: true, follow: true },
-    openGraph: {
-      type: "website",
+    openGraph: openGraph({
       title: seo?.ogTitle ?? `${service.name} | ${site.name}`,
       description: seo?.ogDescription ?? service.summary,
       url: `/services/${service.slug}`,
-      /* Declaring `openGraph` here replaces the file-based
-         opengraph-image convention instead of merging with it, so the card
-         has to name the image itself. */
-      images: ["/opengraph-image.png"],
-    },
+    }),
     twitter: {
       card: "summary_large_image",
       title: seo?.ogTitle ?? `${service.name} | ${site.name}`,
@@ -72,6 +86,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
      deliverables list, which left SEO with a lone Tools card and no heading at
      all. It now also appears for a service that supplies its own copy for it. */
   const hasWhatYouGet = hasDeliverables || Boolean(service.whatYouGet);
+  const heroImage = SERVICE_IMAGE[service.slug];
 
   /* Three nodes, not one: the page, its breadcrumb, and the service the page
      is about. `hasOfferCatalog` lists the capabilities this page actually
@@ -299,6 +314,32 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
               </Reveal>
             ))}
           </div>
+
+          {/* Straight after the full list of capabilities, where interest is
+              highest and before the technical deliverables, send readers who
+              want the short version to the service's own landing page. */}
+          {PLATFORM_PAGE[service.slug] && (
+            <Reveal delay={120}>
+              <div className="mt-8 flex flex-col gap-5 rounded-2xl border border-line-strong bg-surface p-6 md:flex-row md:items-center md:justify-between md:gap-8 md:p-8">
+                <div>
+                  <p className="font-display text-xl font-medium text-fg md:text-2xl">
+                    Want the quick overview?
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-fg-subtle">
+                    See our approach, the outcomes and the process for{" "}
+                    {service.navLabel} on one page.
+                  </p>
+                </div>
+                <ButtonLink
+                  href={PLATFORM_PAGE[service.slug]}
+                  withArrow
+                  className="shrink-0 self-start md:self-auto"
+                >
+                  Explore Our Approach
+                </ButtonLink>
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
 
@@ -306,18 +347,21 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
           Self-hides when a service has no client-supplied deliverables list:
           the heading promises these are "in the contract", so an invented or
           empty list is worse than no section. */}
+      {/* The heading, its paragraph and the deliverables run down the left; the
+          service's own artwork fills the right. That column held the tools card
+          until the tools moved to their own band below, and an empty half-band
+          is worse than either. cn() is a plain join with no merge step, so the
+          two column rules have to be mutually exclusive. */}
+      {hasWhatYouGet && (
       <section className="section border-t border-line">
-        {/* cn() is a plain join with no merge step, so the two column rules
-            have to be mutually exclusive: without deliverables the band drops
-            to one column instead of leaving a 0.85fr hole where "What you get"
-            would have been. */}
         <div
           className={cn(
-            "shell grid gap-14 lg:gap-16",
-            hasWhatYouGet ? "lg:grid-cols-[1fr_0.85fr]" : "lg:grid-cols-1",
+            "shell grid gap-12 lg:gap-16",
+            heroImage
+              ? "lg:grid-cols-[1fr_0.9fr] lg:items-stretch"
+              : "lg:grid-cols-1",
           )}
         >
-          {hasWhatYouGet && (
           <div>
             <Reveal>
               <span className="eyebrow">What you get</span>
@@ -349,6 +393,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
                   : "No line items that turn out to be optional extras later. If it is on this list it is scoped, priced and delivered."}
               </p>
             </Reveal>
+
             {/* Only with a real, client-supplied list: the contract heading
                 promises these items are contractual, so an invented list would
                 be a false promise. */}
@@ -357,39 +402,10 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
                 <DeliverablesList items={service.deliverables} />
               </div>
             )}
-          </div>
-          )}
 
-          {/* No `lg:max-w-2xl`: alone in a single-column track the cap left
-              this card in the left half with an empty right half beside it, so
-              it runs full width there and only the paragraph keeps a measure.
-
-              `sticky` only makes sense with a taller column beside it to scroll
-              past — alone in the row it has nothing to stick against. Mutually
-              exclusive strings, since cn() does not merge. */}
-          <Reveal delay={120}>
-            <div
-              className={cn(
-                "card p-8",
-                hasWhatYouGet ? "sticky top-28" : "static",
-              )}
-            >
-              <span className="eyebrow eyebrow-plain">Tools & stack</span>
-              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-fg-subtle">
-                {service.stackIntro ??
-                  "We pick boring, well-supported tools on purpose. Everything below is something your next hire can already use."}
-              </p>
-              <ul className="mt-7 flex flex-wrap gap-2">
-                {service.stack.map((tool) => (
-                  <li
-                    key={tool}
-                    className="rounded-lg border border-line bg-glass px-3 py-1.5 font-label text-xs text-fg-body transition-colors duration-200 hover:border-accent-quiet/50 hover:text-accent-strong"
-                  >
-                    {tool}
-                  </li>
-                ))}
-              </ul>
-
+            {/* The ownership note used to sit in a card of its own. It is one
+                sentence, so it rides under the list instead. */}
+            <Reveal delay={200}>
               <div className="mt-8 flex items-center gap-3 border-t border-line pt-6">
                 <span className="grid size-9 shrink-0 place-items-center rounded-full bg-blue-400/12 text-accent">
                   <Check className="size-4" strokeWidth={2.5} />
@@ -399,10 +415,39 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
                     "You own every account, repository and licence we set up on your behalf."}
                 </p>
               </div>
+            </Reveal>
+          </div>
+
+          {heroImage && (
+            /* Deliberately not wrapped in Reveal. That parks its content at
+               opacity 0 in the server HTML and only clears it once the bundle
+               has hydrated and the observer has fired — fine for a line of
+               text, but it left this whole column looking empty.
+
+               The frame runs the full height of the text column and the artwork
+               covers it. These files are 4:3 and the column is taller than it is
+               wide, so cover trims the sides — chosen over letterboxing the
+               image inside bands of empty panel. `object-center` keeps the trim
+               even, which matters because every one of these illustrations is
+               composed around its middle. */
+            <div className="overflow-hidden rounded-2xl border border-line lg:h-full">
+              <img
+                src={heroImage}
+                alt={`${service.name} at Onyxera Tech`}
+                width={1200}
+                height={900}
+                loading="lazy"
+                decoding="async"
+                className="block h-full w-full object-cover object-center"
+              />
             </div>
-          </Reveal>
+          )}
         </div>
       </section>
+      )}
+
+      {/* ---------------- tools & stack ---------------- */}
+      <StackBand stack={service.stack} intro={service.stackIntro} />
 
       {/* ---------------- process ---------------- */}
       <section className="section border-t border-line">

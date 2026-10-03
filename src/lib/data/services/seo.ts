@@ -42,10 +42,10 @@ export const seo: Service = /* -------------------------------------------------
     hero: {
       eyebrow: "Search Engine Optimisation",
       /* The brief’s H1, split so the template can accent the tail. */
-      headline: "SEO That Gets Your",
-      highlight: " Business Found",
+      headline: "SEO Services Built to",
+      highlight: " Grow Your Business",
       sub:
-        "We build AI SEO strategies that improve your visibility across search engines, AI platforms and the places your customers look for trusted answers.",
+        "Improve organic visibility with technical SEO, content strategy and search optimisation built around your market, audience and measurable business goals.",
     },
     /* The three figures the brief supplies, in its own wording — the figure is
        the value, the line printed under it is the label. Refilled from the
@@ -101,9 +101,21 @@ export const seo: Service = /* -------------------------------------------------
       { title: "Convert Into Leads", body: "We optimise your search journey so the right traffic reaches the right pages and turns into enquiries, opportunities and customers.", duration: "Step 04" },
     ],
     stack: [
-      "Ahrefs", "Semrush", "Screaming Frog", "Google Search Console",
-      "Google Analytics 4", "Looker Studio", "Schema.org",
-      "Google Business Profile", "Google Trends", "PageSpeed Insights", "Peec AI",
+      /* Research and audit */
+      "Ahrefs", "Semrush", "Screaming Frog", "Similarweb", "Lighthouse",
+      /* Google's own surfaces */
+      "Google Search Console", "Google Analytics 4", "Looker Studio",
+      "Google Tag Manager", "Google Business Profile", "Google Ads",
+      "Google Trends", "Google Maps", "PageSpeed Insights", "Chrome DevTools",
+      /* Other search and analytics */
+      "Bing Webmaster Tools", "Matomo", "Hotjar", "Mixpanel", "YouTube",
+      /* Platforms and delivery */
+      "WordPress", "Yoast SEO", "WooCommerce", "Shopify", "Webflow",
+      "Contentful", "HubSpot", "Cloudflare",
+      /* AI search visibility */
+      "ChatGPT", "Claude", "Perplexity", "Google Gemini",
+      /* On the page but not in the strip: no open logo exists for these */
+      "Schema.org", "Peec AI",
     ],
     faqs: [
       { q: "How long does it take to see results from SEO?", a: "SEO takes time to build. Technical improvements can show earlier, while stronger rankings, AI visibility and meaningful traffic usually develop over several months." },
@@ -114,12 +126,12 @@ export const seo: Service = /* -------------------------------------------------
       { q: "Do I need to understand SEO, AEO or GEO to work with you?", a: "No. You do not need to understand the technical side. We explain what matters, what we recommend and why in straightforward business terms." },
     ],
     seo: {
-      /* No " | OnyxEra Tech" here — layout.tsx appends it via the title
+      /* No " | Onyxera Tech" here — layout.tsx appends it via the title
          template, and repeating it would print the suffix twice. */
       title: "SEO, AEO & GEO Services",
       description:
         "Improve your visibility across Google and AI search with SEO, AEO and GEO strategies designed to attract qualified traffic, leads and customers.",
-      ogTitle: "SEO, AEO & GEO Services | OnyxEra Tech",
+      ogTitle: "SEO, AEO & GEO Services | Onyxera Tech",
       ogDescription:
         "Improve your visibility across Google and AI search with SEO, AEO and GEO strategies designed to attract qualified traffic, leads and customers.",
       /* Primary keyword first, then the brief's secondary list in its order. */
@@ -130,7 +142,7 @@ export const seo: Service = /* -------------------------------------------------
         "LLM search optimisation", "content and topical authority",
         "structured data and schema",
       ],
-      heroAlt: "SEO services by OnyxEra Tech",
+      heroAlt: "SEO services by Onyxera Tech",
     },
     /* The brief's "3 Core Outcomes", numbered as it numbers them. Distinct
        figures from `metrics`, so the two strips do not repeat each other. */

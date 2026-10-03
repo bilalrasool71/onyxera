@@ -3,6 +3,8 @@ import { Check } from "lucide-react";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { Reveal } from "@/components/ui/Reveal";
 import { legalUpdated, type LegalSection } from "@/lib/data/legal";
+import { graph, pageSchema } from "@/lib/schema";
+import { withLinks } from "@/lib/prose";
 import { site } from "@/lib/site";
 
 /**
@@ -18,6 +20,8 @@ export function LegalPage({
   intro,
   sections,
   label,
+  path,
+  description,
   updated: updatedISO = legalUpdated,
 }: {
   eyebrow: string;
@@ -25,6 +29,10 @@ export function LegalPage({
   intro: string;
   sections: LegalSection[];
   label: string;
+  /** Canonical path, so the structured breadcrumb can name real URLs. */
+  path: string;
+  /** The page's meta description, reused as the WebPage description. */
+  description: string;
   /** Overrides the shared date for a page revised on its own schedule. */
   updated?: string;
 }) {
@@ -36,6 +44,23 @@ export function LegalPage({
 
   return (
     <>
+      {/* These five pages showed a breadcrumb but published no structured one,
+          the only pages on the site where the two disagreed. Built from the
+          same `label` and `path` the visible trail uses, so they cannot
+          drift apart. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: graph(
+            pageSchema({
+              path,
+              name: label,
+              description,
+              crumbs: [{ label, path }],
+            }),
+          ),
+        }}
+      />
       <PageHeader
         eyebrow={eyebrow}
         crumbs={[{ label: "Home", href: "/" }, { label }]}
@@ -79,7 +104,7 @@ export function LegalPage({
                     key={para.slice(0, 40)}
                     className="mt-5 text-base leading-[1.75] text-fg-body"
                   >
-                    {para}
+                    {withLinks(para)}
                   </p>
                 ))}
 
@@ -91,7 +116,7 @@ export function LegalPage({
                           <Check className="size-2.5" strokeWidth={3} />
                         </span>
                         <span className="text-base leading-[1.75] text-fg-body">
-                          {point}
+                          {withLinks(point)}
                         </span>
                       </li>
                     ))}

@@ -70,8 +70,15 @@ type LogoProps = {
  * ground, `logo-black` (white artwork) on the navy one. Doing it in CSS rather
  * than JS means the correct file is right on the very first paint.
  *
- * Both images are decorative; the accessible name comes from the `sr-only`
- * span, so exactly one name is announced whichever file is visible.
+ * Both carry the same alt text. That is safe, and it is safe because the hiding
+ * is `display: none` rather than opacity or a transform: a `display: none`
+ * element is not in the accessibility tree at all, so whichever file the theme
+ * hides is not announced. Exactly one name reaches a screen reader.
+ *
+ * The name used to live in an `sr-only` span with both images decorative. That
+ * read the same to a screen reader, but an audit tool reported the empty alts
+ * as missing ones — it has no way to see the span. The name moved onto the
+ * images; nothing changed on screen.
  */
 export function Logo({ className, size = "md" }: LogoProps) {
   const h = SIZES[size];
@@ -79,19 +86,18 @@ export function Logo({ className, size = "md" }: LogoProps) {
     <span className={cn("inline-flex shrink-0 select-none items-center", className)}>
       <img
         src="/logo-black.webp"
-        alt=""
+        alt="Onyxera Tech"
         width={420}
         height={101}
         className={cn("logo-on-dark", h)}
       />
       <img
         src="/logo-white.webp"
-        alt=""
+        alt="Onyxera Tech"
         width={420}
         height={101}
         className={cn("logo-on-light", h)}
       />
-      <span className="sr-only">OnyxEra Tech</span>
     </span>
   );
 }

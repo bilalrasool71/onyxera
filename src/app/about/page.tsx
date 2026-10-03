@@ -20,26 +20,23 @@ import {
 import { services } from "@/lib/data/services";
 import { graph, pageSchema } from "@/lib/schema";
 import { numberWord, titleCaseWord } from "@/lib/utils";
+import { openGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   /* Title, description and Open Graph copy come from the SEO brief.
      `absolute` because the brief writes each title in full, including the
-     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     brand — leaving the layout's "%s | Onyxera Tech" template to run would
      print the company name twice. */
-  title: { absolute: "About OnyxEra Tech" },
+  title: { absolute: "About Onyxera Tech" },
   description:
-    "Learn about OnyxEra Tech, our experience, approach and vision for helping businesses build better technology, automate work and achieve sustainable growth.",
+    "Learn about Onyxera Tech, our experience, approach and vision for helping businesses build better technology, automate work and achieve sustainable growth.",
   alternates: { canonical: "/about" },
-  openGraph: {
-    title: "About OnyxEra Tech",
+  openGraph: openGraph({
+    title: "About Onyxera Tech",
     description:
-      "Learn about OnyxEra Tech, our experience, approach and vision for helping businesses build better technology, automate work and achieve sustainable growth.",
+      "Learn about Onyxera Tech, our experience, approach and vision for helping businesses build better technology, automate work and achieve sustainable growth.",
     url: "/about",
-    /* Declaring `openGraph` at all replaces the file-based
-       opengraph-image convention rather than merging with it, so the card
-       has to name the image itself. */
-    images: ["/opengraph-image.png"],
-  },
+  }),
 };
 
 export default function AboutPage() {
@@ -52,7 +49,7 @@ export default function AboutPage() {
               path: "/about",
               name: "About",
               description:
-                "From websites and software to AI automation and performance marketing, OnyxEra Tech connects technology with growth to help businesses scale smarter.",
+                "From websites and software to AI automation and performance marketing, Onyxera Tech connects technology with growth to help businesses scale smarter.",
               type: "AboutPage",
               crumbs: [{ label: "About", path: "/about" }],
             }),
@@ -84,7 +81,7 @@ export default function AboutPage() {
         <div className="shell grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <div>
             <Reveal immediate>
-              <span className="eyebrow">About OnyxEra</span>
+              <span className="eyebrow">About Onyxera</span>
             </Reveal>
             {/* Unwrapped on purpose — see the note on the home page's h1. */}
             <h1 className="mt-6 text-[clamp(2.5rem,6.4vw,4.75rem)] text-fg">
@@ -111,18 +108,24 @@ export default function AboutPage() {
           </div>
 
           {/* Supplied photograph, staged from the launch checklist document. */}
-          {/* No `Reveal`, and fetched at high priority: at 736px square this
-              photograph is the largest thing in this page's fold, which makes
-              it the LCP element — and Chromium will not credit an element that
-              was mid-animation, or still at opacity 0 waiting on hydration,
-              when it was first painted. */}
+          {/* No `Reveal`: at 736px square this photograph is the largest
+              thing in this page's fold, which makes it the LCP element, and
+              Chromium will not credit an element that was mid-animation, or
+              still at opacity 0 waiting on hydration, when it was first
+              painted.
+
+              `fetchPriority="high"` is gone. React turns it into a preload
+              hint, Next carries that hint inside the prefetched payload for
+              this route, and every page in the header that links to /about
+              was then downloading this 52KB photograph for a page the visitor
+              had not asked for. It cost more on the pages that never show it
+              than it saved on the one that does. */}
           <div className="card relative aspect-4/3 overflow-hidden">
             <img
               src="/images/about-hero.webp"
-              alt="OnyxEra Tech, built on experience, one connected team"
+              alt="Onyxera Tech, built on experience, one connected team"
               width={736}
               height={736}
-              fetchPriority="high"
               className="size-full object-cover"
             />
           </div>
@@ -199,7 +202,7 @@ export default function AboutPage() {
               was folded into web applications. The cards below this heading are
               differentiators, not services, so the number was never theirs. */}
           <SectionHeading
-            eyebrow="Why OnyxEra"
+            eyebrow="Why Onyxera"
             title={
               <>
                 Different expertise.

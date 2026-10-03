@@ -40,15 +40,15 @@ export const refundSections: LegalSection[] = [
   {
     heading: "Scope of this policy",
     body: [
-      "OnyxEra Tech delivers professional digital services including web design, software development, automation, SEO, digital marketing and cyber security. Given the time, expertise and project resources needed for these services, refunds will be determined based on the nature and progress of the engagement.",
-      "This policy applies to services bought directly from OnyxEra Tech. Refund, Cancellation and Payment Terms. Where applicable, the specific refund, cancellation and payment terms agreed to in a signed proposal or client agreement will supersede this policy.",
+      "Onyxera Tech delivers [professional digital services](/services) including web design, software development, automation, SEO, digital marketing and cyber security. Given the time, expertise and project resources needed for these services, refunds will be determined based on the nature and progress of the engagement.",
+      "This policy applies to services bought directly from Onyxera Tech. Refund, Cancellation and Payment Terms. Where applicable, the specific refund, cancellation and payment terms agreed to in a signed proposal or client agreement will supersede this policy.",
     ],
     needsReview: true,
   },
   {
     heading: "No going forward",
     body: [
-      "The client may request cancellation of a project by contacting us in writing. Where work has already started, fees for work done, resources committed, third party expenses and other approved expenses may still be charged.",
+      "The client may request cancellation of a project by [contacting us](/contact) in writing. Where work has already started, fees for work done, resources committed, third party expenses and other approved expenses may still be charged.",
       "Any amount to be refunded will be calculated on the basis of the work done and the payments already committed.",
     ],
     needsReview: true,
@@ -56,7 +56,7 @@ export const refundSections: LegalSection[] = [
   {
     heading: "Return policy",
     body: [
-      "Refunds may be considered if the relevant service has not yet begun by OnyxEra Tech, or if the signed client agreement expressly states a refund.",
+      "Refunds may be considered if the relevant service has not yet begun by Onyxera Tech, or if the signed client agreement expressly states a refund.",
       "Payments are for professional services and as such, and because development time and resources have been provided, they are non refundable once substantial work has been performed.",
     ],
     needsReview: true,
@@ -77,7 +77,7 @@ export const refundSections: LegalSection[] = [
        the colon that introduces the items. Kept as the client's prose. */
     heading: "Non refundable services",
     body: [
-      "Some services may not be eligible for a refund once delivered or commenced. These include, but are not limited to: completed development work, design work, SEO work, marketing campaign management, automation setup, consulting, security assessments and other professional services.",
+      "Some services may not be eligible for a refund once delivered or commenced. These include, but are not limited to: completed development work, design work, [SEO work](/services/seo-and-ai-seo), marketing campaign management, [automation setup](/services/automation), consulting, security assessments and other professional services.",
       "Where a service has an agreed cancellation or refund provision, the terms of that agreement shall apply.",
     ],
     needsReview: true,
@@ -86,7 +86,7 @@ export const refundSections: LegalSection[] = [
     heading: "Requesting a refund",
     body: [
       "To make a refund request, send a written request to:",
-      `OnyxEra Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
+      `Onyxera Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
       "Please provide your name, project or service, payment details and reason for request. We will review the request and respond in a reasonable time.",
       "Where client agreements and signed proposals contain specific payment, cancellation or refund terms, these shall take precedence.",
     ],

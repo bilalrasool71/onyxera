@@ -76,15 +76,37 @@ export const digital_marketing: Service = /* -----------------------------------
     ],
     stack: [
       "Google Ads",
+      "Bing Ads",
       "Meta Ads",
       "LinkedIn Ads",
+      "TikTok",
+      "Snapchat",
+      "Pinterest",
+      "Reddit",
+      "X",
+      "YouTube",
+      "Instagram",
+      "Facebook",
+      "WhatsApp",
       "GA4",
       "Server Side GTM",
-      "HubSpot",
-      "Klaviyo",
-      "Segment",
       "Looker Studio",
       "Hotjar",
+      "Semrush",
+      "Ahrefs",
+      "Mailchimp",
+      "Brevo",
+      "Klaviyo",
+      "Buffer",
+      "Hootsuite",
+      "Canva",
+      "Figma",
+      "HubSpot",
+      "Segment",
+      "Shopify",
+      "WordPress",
+      "Stripe",
+      "Zapier",
     ],
     faqs: [
       { q: "How much should I spend on digital marketing?", a: "There is no fixed number. We recommend a budget based on your goals, market, competition and the results we need to achieve." },
@@ -95,12 +117,12 @@ export const digital_marketing: Service = /* -----------------------------------
       { q: "What happens if my campaigns are not generating leads?", a: "We identify where the problem is, whether it is the audience, offer, creative, landing page or campaign, then focus on fixing the weakest point." },
     ],
     seo: {
-      /* Kept under 60 characters with " | OnyxEra Tech" appended by the
+      /* Kept under 60 characters with " | Onyxera Tech" appended by the
          title template, which is what Google prints. */
       title: "Digital Marketing Services",
       description:
         "Grow your business with Google Ads, Meta Ads, social media and performance marketing focused on qualified leads, conversions and measurable growth.",
-      ogTitle: "Digital Marketing Services | OnyxEra Tech",
+      ogTitle: "Digital Marketing Services | Onyxera Tech",
       ogDescription:
         "Grow your business with Google Ads, Meta Ads, social media and performance marketing focused on qualified leads, conversions and measurable growth.",
       /* Primary keyword first, then the brief's secondary list in its order. */
@@ -116,7 +138,7 @@ export const digital_marketing: Service = /* -----------------------------------
         "landing page optimisation", "paid media strategy", "ecommerce marketing",
         "B2B digital marketing",
       ],
-      heroAlt: "Digital marketing services by OnyxEra Tech",
+      heroAlt: "Digital marketing services by Onyxera Tech",
     },
     problem: {
       title: "Getting Clicks, but not Enough Customers?",

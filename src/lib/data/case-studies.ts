@@ -33,6 +33,9 @@ export type CaseStudy = {
    * headline above it is untouched.
    */
   seoTitle?: string;
+  /** Search-result description, where the summary is too short to fill one.
+      Only the page's <head> uses it; the visible summary is untouched. */
+  metaDescription?: string;
   summary: string;
   challenge: string;
   approach: { title: string; body: string }[];
@@ -1104,6 +1107,8 @@ const allCaseStudies: CaseStudy[] = [
   {
     slug: "customer-portal-security-assessment",
     seoTitle: "Customer Portal Security Case Study",
+    metaDescription:
+      "Customer portal security assessment covering authentication, user permissions, API endpoints and dependencies, so the client could scale with confidence.",
     coverImage: {
       src: "/images/work/customer-portal-security-assessment/2-delivery-flow.svg",
       alt: "Delivery flow: security assessment, vulnerability report, remediation plan and fix verification",
@@ -1121,7 +1126,7 @@ const allCaseStudies: CaseStudy[] = [
     approach: [
       {
         title: "What We Did",
-        body: "OnyxEra performed a full security assessment of the portal and supporting APIs.",
+        body: "Onyxera performed a full security assessment of the portal and supporting APIs.",
       },
       {
         title: "What We Found",
@@ -1171,6 +1176,8 @@ const allCaseStudies: CaseStudy[] = [
   {
     slug: "cloud-security-assessment",
     seoTitle: "Cloud Security Assessment Case Study",
+    metaDescription:
+      "Cloud security assessment for a SaaS platform: stronger access controls, reduced unnecessary exposure and clearer visibility across its cloud environment.",
     coverImage: {
       src: "/images/work/cloud-security-assessment/1-improvement-plan.svg",
       alt: "Seven areas reviewed across a cloud environment, feeding a prioritised plan across identity, access, infrastructure, monitoring and remediation",
@@ -1188,7 +1195,7 @@ const allCaseStudies: CaseStudy[] = [
     approach: [
       {
         title: "What We Did",
-        body: "OnyxEra reviewed the client's cloud environment from both infrastructure and identity perspectives.",
+        body: "Onyxera reviewed the client's cloud environment from both infrastructure and identity perspectives.",
       },
       {
         title: "The Solution",
@@ -1245,7 +1252,7 @@ const allCaseStudies: CaseStudy[] = [
     approach: [
       {
         title: "What We Did",
-        body: "OnyxEra carried out an application penetration test covering authentication, authorisation, user roles, API endpoints, session management, input validation, file handling, business logic, sensitive data exposure and third party integrations.",
+        body: "Onyxera carried out an application penetration test covering authentication, authorisation, user roles, API endpoints, session management, input validation, file handling, business logic, sensitive data exposure and third party integrations.",
       },
       {
         title: "What We Found",

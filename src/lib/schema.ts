@@ -65,7 +65,7 @@ export function organizationSchema() {
       addressCountry: o.countryCode,
     })),
     /* One point per number, each with its own @id and named for the country
-       it answers in, so "OnyxEra Tech Australia contact" resolves to the
+       it answers in, so "Onyxera Tech Australia contact" resolves to the
        Australian line rather than to whichever number happened to be listed
        first — and so the three are addressable as distinct entities that
        nonetheless belong to this one organisation.
@@ -153,6 +153,32 @@ export function pageSchema({ path, name, description, type = "WebPage", crumbs, 
       })),
     },
   ];
+}
+
+/**
+ * The questions and answers a page already shows, restated for machines.
+ *
+ * Google stopped showing FAQ rich results for sites like this one in 2023 —
+ * they are reserved for government and health domains now — so this will not
+ * put an accordion in the search listing. It is here because the answers are
+ * then legible to the systems that do read structured data, which is what the
+ * brief asked for.
+ *
+ * The answers must be the ones on the page. Marking up copy the reader cannot
+ * see is what gets structured data ignored, so the link markers the body text
+ * carries are stripped to their words rather than dropped.
+ */
+export function faqSchema(path: string, items: { q: string; a: string }[]) {
+  const strip = (t: string) => t.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  return {
+    "@type": "FAQPage",
+    "@id": `${abs(path)}#faq`,
+    mainEntity: items.map((i) => ({
+      "@type": "Question",
+      name: i.q,
+      acceptedAnswer: { "@type": "Answer", text: strip(i.a) },
+    })),
+  };
 }
 
 /** Wraps nodes in the `@graph` envelope the crawler expects. */

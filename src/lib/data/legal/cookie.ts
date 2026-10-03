@@ -35,7 +35,7 @@ export const cookieSections: LegalSection[] = [
   {
     heading: "How we use cookies",
     body: [
-      `${site.name} uses cookies and similar technologies to operate the website, improve performance, understand website usage and remember certain preferences.`,
+      `[${site.name}](/about) uses cookies and similar technologies to operate the website, improve performance, understand website usage and remember certain preferences.`,
       "We do not collect information through cookies which is not necessary to provide or improve our website.",
     ],
     /* A hard negative representation about the scope of collection — and one
@@ -47,7 +47,7 @@ export const cookieSections: LegalSection[] = [
     heading: "The cookies we use",
     body: [
       "We may use essential cookies that are necessary for the website to work, preference cookies that remember your selected settings, analytics cookies that help us understand website usage and performance, and marketing cookies where applicable.",
-      "The exact cookies we use may change as our website, tools and services evolve.",
+      "The exact cookies we use may change as our website, tools and [services](/services) evolve.",
     ],
     /* Analytics and marketing cookies attract prior-consent obligations in
        some jurisdictions, and this statement commits to no consent mechanism. */
@@ -73,7 +73,7 @@ export const cookieSections: LegalSection[] = [
   {
     heading: "Get in touch",
     body: [
-      `For questions about how ${site.name} uses cookies please contact us:`,
+      `For questions about how ${site.name} uses cookies please [contact us](/contact):`,
       `${site.name}, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}. Website ${site.url}.`,
     ],
   },

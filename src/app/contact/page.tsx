@@ -4,27 +4,23 @@ import { PageHeader } from "@/components/sections/PageHeader";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { graph, pageSchema } from "@/lib/schema";
-import { site } from "@/lib/site";
+import { openGraph, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   /* Title, description and Open Graph copy come from the SEO brief.
      `absolute` because the brief writes each title in full, including the
-     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     brand — leaving the layout's "%s | Onyxera Tech" template to run would
      print the company name twice. */
-  title: { absolute: "Contact OnyxEra Tech" },
+  title: { absolute: "Contact Onyxera Tech" },
   description:
-    "Talk to OnyxEra Tech about websites, software, CRM, ERP, automation, SEO, digital marketing or cyber security for your business and growth goals.",
+    "Talk to Onyxera Tech about websites, software, CRM, ERP, automation, SEO, digital marketing or cyber security for your business and growth goals.",
   alternates: { canonical: "/contact" },
-  openGraph: {
-    title: "Contact OnyxEra Tech",
+  openGraph: openGraph({
+    title: "Contact Onyxera Tech",
     description:
-      "Talk to OnyxEra Tech about websites, software, CRM, ERP, automation, SEO, digital marketing or cyber security for your business and growth goals.",
+      "Talk to Onyxera Tech about websites, software, CRM, ERP, automation, SEO, digital marketing or cyber security for your business and growth goals.",
     url: "/contact",
-    /* Declaring `openGraph` at all replaces the file-based
-       opengraph-image convention rather than merging with it, so the card
-       has to name the image itself. */
-    images: ["/opengraph-image.png"],
-  },
+  }),
 };
 
 export default function ContactPage() {
@@ -46,6 +42,9 @@ export default function ContactPage() {
     label: string;
     value: string;
     href?: string;
+    /* A country's phone, shown under its address so each location reads as
+       one block rather than three addresses followed by three numbers. */
+    phone?: { value: string; href: string };
   }[] = [
     { icon: Mail, label: "Email", value: site.email, href: `mailto:${site.email}` },
     /* Just the country. The "· Operating Location" / "· Mailing Address"
@@ -55,12 +54,7 @@ export default function ContactPage() {
       icon: MapPin,
       label: o.label,
       value: `${o.line1}, ${o.line2}`,
-    })),
-    ...site.offices.map((o) => ({
-      icon: Phone,
-      label: `${o.label} phone`,
-      value: o.phone,
-      href: `tel:${o.phoneHref}`,
+      phone: { value: o.phone, href: `tel:${o.phoneHref}` },
     })),
     { icon: Clock, label: "Hours", value: site.hours },
   ];
@@ -90,8 +84,8 @@ export default function ContactPage() {
           </Reveal>
 
           {/* direct details — the only sidebar card; the page stays deliberately plain */}
-          <Reveal delay={90}>
-            <div className="card p-7 md:p-8">
+          <Reveal delay={90} className="h-full">
+            <div className="card h-full p-7 md:p-8">
               <span className="eyebrow eyebrow-plain">Direct lines</span>
               <ul className="mt-6 space-y-5">
                 {details.map((d) => (
@@ -112,6 +106,15 @@ export default function ContactPage() {
                         </a>
                       ) : (
                         <span className="mt-1 block text-sm text-fg-body">{d.value}</span>
+                      )}
+                      {d.phone && (
+                        <a
+                          href={d.phone.href}
+                          className="mt-1.5 inline-flex items-center gap-1.5 text-sm text-fg-body transition-colors duration-300 hover:text-accent"
+                        >
+                          <Phone aria-hidden="true" className="size-3.5 text-accent" strokeWidth={1.7} />
+                          {d.phone.value}
+                        </a>
                       )}
                     </span>
                   </li>

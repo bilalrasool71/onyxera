@@ -171,12 +171,26 @@ export function HeroVisual({ className }: { className?: string }) {
               x1={n.sx} y1={n.sy} x2={n.ex} y2={n.ey}
               stroke="var(--hv-line)" strokeWidth="1.5"
             />
-            <line
-              className="hv-flow"
-              style={{ animationDelay: n.delay }}
-              x1={n.sx} y1={n.sy} x2={n.ex} y2={n.ey}
-              stroke="var(--hv-pulse)" strokeWidth="3"
-              strokeDasharray={`13 ${LEN - 13}`}
+            {/* A dot that travels the wire, not a dash walking along it.
+                The dash version animated `stroke-dashoffset`, which the
+                compositor cannot take: every frame went back to the main
+                thread for style, layout and paint, five wires at once and
+                never stopping. It was the single largest cost on the page —
+                3.4s of style and layout, 2.0s of rendering, and a Speed Index
+                that could not settle because the viewport never stopped
+                changing. `transform` is composited, so the same dot now costs
+                the main thread nothing. */}
+            <circle
+              className="hv-pulse"
+              style={
+                {
+                  "--hv-dx": `${n.ex - n.sx}px`,
+                  "--hv-dy": `${n.ey - n.sy}px`,
+                  animationDelay: n.delay,
+                } as React.CSSProperties
+              }
+              cx={n.sx} cy={n.sy} r="2.6"
+              fill="var(--hv-pulse)" stroke="none"
             />
           </g>
         ))}
@@ -187,7 +201,7 @@ export function HeroVisual({ className }: { className?: string }) {
         <circle className="hv-core-halo" cx={CX} cy={CY} r="94" fill="var(--hv-wash)" />
         <circle cx={CX} cy={CY} r="70" fill="var(--hv-fill)" stroke="var(--hv-edge)" strokeWidth="1.5" />
         <circle cx={CX} cy={CY} r="59" fill="none" stroke="var(--hv-line)" strokeWidth="1" />
-        {/* The arrow from the OnyxEra mark, redrawn at this scale. */}
+        {/* The arrow from the Onyxera mark, redrawn at this scale. */}
         <g
           transform={`translate(${CX - 28} ${CY - 28})`}
           fill="none" stroke="var(--hv-glyph)" strokeWidth="3.3"

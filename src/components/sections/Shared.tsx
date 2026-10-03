@@ -91,7 +91,7 @@ export function ClientLogos({
             <span className="flex h-20 w-full items-center justify-center md:h-24">
               <img
                 src={c.logo}
-                alt=""
+                alt={`${c.name} logo`}
                 width={250}
                 height={250}
                 loading="lazy"
@@ -99,10 +99,22 @@ export function ClientLogos({
                 className="max-h-full max-w-full object-contain"
               />
             </span>
-            {/* The name is the label, so the image is decorative and carries an
-                empty alt — otherwise both get announced. Two clamped lines keeps
-                every cell the same height whether the name wraps or not. */}
-            <span className="line-clamp-2 w-full text-center font-display text-[0.8125rem] leading-snug font-medium text-navy-900">
+            {/* The name now rides on the image's alt, so this caption is
+                hidden from the accessibility tree — otherwise the same client
+                name is announced twice, once from each element.
+
+                It was the other way round until an audit tool reported the
+                empty alt as a missing one. The tool cannot see that the name
+                sits in the next element; moving the name onto the image
+                satisfies it without a screen reader hearing the name twice.
+                Visually nothing changes.
+
+                Two clamped lines keeps every cell the same height whether the
+                name wraps or not. */}
+            <span
+              aria-hidden="true"
+              className="line-clamp-2 w-full text-center font-display text-[0.8125rem] leading-snug font-medium text-navy-900"
+            >
               {c.name}
             </span>
           </span>
@@ -391,8 +403,11 @@ export function FaqSection({
 /* ------------------------------------------------------------------ */
 
 export function DeliverablesList({ items }: { items: string[] }) {
+  /* One item per line. The two-column split read as two lists rather than
+     one, and the second column left the deliverables sitting under half the
+     measure the paragraph above them uses. */
   return (
-    <ul className="grid gap-x-8 gap-y-3.5 sm:grid-cols-2">
+    <ul className="grid gap-y-3.5">
       {items.map((item, i) => (
         <Reveal key={item} delay={i * 45} as="li">
           <span className="flex items-start gap-3">

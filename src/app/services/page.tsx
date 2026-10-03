@@ -3,10 +3,10 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { CtaBand, FaqSection } from "@/components/sections/Shared";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { services } from "@/lib/data/services";
-import { site } from "@/lib/site";
+import { openGraph, site } from "@/lib/site";
 import { numberWord, titleCaseWord } from "@/lib/utils";
 import { generalFaqs } from "@/lib/data/agency";
 import { graph, pageSchema } from "@/lib/schema";
@@ -19,40 +19,79 @@ const NAME_LIST = `${NAMES.slice(0, -1).join(", ")} and ${NAMES.at(-1)}`;
 export const metadata: Metadata = {
   /* Title, description and Open Graph copy come from the SEO brief.
      `absolute` because the brief writes each title in full, including the
-     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     brand — leaving the layout's "%s | Onyxera Tech" template to run would
      print the company name twice. */
-  title: { absolute: "Digital Solutions | OnyxEra Tech" },
+  title: { absolute: "Digital Solutions | Onyxera Tech" },
   description:
-    "Explore OnyxEra Tech services across digital development, SEO, digital marketing, automation and cyber security, built around your business and growth.",
+    "Explore Onyxera Tech services across digital development, SEO, digital marketing, automation and cyber security, built around your business and growth.",
   alternates: { canonical: "/services" },
-  openGraph: {
-    title: "Digital Solutions | OnyxEra Tech",
+  openGraph: openGraph({
+    title: "Digital Solutions | Onyxera Tech",
     description:
-      "Explore OnyxEra Tech services across digital development, SEO, digital marketing, automation and cyber security, built around your business and growth.",
+      "Explore Onyxera Tech services across digital development, SEO, digital marketing, automation and cyber security, built around your business and growth.",
     url: "/services",
-    /* Declaring `openGraph` at all replaces the file-based
-       opengraph-image convention rather than merging with it, so the card
-       has to name the image itself. */
-    images: ["/opengraph-image.png"],
-  },
+  }),
 };
 
+/* The client's copy, verbatim. The headings are statements about how the
+   disciplines meet rather than the "A + B" labels that stood here, so the
+   section now reads as four positions rather than four pairings. */
+/* `body` is a node rather than a string because the document links a
+   discipline in each of these four to the service page that covers it. Those
+   links are part of the copy the client wrote, so they live with it. */
 const pairings = [
   {
-    title: "Design + SEO",
-    body: "A redesign planned without search input is how companies lose five years of rankings in a weekend. We plan the URL structure and content model together.",
+    title: "Build It Right, Then Make It Visible",
+    body: (
+      <>
+        A website should look good and perform well. We connect development, user
+        experience and{" "}
+        <Link href="/services/seo-and-ai-seo" className="prose-link">
+          SEO
+        </Link>{" "}
+        so your digital foundation supports customers, search visibility and future
+        business growth.
+      </>
+    ),
   },
   {
-    title: "Marketing + Design",
-    body: "Paid traffic is only as good as the page it lands on. The same team builds the ad and the landing page, so the promise and the payoff match.",
+    title: "Turn Traffic Into Something Useful",
+    body: (
+      <>
+        Traffic only matters when it creates action. We connect{" "}
+        <Link href="/services/digital-marketing" className="prose-link">
+          digital marketing
+        </Link>, landing pages and
+        development to create experiences that turn attention into meaningful
+        enquiries and measurable opportunities.
+      </>
+    ),
   },
   {
-    title: "Web App + Automation",
-    body: "The best internal tool is one that eliminates work rather than relocating it. We build the application and the workflows around it as one piece.",
+    title: "Build The Workflow Around The Work",
+    body: (
+      <>
+        <Link href="/services/automation" className="prose-link">
+          Automation
+        </Link>{" "}
+        starts with understanding the work. We connect applications, CRM, ERP and
+        workflows so information moves efficiently, reducing manual effort while
+        helping teams operate with greater consistency.
+      </>
+    ),
   },
   {
-    title: "Any build + Security",
-    body: "Security review is folded into development rather than bolted on at the end, which is both cheaper and considerably less alarming.",
+    title: "Security Belongs Inside The Solution",
+    body: (
+      <>
+        <Link href="/services/cyber-security" className="prose-link">
+          Security
+        </Link>{" "}
+        should be part of every digital solution. We consider applications,
+        integrations, infrastructure and access controls early, helping identify
+        risks before they become costly business problems.
+      </>
+    ),
   },
 ];
 
@@ -70,7 +109,7 @@ export default function ServicesPage() {
               type: "CollectionPage",
               crumbs: [{ label: "Services", path: "/services" }],
               /* Names every service page as part of this collection, which is
-                 the OnyxEra Tech -> Services -> Individual Service link the
+                 the Onyxera Tech -> Services -> Individual Service link the
                  brief asks for. */
               extra: {
                 mainEntity: {
@@ -91,11 +130,11 @@ export default function ServicesPage() {
         crumbs={[{ label: "Home", href: "/" }, { label: "Services" }]}
         title={
           <>
-            Digital Solutions
+            Digital Solutions Built
             <span className="accent-text"> For Your Business</span>
           </>
         }
-        intro="Each of these is a full practice with its own specialists. Take one, or take several and let them reinforce each other."
+        intro="Our digital solutions combine technology, marketing, automation and security to solve business problems, improve operations and support sustainable growth."
       />
 
       {/* ---------------- detailed service list ---------------- */}
@@ -164,21 +203,24 @@ export default function ServicesPage() {
       {/* ---------------- pairings ---------------- */}
       <section className="section">
         <div className="shell">
+          {/* The document's "MAIIN Heading", which introduces the four below
+              it. No eyebrow: the document does not supply one, and the last
+              heading here was written in-house. */}
           <SectionHeading
-            eyebrow="Better together"
             title={
               <>
-                Where the disciplines
-                <span className="accent-text"> compound</span>.
+                Digital Solutions That Work
+                <span className="accent-text"> As One System</span>
               </>
             }
-            intro="Services bought separately tend to quietly undo each other. These are the combinations our clients get the most out of."
+            intro="Digital solutions do not work in isolation. Websites, SEO, marketing, automation and security influence each other. We connect these disciplines around one objective, making improvements more valuable."
+            introWide
           />
 
           {/* Borders, not a `gap-px` grid over a tinted parent — see the note
               on the same pattern in services/[slug]/page.tsx. Fractional column
               widths made those 1px gaps paint inconsistently. */}
-          <div className="mt-14 grid overflow-hidden rounded-2xl border border-line md:grid-cols-2">
+          <div className="mt-10 grid overflow-hidden rounded-2xl border border-line md:grid-cols-2">
             {pairings.map((p, i) => (
               <Reveal
                 key={p.title}

@@ -22,7 +22,7 @@ export const disclaimerSections: LegalSection[] = [
   {
     heading: "General info",
     body: [
-      "The information contained in this website is for general information purposes only. Its purpose is to help visitors learn more about OnyxEra Tech and the services that we offer.",
+      "The information contained in this website is for general information purposes only. Its purpose is to help visitors learn more about [Onyxera Tech](/about) and [the services that we offer](/services).",
     ],
   },
   {
@@ -34,7 +34,7 @@ export const disclaimerSections: LegalSection[] = [
   {
     heading: "Services and results",
     body: [
-      "We design our services, strategies and recommendations for each engagement. Impressive as past results, case studies and examples are, they do not guarantee the same results for everyone.",
+      "We design our services, strategies and recommendations for each engagement. Impressive as past results, [case studies](/our-portfolio) and examples are, they do not guarantee the same results for everyone.",
     ],
     needsReview: true,
   },
@@ -54,14 +54,14 @@ export const disclaimerSections: LegalSection[] = [
   {
     heading: "Liability disclaimer",
     body: [
-      "OnyxEra Tech shall have no liability for any loss caused by reliance on information posted on this website to the extent permitted by applicable law. Nothing in this disclaimer will exclude any rights that may not be excluded by law.",
+      "Onyxera Tech shall have no liability for any loss caused by reliance on information posted on this website to the extent permitted by applicable law. Nothing in this disclaimer will exclude any rights that may not be excluded by law.",
     ],
     needsReview: true,
   },
   {
     heading: "Contact",
     body: [
-      `OnyxEra Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
+      `Onyxera Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
     ],
   },
 ];

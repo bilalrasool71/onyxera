@@ -7,6 +7,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/services",
+    "/platforms",
+    "/automation-solutions",
+    "/platforms/gohighlevel",
+    /* The platform pages. Hidden from the Platforms menu or not, each one is a
+       real landing page with its own copy and structured data, so it belongs
+       here whether or not the header links to it. */
+    "/platforms/odoo-erp",
+    "/platforms/frappe-erpnext",
+    "/platforms/shopify-development-services",
+    "/cybersecurity-solutions",
+    "/custom-development-solutions",
+    "/digital-marketing-services",
+    "/seo-services",
     "/our-portfolio",
     "/about",
     "/contact",

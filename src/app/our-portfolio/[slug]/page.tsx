@@ -19,7 +19,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { caseStudies, getCaseStudy } from "@/lib/data/case-studies";
 import { getService } from "@/lib/data/services";
 import { cn, numberWord, titleCaseWord } from "@/lib/utils";
-import { site } from "@/lib/site";
+import { openGraph, site } from "@/lib/site";
 
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
@@ -47,19 +47,15 @@ export async function generateMetadata({
 
   return {
     /* The SEO brief's title where it supplies one, the client name otherwise.
-       Either way the layout template appends " | OnyxEra Tech". */
+       Either way the layout template appends " | Onyxera Tech". */
     title: study.seoTitle ?? study.client,
-    description: clamp(study.summary),
+    description: clamp(study.metaDescription ?? study.summary),
     alternates: { canonical: `/our-portfolio/${study.slug}` },
-    openGraph: {
+    openGraph: openGraph({
       title: `${study.seoTitle ?? study.client} | ${site.name}`,
-      description: clamp(study.summary),
+      description: clamp(study.metaDescription ?? study.summary),
       url: `/our-portfolio/${study.slug}`,
-      /* Declaring `openGraph` here replaces the file-based
-         opengraph-image convention instead of merging with it, so the card
-         has to name the image itself. */
-      images: ["/opengraph-image.png"],
-    },
+    }),
   };
 }
 

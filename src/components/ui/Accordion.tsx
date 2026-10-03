@@ -3,8 +3,10 @@
 import { useId, useState } from "react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { withLinks } from "@/lib/prose";
 
 type Item = { q: string; a: string };
+
 
 export function Accordion({ items, className }: { items: Item[]; className?: string }) {
   const [open, setOpen] = useState<number | null>(0);
@@ -69,7 +71,7 @@ export function Accordion({ items, className }: { items: Item[]; className?: str
             >
               <div className="overflow-hidden">
                 <p className="max-w-3xl px-6 pr-12 pb-6 text-[0.9375rem] leading-relaxed text-fg-muted md:px-7">
-                  {item.a}
+                  {withLinks(item.a)}
                 </p>
               </div>
             </div>

@@ -15,6 +15,27 @@
           {
             "key": "Cache-Control",
             "value": "public, max-age=0, must-revalidate"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "SAMEORIGIN"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(webp|png|jpg|jpeg|svg|ico|woff2)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=604800, stale-while-revalidate=86400"
           }
         ]
       },
@@ -29,6 +50,56 @@
       }
     ],
     "redirects": [
+      {
+        "source": "/seo-platform",
+        "destination": "/seo-services",
+        "type": 301
+      },
+      {
+        "source": "/platforms/shopify",
+        "destination": "/platforms/shopify-development-services",
+        "type": 301
+      },
+      {
+        "source": "/digital-marketing-platform",
+        "destination": "/digital-marketing-services",
+        "type": 301
+      },
+      {
+        "source": "/development-platform",
+        "destination": "/custom-development-solutions",
+        "type": 301
+      },
+      {
+        "source": "/cyber-security-platform",
+        "destination": "/cybersecurity-solutions",
+        "type": 301
+      },
+      {
+        "source": "/automation-funnel",
+        "destination": "/automation-solutions",
+        "type": 301
+      },
+      {
+        "source": "/shopify",
+        "destination": "/platforms/shopify-development-services",
+        "type": 301
+      },
+      {
+        "source": "/gohighlevel",
+        "destination": "/platforms/gohighlevel",
+        "type": 301
+      },
+      {
+        "source": "/odoo",
+        "destination": "/platforms/odoo-erp",
+        "type": 301
+      },
+      {
+        "source": "/frappe-erpnext",
+        "destination": "/platforms/frappe-erpnext",
+        "type": 301
+      },
       {
         "source": "/work/sift-health",
         "destination": "/",

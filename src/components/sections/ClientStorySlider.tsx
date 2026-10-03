@@ -129,7 +129,7 @@ export function ClientStorySlider({ className }: { className?: string }) {
                         square crop would slice most of them in half. */}
                     <img
                       src={s.logo}
-                      alt=""
+                      alt={`${s.client} logo`}
                       width={96}
                       height={96}
                       loading="lazy"
@@ -137,7 +137,12 @@ export function ClientStorySlider({ className }: { className?: string }) {
                       className="size-12 shrink-0 object-contain"
                     />
                     <span className="min-w-0">
+                      {/* The name rides on the logo's alt above, so this copy
+                          of it is hidden from the accessibility tree — without
+                          that the client is announced twice. The project line
+                          below is not hidden: it says something different. */}
                       <span
+                        aria-hidden="true"
                         className="block font-display text-[0.9375rem] leading-snug font-medium"
                         style={{ color: "var(--quote-fg)" }}
                       >

@@ -1,6 +1,6 @@
-# OnyxEra Tech
+# Onyxera Tech
 
-Marketing site for OnyxEra Tech — web and software development, SEO, digital
+Marketing site for Onyxera Tech — web and software development, SEO, digital
 marketing, automation and cyber security.
 
 **Live:** https://onyxeratech.com
@@ -167,5 +167,5 @@ source document supplied none.
 - Image sets for the seven case studies that have none
 - Google Search Console verification and sitemap submission
 - Governing law for Terms and Returns & Refunds
-- Confirmation that the client logos in the "Trusted by" band are OnyxEra's own
+- Confirmation that the client logos in the "Trusted by" band are Onyxera's own
   clients and cleared for use

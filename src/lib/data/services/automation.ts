@@ -49,10 +49,10 @@ export const automation: Service = /* ------------------------------------------
     },
     hero: {
       eyebrow: "Automation & AI Workflows",
-      headline: "Automation That Gives Your",
-      highlight: " Team Time Back",
+      headline: "AI Automation Services Built Around",
+      highlight: " Your Workflows",
       sub:
-        "We automate repetitive processes so your team can spend less time on busywork and more time growing the business.",
+        "Reduce repetitive work with practical AI and automation solutions that connect your tools, streamline workflows and improve operational efficiency.",
     },
     /* The three figures the brief supplies, in the brief's own wording. They
        used to be repeated verbatim in `heroStats`, which renders a second
@@ -102,8 +102,36 @@ export const automation: Service = /* ------------------------------------------
       { title: "Launch & Improve", body: "We train your team, document the workflow and monitor it so the automation keeps working after launch.", duration: "Step 04" },
     ],
     stack: [
-      "n8n", "Make", "Zapier", "Python", "Node.js",
-      "Airtable", "Retool", "Claude API", "Temporal", "AWS Lambda",
+      "n8n",
+      "Make",
+      "Zapier",
+      "Temporal",
+      "Retool",
+      "Airtable",
+      "Python",
+      "Node.js",
+      "Postman",
+      "GitHub Actions",
+      "Docker",
+      "AWS Lambda",
+      "Claude API",
+      "ChatGPT API",
+      "Google Gemini",
+      "LangChain",
+      "Hugging Face",
+      "Slack",
+      "Notion",
+      "Google Sheets",
+      "Trello",
+      "Zendesk",
+      "Intercom",
+      "Twilio",
+      "SendGrid",
+      "HubSpot",
+      "Salesforce",
+      "Supabase",
+      "Firebase",
+      "PostgreSQL",
     ],
     faqs: [
       { q: "Do I need to replace my existing software?", a: "Usually not. Many useful automations connect the tools you already use rather than replacing them." },
@@ -117,7 +145,7 @@ export const automation: Service = /* ------------------------------------------
       title: "Automation Services & AI Workflows",
       description:
         "Automate repetitive work, connect business systems and improve efficiency with AI automation, workflow solutions and practical process automation.",
-      ogTitle: "Automation Services & AI Workflows | OnyxEra Tech",
+      ogTitle: "Automation Services & AI Workflows | Onyxera Tech",
       ogDescription:
         "Automate repetitive work, connect business systems and improve efficiency with AI automation, workflow solutions and practical process automation.",
       keywords: [
@@ -127,7 +155,7 @@ export const automation: Service = /* ------------------------------------------
         "AI automation",
         "AI workflow automation",
       ],
-      heroAlt: "AI automation and workflow services by OnyxEra Tech",
+      heroAlt: "AI automation and workflow services by Onyxera Tech",
     },
     /* The brief's "3 Core Outcomes". `metrics` above carries the figures; this
        is the second strip, numbered, the same shape the SEO page uses. */

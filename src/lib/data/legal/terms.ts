@@ -37,7 +37,7 @@ export const termsSections: LegalSection[] = [
   {
     heading: "About these terms",
     body: [
-      "These Terms and Conditions apply to your use of the OnyxEra Tech website. For client projects, the signed proposal and agreement for that engagement will supersede these website terms.",
+      "These Terms and Conditions apply to your use of the Onyxera Tech website. For client projects, the signed proposal and agreement for that engagement will supersede these website terms.",
       "Use of the website shall be deemed to be your acceptance of these Terms and Conditions. These terms apply only to your use of the website, and do not apply to services provided under a separate client agreement.",
     ],
   },
@@ -51,7 +51,7 @@ export const termsSections: LegalSection[] = [
   {
     heading: "Our content",
     body: [
-      "OnyxEra Tech owns all website design, written content, code, graphics and brand assets, unless otherwise stated.",
+      "Onyxera Tech owns all website design, written content, code, graphics and brand assets, unless otherwise stated.",
     ],
   },
   {
@@ -70,14 +70,14 @@ export const termsSections: LegalSection[] = [
   {
     heading: "Services and proposals",
     body: [
-      "The information about our services is designed to demonstrate our capabilities and possible solutions.",
-      "No content contained on this website shall be construed to impose any obligation on OnyxEra Tech to provide services. Any engagement is subject to agreed scope, pricing, timeline and a written agreement.",
+      "The information about [our services](/services) is designed to demonstrate our capabilities and possible solutions.",
+      "No content contained on this website shall be construed to impose any obligation on Onyxera Tech to provide services. Any engagement is subject to agreed scope, pricing, timeline and a written agreement.",
     ],
   },
   {
     heading: "Case studies and results",
     body: [
-      "Case studies, testimonials and results are related to specific projects and scenarios.",
+      "[Case studies](/our-portfolio), testimonials and results are related to specific projects and scenarios.",
       "Past performance is not a guarantee of future results. Results will vary depending on business, market, budget, competition, implementation and other factors.",
     ],
   },
@@ -85,13 +85,13 @@ export const termsSections: LegalSection[] = [
     heading: "Third party services and links",
     body: [
       "This website may refer to or link to third party platforms, software, websites or services.",
-      "OnyxEra Tech has no control over such third party services and makes no warranty as to the availability, content, security, privacy practices or terms of such third party services.",
+      "Onyxera Tech has no control over such third party services and makes no warranty as to the availability, content, security, privacy practices or terms of such third party services.",
     ],
   },
   {
     heading: "Intellectual property",
     body: [
-      "Unless otherwise noted, all original site content created by OnyxEra Tech is licensed under applicable intellectual property laws.",
+      "Unless otherwise noted, all original site content created by Onyxera Tech is licensed under applicable intellectual property laws.",
       "You may not reproduce, modify, distribute or commercially exploit any content, code, designs or brand material without our prior written permission.",
     ],
   },
@@ -105,7 +105,7 @@ export const termsSections: LegalSection[] = [
   {
     heading: "Limitation of liability",
     body: [
-      "To the maximum extent permitted by applicable Australian law, OnyxEra Tech shall not be liable for any loss or damage suffered by you as a consequence of your use or reliance on information contained on this website.",
+      "To the maximum extent permitted by applicable Australian law, Onyxera Tech shall not be liable for any loss or damage suffered by you as a consequence of your use or reliance on information contained on this website.",
       "Nothing in these terms limits, excludes or modifies any rights or remedies that may not lawfully be limited or excluded under applicable consumer protection laws.",
     ],
     needsReview: true,
@@ -117,7 +117,7 @@ export const termsSections: LegalSection[] = [
        padded out with wording the document never supplied. */
     heading: "Privacy",
     body: [
-      "Your use of this website may involve the collection and processing of personal information.",
+      "Your use of this website may involve the collection and processing of [personal information](/privacy-policy).",
     ],
     needsReview: true,
   },
@@ -130,11 +130,11 @@ export const termsSections: LegalSection[] = [
   },
   {
     /* Reproduced as supplied. The clause names no jurisdiction — it leaves the
-       governing law to be "determined by OnyxEra Tech" — which is exactly the
+       governing law to be "determined by Onyxera Tech" — which is exactly the
        point a solicitor needs to settle before launch. */
     heading: "Law and jurisdiction",
     body: [
-      "These Terms shall be governed by the applicable law of the jurisdiction as determined by OnyxEra Tech for its website operations.",
+      "These Terms shall be governed by the applicable law of the jurisdiction as determined by Onyxera Tech for its website operations.",
       "If a client engagement is subject to a separate written agreement, the governing law and jurisdiction of such agreement will apply to the engagement.",
     ],
     needsReview: true,
@@ -142,10 +142,10 @@ export const termsSections: LegalSection[] = [
   {
     heading: "Contact us",
     body: [
-      "Please contact us if you have any inquiries about these Terms and Conditions:",
+      "Please [contact us](/contact) if you have any inquiries about these Terms and Conditions:",
     ],
     points: [
-      `OnyxEra Tech, ${AU_ADDRESS}`,
+      `Onyxera Tech, ${AU_ADDRESS}`,
       `Email: ${site.email}`,
       `Phone: ${AU.phone}`,
       `Website: ${site.url}`,

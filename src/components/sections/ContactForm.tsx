@@ -1,26 +1,29 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { AlertCircle, Send } from "lucide-react";
+import { AlertCircle, ChevronDown, Send } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { contactReasons } from "@/lib/data/agency";
+import { preloadRecaptcha, submitLead } from "@/lib/formService";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-/* There is no "sending" and no "error": the form has no server to talk to.
-   `output: "export"` cannot emit a route handler, so the old POST to
-   /api/contact was a guaranteed 404 whose catch block still rendered a green
-   tick over the words "Message received." — a receipt for a message nobody
-   received, on the site's primary conversion path. The mail hand-off is now
-   the only path, and the confirmation says exactly that. */
-type Status = "idle" | "sent";
+/* The form posts to the WebAppConsulting CRM, the same endpoint the sibling
+   sites use, identified by this site's WebSiteId. Before that it opened the
+   visitor's mail client and called it done — which lost the enquiry outright
+   for anyone without a configured mail app, and recorded nothing either way.
+
+   "error" exists because a submission can genuinely fail, and the visitor is
+   then offered the mail route rather than a dead end. Nothing here claims a
+   message arrived unless the API said so. */
+type Status = "idle" | "sending" | "sent" | "error";
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 /* Border colour is chosen in exactly one place below. `cn()` is a plain join
    with no tailwind-merge, so two competing `border-*` utilities would resolve
    by stylesheet order rather than argument order. */
 const fieldClass =
-  "w-full rounded-xl border bg-glass px-4 py-3 text-[0.9375rem] text-fg transition-all duration-300 placeholder:text-fg-faint";
+  "w-full rounded-sm border bg-glass px-4 py-3 text-[0.9375rem] text-fg transition-all duration-300 placeholder:text-fg-faint";
 
 /* `--line-strong` is a decorative hairline — 1.76:1 dark and 1.45:1 light
    against the field fill, where WCAG 1.4.11 asks 3:1 to bound a control. The
@@ -43,6 +46,15 @@ const errorClass = "mt-2 flex items-center gap-1.5 text-xs text-danger";
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
+  /* Kept so the visitor can retry or fall back to email without retyping. */
+  const draft = useRef<{ subject: string; body: string }>({ subject: "", body: "" });
+
+  /* Fetched on mount rather than on submit: the badge Google requires is then
+     visible from the start, and the first submission is not waiting on a
+     script download. */
+  useEffect(() => {
+    preloadRecaptcha();
+  }, []);
 
   /* Focus targets: the first invalid control on a failed submit, the
      confirmation heading once the form is swapped out. Without these a screen
@@ -71,8 +83,10 @@ export function ContactForm() {
     return next;
   }
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (status === "sending") return;
+
     const data = new FormData(event.currentTarget);
 
     const found = validate(data);
@@ -86,25 +100,36 @@ export function ContactForm() {
       return;
     }
 
-    /* Compose the message and hand it straight to the visitor's mail client.
-       Same details, one step further along — and nothing here claims to have
-       delivered it. */
     const field = (k: string) => String(data.get(k) ?? "").trim();
-    const lines = [
-      `Name: ${field("name")}`,
-      `Email: ${field("email")}`,
+
+    /* The CRM takes one free-text comment, so the two optional fields are
+       labelled and folded into it rather than dropped. */
+    const meta = [
       field("company") && `Company: ${field("company")}`,
       field("service") && `Service: ${field("service")}`,
-      "",
-      field("message"),
-    ].filter(Boolean);
+    ].filter(Boolean) as string[];
+    /* A blank line between the labelled fields and the message, but only when
+       there are labelled fields to separate. */
+    const comment = [...meta, ...(meta.length ? [""] : []), field("message")].join("\n");
 
-    window.location.href =
-      `mailto:${site.email}` +
-      `?subject=${encodeURIComponent(`Project enquiry from ${field("name")}`)}` +
-      `&body=${encodeURIComponent(lines.join("\n"))}`;
+    draft.current = {
+      subject: `Project enquiry from ${field("name")}`,
+      body: [`Name: ${field("name")}`, `Email: ${field("email")}`, "", comment].join("\n"),
+    };
 
-    setStatus("sent");
+    setStatus("sending");
+    try {
+      await submitLead({
+        fullName: field("name"),
+        email: field("email"),
+        /* No phone field on this form; the CRM accepts the lead without one. */
+        phone: "",
+        comment,
+      });
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   }
 
   if (status === "sent") {
@@ -121,18 +146,17 @@ export function ContactForm() {
           tabIndex={-1}
           className="mt-7 font-display text-2xl font-medium text-fg"
         >
-          Almost there. Send it from your email client.
+          Message received.
         </h2>
         <p className="mt-4 max-w-md text-[0.9375rem] leading-relaxed text-fg-muted">
-          We have opened your email app with the message ready to go. Press send
-          there and it reaches us. If nothing opened, write to{" "}
+          It is with the team now. If you would rather add anything, write to{" "}
           <a
             href={`mailto:${site.email}`}
             className="text-accent underline underline-offset-4 hover:text-accent-strong"
           >
             {site.email}
-          </a>{" "}
-          instead.
+          </a>
+          .
         </p>
         <button
           type="button"
@@ -141,6 +165,49 @@ export function ContactForm() {
         >
           Write another message
         </button>
+      </div>
+    );
+  }
+
+  if (status === "error") {
+    /* The submission failed, so the message did not reach anyone. Rather than
+       leave the visitor to retype it, the mail link below carries what they
+       already wrote. */
+    return (
+      <div
+        role="alert"
+        className="card flex flex-col items-center p-10 text-center md:p-14"
+      >
+        <span className="grid size-14 place-items-center rounded-full bg-danger/12 text-danger">
+          <AlertCircle className="size-7" strokeWidth={1.6} />
+        </span>
+        <h2
+          ref={confirmation}
+          tabIndex={-1}
+          className="mt-7 font-display text-2xl font-medium text-fg"
+        >
+          That did not go through.
+        </h2>
+        <p className="mt-4 max-w-md text-[0.9375rem] leading-relaxed text-fg-muted">
+          Something on our side failed, so the message has not reached us. Try
+          again, or send it by email — the link below already has what you
+          wrote.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-5">
+          <Button type="button" size="lg" onClick={() => setStatus("idle")}>
+            Try again
+          </Button>
+          <a
+            href={
+              `mailto:${site.email}` +
+              `?subject=${encodeURIComponent(draft.current.subject)}` +
+              `&body=${encodeURIComponent(draft.current.body)}`
+            }
+            className="font-display text-sm font-medium text-accent underline-offset-4 transition-colors hover:text-accent-strong hover:underline"
+          >
+            Send it by email instead
+          </a>
+        </div>
       </div>
     );
   }
@@ -211,18 +278,29 @@ export function ContactForm() {
           <label htmlFor="service" className={labelClass}>
             What do you need?
           </label>
-          <select
-            id="service"
-            name="service"
-            defaultValue="Not sure yet"
-            className={cn(fieldClass, fieldRest)}
-          >
-            {contactReasons.map((r) => (
-              <option key={r} value={r} className="bg-surface">
-                {r}
-              </option>
-            ))}
-          </select>
+          {/* The browser's own arrow sat hard against the edge and made the
+              control a few px shorter than the inputs beside it. It is hidden
+              and replaced with a chevron in the site's colours, inset like
+              the text. */}
+          <div className="relative">
+            <select
+              id="service"
+              name="service"
+              defaultValue="Not sure yet"
+              className={cn(fieldClass, fieldRest, "cursor-pointer appearance-none pr-11")}
+            >
+              {contactReasons.map((r) => (
+                <option key={r} value={r} className="bg-surface">
+                  {r}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-fg-subtle"
+              strokeWidth={2}
+            />
+          </div>
         </div>
 
         <div className="sm:col-span-2">
@@ -260,10 +338,35 @@ export function ContactForm() {
         <p className="max-w-xs text-xs leading-relaxed text-fg-faint">
           Your message comes straight to the team. No mailing list, no sequence.
         </p>
-        <Button type="submit" size="lg" withArrow>
-          Send message
+        <Button type="submit" size="lg" withArrow disabled={status === "sending"}>
+          {status === "sending" ? "Sending…" : "Send message"}
         </Button>
       </div>
+
+      {/* reCAPTCHA v3 has no checkbox and its floating badge is hidden (it sat
+          over the contact button), so Google's required disclosure is shown
+          here instead. */}
+      <p className="mt-5 text-xs leading-relaxed text-fg-faint">
+        Protected by reCAPTCHA. The Google{" "}
+        <a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-4 transition-colors duration-300 hover:text-accent"
+        >
+          Privacy Policy
+        </a>{" "}
+        and{" "}
+        <a
+          href="https://policies.google.com/terms"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-4 transition-colors duration-300 hover:text-accent"
+        >
+          Terms of Service
+        </a>{" "}
+        apply.
+      </p>
     </form>
   );
 }

@@ -13,28 +13,24 @@ import { ClientStorySlider } from "@/components/sections/ClientStorySlider";
 import { Reveal } from "@/components/ui/Reveal";
 import { engagementSteps, homeFaqs } from "@/lib/data/agency";
 import { graph, pageSchema } from "@/lib/schema";
-import { site } from "@/lib/site";
+import { openGraph, site } from "@/lib/site";
 
 /* Self-referencing canonical; metadataBase resolves it against site.url. */
 export const metadata: Metadata = {
   /* Title, description and Open Graph copy come from the SEO brief.
      `absolute` because the brief writes each title in full, including the
-     brand — leaving the layout's "%s | OnyxEra Tech" template to run would
+     brand — leaving the layout's "%s | Onyxera Tech" template to run would
      print the company name twice. */
-  title: { absolute: "Build, Automate & Grow | OnyxEra Tech" },
+  title: { absolute: "Build, Automate & Grow | Onyxera Tech" },
   description:
-    "Build, automate and grow with OnyxEra Tech through websites, software, AI automation, SEO, digital marketing and cyber security solutions for businesses.",
+    "Build, automate and grow with Onyxera Tech through websites, software, AI automation, SEO, digital marketing and cyber security solutions for businesses.",
   alternates: { canonical: "/" },
-  openGraph: {
-    title: "Build, Automate & Grow | OnyxEra Tech",
+  openGraph: openGraph({
+    title: "Build, Automate & Grow | Onyxera Tech",
     description:
-      "Build, automate and grow with OnyxEra Tech through websites, software, AI automation, SEO, digital marketing and cyber security solutions for businesses.",
+      "Build, automate and grow with Onyxera Tech through websites, software, AI automation, SEO, digital marketing and cyber security solutions for businesses.",
     url: "/",
-    /* Declaring `openGraph` at all replaces the file-based
-       opengraph-image convention rather than merging with it, so the card
-       has to name the image itself. */
-    images: ["/opengraph-image.png"],
-  },
+  }),
 };
 
 export default function HomePage() {

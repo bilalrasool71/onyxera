@@ -17,7 +17,7 @@ import { site } from "@/lib/site";
 
    NOTE (not for publication): the source document closes with an internal note
    that this copy is website-ready but should be reviewed by legal before
-   publication, because privacy obligations depend on OnyxEra's actual legal
+   publication, because privacy obligations depend on Onyxera's actual legal
    entity, technology stack, data flows and client locations. Recorded here
    instead of in the published sections. Clauses carrying a specific legal
    commitment are marked `needsReview`. */
@@ -27,7 +27,7 @@ export const privacySections: LegalSection[] = [
     heading: "To whom this policy applies",
     body: [
       "We process personal information in accordance with applicable Australian privacy and data protection legislation.",
-      "This policy applies to OnyxEra Tech, our website, our digital services, client communications and our business operations.",
+      "This policy applies to [Onyxera Tech](/about), our website, [our digital services](/services), client communications and our business operations.",
       "This includes data gathered from visitors to our website, prospective and current clients, business partners, suppliers and individuals who engage with us.",
     ],
   },
@@ -96,7 +96,7 @@ export const privacySections: LegalSection[] = [
   {
     heading: "Cookies and analytics",
     body: [
-      "We use cookies and similar technologies on our website to make the website work, to understand how visitors use it, to improve performance, to measure marketing activity and to support security.",
+      "We use [cookies and similar technologies](/cookie-policy) on our website to make the website work, to understand how visitors use it, to improve performance, to measure marketing activity and to support security.",
       "You may control and/or delete cookies as desired. For details see aboutcookies.org. You may also restrict or block cookies through your browser settings and any cookie controls available on our website.",
     ],
   },
@@ -149,8 +149,8 @@ export const privacySections: LegalSection[] = [
   {
     heading: "How to complain about privacy",
     body: [
-      "If you are concerned about how we have handled your personal information, please contact us in the first instance so that we can investigate and deal with the matter.",
-      `Privacy contact. OnyxEra Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
+      "If you are concerned about how we have handled your personal information, please [contact us](/contact) in the first instance so that we can investigate and deal with the matter.",
+      `Privacy contact. Onyxera Tech, ${AU_ADDRESS}. Email ${site.email}, phone ${AU.phone}.`,
       "Please give us all the information we need to understand your concern. We will consider your message and respond in a timely manner.",
       "If you are not satisfied with our response, you can contact the Office of the Australian Information Commissioner (OAIC) or another relevant privacy regulator.",
     ],

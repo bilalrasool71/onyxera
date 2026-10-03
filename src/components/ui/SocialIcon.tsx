@@ -1,6 +1,6 @@
 /**
  * Brand glyphs for the social links. Lucide dropped its brand icons, so these
- * are inline paths — used only to link to OnyxEra's own profiles, which is what
+ * are inline paths — used only to link to Onyxera's own profiles, which is what
  * the platforms' brand guidelines permit.
  */
 const PATHS: Record<string, string> = {

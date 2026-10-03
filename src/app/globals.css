@@ -242,10 +242,18 @@
 
   /* Primary CTA: brand blue on navy, with navy type on top.
      Brief: "Remove gradient" + "Start a conversion: brand guideline blue".
-     Flat #6A9BD1 exactly, not a ramp around it. Navy on it = 5.68:1. */
+     Flat #6A9BD1 exactly, not a ramp around it.
+
+     The label is white here as well as in the light theme, on the client's
+     instruction: the same button was reading navy in one theme and white in
+     the other. Recorded plainly, as it already is on the light theme below —
+     white on #6A9BD1 measures 2.9:1 where WCAG AA asks 4.5:1 for a control's
+     label, and the navy it replaces measured 5.68:1. An accessibility audit
+     will raise it. Setting this one line back to var(--color-navy-900) is the
+     whole way back. */
   --btn-fill: linear-gradient(var(--color-blue-400), var(--color-blue-400));
   --btn-fill-hover: linear-gradient(var(--color-blue-300), var(--color-blue-300));
-  --btn-fg: var(--color-navy-900);
+  --btn-fg: #ffffff;
 
   /* The white half of the "one blue, one white" CTA pair. Navy type on white
      is 16.69:1 in both themes. On this ground the pill already has an edge, so
@@ -1213,4 +1221,12 @@
     transform: none;
     animation: none;
   }
+}
+
+/* reCAPTCHA v3's floating badge lands in the bottom-right corner, on top of
+   the contact button and the back-to-top control. Google allows hiding it as
+   long as the disclosure it carries is shown in the form instead, which both
+   forms now do — see ContactForm and AutomationFunnelForm. */
+.grecaptcha-badge {
+  visibility: hidden;
 }

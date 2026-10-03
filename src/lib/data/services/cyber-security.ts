@@ -42,10 +42,10 @@ export const cyber_security: Service = /* --------------------------------------
     },
     hero: {
       eyebrow: "Cyber Security",
-      headline: "Cyber Security That",
-      highlight: " Protects Your Business",
+      headline: "Cybersecurity Services Built to",
+      highlight: " Protect Your Business",
       sub:
-        "Find vulnerabilities before they become expensive problems. We test your systems, explain the risks clearly and help your team fix what matters most.",
+        "Strengthen your digital environment with practical cybersecurity strategies designed to identify risks, protect critical systems and support secure business operations.",
     },
     /* The brief's "Results Section", verbatim. This strip renders directly
        under the hero; `heroStats` renders a second, identical strip further
@@ -84,8 +84,39 @@ export const cyber_security: Service = /* --------------------------------------
       { title: "Fix & Retest", body: "We help close the gaps, test the fixes and confirm that the findings are resolved.", duration: "Step 04" },
     ],
     stack: [
-      "Burp Suite", "Nmap", "OWASP ZAP", "Semgrep", "Snyk",
-      "Wazuh", "Terraform", "Vault", "AWS Security Hub",
+      "Burp Suite",
+      "OWASP ZAP",
+      "Metasploit",
+      "Wireshark",
+      "Kali Linux",
+      "Nmap",
+      "Snyk",
+      "Semgrep",
+      "SonarQube",
+      "Trivy",
+      "Qualys",
+      "Wazuh",
+      "Splunk",
+      "Elastic",
+      "Okta",
+      "Auth0",
+      "1Password",
+      "Bitwarden",
+      "Vault",
+      "Terraform",
+      "Docker",
+      "Kubernetes",
+      "GitHub",
+      "GitLab",
+      "Ubuntu",
+      "OpenSSL",
+      "Let's Encrypt",
+      "Cloudflare",
+      "Nginx",
+      "Fortinet",
+      "Cisco",
+      "Palo Alto Networks",
+      "AWS Security Hub",
     ],
     faqs: [
       { q: "Do I need cyber security if my business is small?", a: "Yes. The right level of security depends on what you store, who has access and how your business operates. We start by identifying your actual risks." },
@@ -99,7 +130,7 @@ export const cyber_security: Service = /* --------------------------------------
       title: "Cyber Security Services",
       description:
         "Protect your business with cyber security services including penetration testing, security assessments, cloud security, compliance and risk management.",
-      ogTitle: "Cyber Security Services | OnyxEra Tech",
+      ogTitle: "Cyber Security Services | Onyxera Tech",
       ogDescription:
         "Protect your business with cyber security services including penetration testing, security assessments, cloud security, compliance and risk management.",
       keywords: [
@@ -112,7 +143,7 @@ export const cyber_security: Service = /* --------------------------------------
         "ISO 27001",
         "cloud security",
       ],
-      heroAlt: "cyber security services by OnyxEra Tech",
+      heroAlt: "cyber security services by Onyxera Tech",
     },
     /* No `heroStats`: the brief has a single results strip and it is already
        in `metrics`. Populating both rendered the same three figures twice. */

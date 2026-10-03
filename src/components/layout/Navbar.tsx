@@ -3,7 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
+import {
+  ArrowUpRight,
+  Bot,
+  Boxes,
+  Building2,
+  ChevronDown,
+  Code2,
+  LayoutDashboard,
+  Megaphone,
+  Menu,
+  Search,
+  ShieldCheck,
+  ShoppingBag,
+  X,
+} from "lucide-react";
 import { Logo, LogoMark } from "@/components/ui/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -20,6 +34,111 @@ const NAV_ACTIVE = "bg-blue-400/12 text-accent";
 const NAV_IDLE = "text-fg-body hover:bg-glass hover:text-fg";
 
 const SERVICES_MENU_ID = "services-menu";
+const PLATFORMS_MENU_ID = "platforms-menu";
+
+/** The two header dropdowns. Only one can be open at a time. */
+type MenuKey = "services" | "platforms";
+
+/* Pages in the services panel that are not services: lead funnels, kept out
+   of `services` so they do not appear in the footer, the sitemap's service
+   routes or the "Compare all five" count. They fill the cells after the five
+   services in the two-column grid. */
+const ALL_FUNNEL_LINKS = [
+  {
+    href: "/automation-solutions",
+    navLabel: "Automation Funnel",
+    tagline: "Capture, qualify and follow up on autopilot",
+    icon: Bot,
+  },
+];
+
+/* Hidden for now at the client's request. The page itself stays live and
+   reachable — it just does not appear in the services panel or the mobile
+   menu. Set this back to true to list it again; nothing else changes. */
+const SHOW_FUNNEL_LINKS = false;
+
+const FUNNEL_LINKS: typeof ALL_FUNNEL_LINKS = SHOW_FUNNEL_LINKS ? ALL_FUNNEL_LINKS : [];
+
+/* A labelled group under the services in the same panel. Also not services:
+   the platforms we implement and build on. */
+const PLATFORMS_LABEL = "Platforms";
+const ALL_PLATFORM_LINKS = [
+  {
+    href: "/platforms/gohighlevel",
+    navLabel: "GoHighLevel (GHL)",
+    tagline: "CRM and automation built around your business",
+    icon: LayoutDashboard,
+  },
+  {
+    href: "/platforms/odoo-erp",
+    navLabel: "Odoo Business Systems",
+    tagline: "Sales, inventory and accounting in one place",
+    icon: Boxes,
+  },
+  {
+    href: "/platforms/frappe-erpnext",
+    navLabel: "Frappe / ERPNext",
+    tagline: "Open source ERP, tailored to how you work",
+    icon: Building2,
+  },
+  {
+    href: "/platforms/shopify-development-services",
+    navLabel: "Shopify Solutions",
+    tagline: "Stores designed, built and optimised to sell",
+    icon: ShoppingBag,
+  },
+  {
+    href: "/cybersecurity-solutions",
+    navLabel: "Cyber Security",
+    tagline: "Protect your systems, data and people",
+    icon: ShieldCheck,
+  },
+  {
+    href: "/custom-development-solutions",
+    navLabel: "Development Solutions",
+    tagline: "Software and systems built around your business",
+    icon: Code2,
+  },
+  {
+    href: "/digital-marketing-services",
+    navLabel: "Digital Marketing",
+    tagline: "Campaigns, content and ads that bring in leads",
+    icon: Megaphone,
+  },
+  {
+    href: "/seo-services",
+    navLabel: "SEO Services",
+    tagline: "Be found on Google, AI search and beyond",
+    icon: Search,
+  },
+  /* Hidden from the services panel (SHOW_FUNNEL_LINKS above) but listed
+     here at the client's request. */
+  {
+    href: "/automation-solutions",
+    navLabel: "Automation Funnel",
+    tagline: "Capture, qualify and follow up on autopilot",
+    icon: Bot,
+  },
+];
+
+/* Hidden for now at the client's request: the five platforms that have a
+   service page of their own. Each page stays live and is linked from its
+   service page ("Want the quick overview?" under What we do) — it simply does
+   not appear in this menu. Set this back to true to list them again; nothing
+   else changes. */
+const SHOW_SERVICE_PLATFORM_LINKS = false;
+
+const SERVICE_PLATFORM_HREFS = [
+  "/cybersecurity-solutions",
+  "/custom-development-solutions",
+  "/digital-marketing-services",
+  "/seo-services",
+  "/automation-solutions",
+];
+
+const PLATFORM_LINKS = SHOW_SERVICE_PLATFORM_LINKS
+  ? ALL_PLATFORM_LINKS
+  : ALL_PLATFORM_LINKS.filter((p) => !SERVICE_PLATFORM_HREFS.includes(p.href));
 
 /* Everything the browser would put in the tab order. Used to cycle focus while
    the mobile panel is open; `tabindex="-1"` entries are dropped afterwards. */
@@ -36,7 +155,10 @@ export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
+  /* Which header dropdown is open, if any. One value rather than a flag per
+     menu: opening either must close the other, and a single piece of state
+     makes that impossible to get wrong. */
+  const [openMenu, setOpenMenu] = useState<MenuKey | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -55,7 +177,7 @@ export function Navbar() {
   /* Reset transient UI whenever the route changes. */
   useEffect(() => {
     setMenuOpen(false);
-    setDropdown(false);
+    setOpenMenu(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -69,7 +191,7 @@ export function Navbar() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
       setMenuOpen(false);
-      setDropdown(false);
+      setOpenMenu(null);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -143,13 +265,16 @@ export function Navbar() {
     return () => document.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
-  const openDropdown = () => {
+  const openDropdown = (key: MenuKey) => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    setDropdown(true);
+    setOpenMenu(key);
   };
+  /* The delay is what lets the pointer cross the gap between a trigger and its
+     panel. Moving straight onto the other trigger opens that one, which
+     cancels the timer — so the two never both appear. */
   const closeDropdown = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setDropdown(false), 140);
+    closeTimer.current = setTimeout(() => setOpenMenu(null), 140);
   };
 
   const isActive = (href: string) =>
@@ -198,14 +323,14 @@ export function Navbar() {
                 fixed <header> so it can centre on the page gutter. Anchored to
                 this trigger it ran 90px past the nav's right edge at 1024px. */}
             <div
-              onMouseEnter={openDropdown}
+              onMouseEnter={() => openDropdown("services")}
               onMouseLeave={closeDropdown}
               /* Tabbing out of the panel should close it, not leave it hanging
                  open behind the next focused element. */
               onBlur={(e) => {
                 if (e.currentTarget.contains(e.relatedTarget as Node | null))
                   return;
-                setDropdown(false);
+                setOpenMenu((m) => (m === "services" ? null : m));
               }}
             >
               {/* A link, not a button. The panel below lists the five
@@ -220,29 +345,31 @@ export function Navbar() {
                   which is what Enter on a link should do. */}
               <Link
                 href="/services"
-                onFocus={openDropdown}
-                aria-expanded={dropdown}
+                onFocus={() => openDropdown("services")}
+                aria-expanded={openMenu === "services"}
                 aria-controls={SERVICES_MENU_ID}
                 className={cn(
                   NAV_PILL,
-                  isActive("/services") || dropdown ? NAV_ACTIVE : NAV_IDLE,
+                  isActive("/services") || openMenu === "services"
+                    ? NAV_ACTIVE
+                    : NAV_IDLE,
                 )}
               >
                 Services
                 <ChevronDown
                   className={cn(
                     "size-3.5 transition-transform duration-200",
-                    dropdown && "rotate-180",
+                    openMenu === "services" && "rotate-180",
                   )}
                 />
               </Link>
 
               <div
                 id={SERVICES_MENU_ID}
-                aria-hidden={!dropdown}
+                aria-hidden={openMenu !== "services"}
                 className={cn(
                   "pointer-events-none absolute inset-x-0 top-full transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                  dropdown
+                  openMenu === "services"
                     ? "visible translate-y-0 opacity-100"
                     : "invisible -translate-y-2 opacity-0",
                 )}
@@ -250,7 +377,7 @@ export function Navbar() {
                 <div className="shell flex justify-center pt-3">
                   <div className="pointer-events-auto flex w-full max-w-[50rem] overflow-hidden rounded-2xl border border-line-strong bg-surface shadow-lifted">
                     <div className="min-w-0 flex-1 p-2">
-                      {/* auto-rows-fr so the three rows share whatever height the
+                      {/* auto-rows-fr so the rows share whatever height the
                         aside sets — otherwise the column ends in dead space. */}
                       <div className="grid h-full auto-rows-fr grid-cols-2 gap-1">
                         {services.map((s) => (
@@ -277,6 +404,31 @@ export function Navbar() {
                               </span>
                             </span>
                           </Link>
+                        ))}
+                        {FUNNEL_LINKS.map((f) => (
+                        <Link
+                          key={f.href}
+                          href={f.href}
+                          className="group relative flex items-center gap-3 rounded-xl border border-transparent p-3 transition-colors duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-accent-icon/50 hover:bg-glass"
+                        >
+                          <span className="grid size-9 shrink-0 place-items-center rounded-lg border border-line-strong bg-glass text-accent transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-accent-icon/60 group-hover:bg-blue-400/18">
+                            <f.icon className="size-4" strokeWidth={1.75} />
+                          </span>
+                          <span className="min-w-0 flex-1 transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5">
+                            <span className="flex items-center gap-1.5">
+                              <span className="font-display text-sm font-medium text-fg transition-colors duration-300 group-hover:text-accent-strong">
+                                {f.navLabel}
+                              </span>
+                              <ArrowUpRight
+                                aria-hidden="true"
+                                className="size-3.5 -translate-x-1 text-accent opacity-0 transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:opacity-100"
+                              />
+                            </span>
+                            <span className="mt-0.5 block text-xs leading-snug text-fg-subtle">
+                              {f.tagline}
+                            </span>
+                          </span>
+                        </Link>
                         ))}
                       </div>
                     </div>
@@ -317,6 +469,146 @@ export function Navbar() {
                             {/* Real client work is the strongest thing on the
                                 site — the menu should not be a dead end that
                                 only offers a sales call. */}
+                            <Link
+                              href="/our-portfolio"
+                              className="group flex items-center justify-center gap-1.5 text-[0.8125rem] font-medium text-fg-muted transition-colors duration-300 hover:text-accent"
+                            >
+                              See client results
+                              <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </aside>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Platforms — its own menu beside Services. Same positioning
+                trick: the panel is placed against the fixed <header>, not this
+                trigger, so it can centre on the page gutter. */}
+            <div
+              onMouseEnter={() => openDropdown("platforms")}
+              onMouseLeave={closeDropdown}
+              onBlur={(e) => {
+                if (e.currentTarget.contains(e.relatedTarget as Node | null))
+                  return;
+                setOpenMenu((m) => (m === "platforms" ? null : m));
+              }}
+            >
+              {/* A link, not a button, now that /platforms is a page of its
+                  own — the same treatment as Services above, and for the same
+                  reason: as a button this swallowed the click and the index
+                  was unreachable from the navigation.
+
+                  The panel still opens on hover from the wrapper, and on focus
+                  for anyone arriving by keyboard. */}
+              <Link
+                href="/platforms"
+                onFocus={() => openDropdown("platforms")}
+                aria-expanded={openMenu === "platforms"}
+                aria-controls={PLATFORMS_MENU_ID}
+                className={cn(
+                  NAV_PILL,
+                  isActive("/platforms") ||
+                    PLATFORM_LINKS.some((f) => isActive(f.href)) ||
+                    openMenu === "platforms"
+                    ? NAV_ACTIVE
+                    : NAV_IDLE,
+                )}
+              >
+                {PLATFORMS_LABEL}
+                <ChevronDown
+                  className={cn(
+                    "size-3.5 transition-transform duration-200",
+                    openMenu === "platforms" && "rotate-180",
+                  )}
+                />
+              </Link>
+
+              <div
+                id={PLATFORMS_MENU_ID}
+                aria-hidden={openMenu !== "platforms"}
+                className={cn(
+                  "pointer-events-none absolute inset-x-0 top-full transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                  openMenu === "platforms"
+                    ? "visible translate-y-0 opacity-100"
+                    : "invisible -translate-y-2 opacity-0",
+                )}
+              >
+                <div className="shell flex justify-center pt-3">
+                  {/* Built exactly like the services panel: the list on the
+                      left, three across, and the same "not sure" aside on the
+                      right, so the two dropdowns read as one set. */}
+                  <div className="pointer-events-auto flex w-full max-w-[46rem] overflow-hidden rounded-2xl border border-line-strong bg-surface shadow-lifted">
+                    <div className="min-w-0 flex-1 p-2">
+                      <div className="grid h-full auto-rows-fr grid-cols-1 gap-1">
+                        {PLATFORM_LINKS.map((f) => (
+                          <Link
+                            key={f.href}
+                            href={f.href}
+                            className={cn(
+                              "group relative flex items-center gap-3 rounded-xl border p-3 transition-colors duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-accent-icon/50 hover:bg-glass",
+                              isActive(f.href) ? "border-transparent bg-glass" : "border-transparent",
+                            )}
+                          >
+                            <span className="grid size-9 shrink-0 place-items-center rounded-lg border border-line-strong bg-glass text-accent transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-accent-icon/60 group-hover:bg-blue-400/18">
+                              <f.icon className="size-4" strokeWidth={1.75} />
+                            </span>
+                            <span className="min-w-0 flex-1 transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5">
+                              <span className="flex items-center gap-1.5">
+                                <span className="font-display text-sm font-medium whitespace-nowrap text-fg transition-colors duration-300 group-hover:text-accent-strong">
+                                  {f.navLabel}
+                                </span>
+                                <ArrowUpRight
+                                  aria-hidden="true"
+                                  className="size-3.5 shrink-0 -translate-x-1 text-accent opacity-0 transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:opacity-100"
+                                />
+                              </span>
+                              <span className="mt-0.5 block text-xs leading-snug text-fg-subtle">
+                                {f.tagline}
+                              </span>
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+
+                    <aside className="relative flex w-[15rem] shrink-0 overflow-hidden border-l border-line bg-bg p-5 xl:w-[16rem]">
+                      <LogoMark className="pointer-events-none absolute -right-8 -bottom-9 size-28 opacity-[0.05]" />
+                      <div className="relative flex h-full flex-col">
+                        <span className="eyebrow eyebrow-plain">
+                          Not sure which platform?
+                        </span>
+                        <p className="mt-3 font-display text-[1.0625rem] leading-snug font-medium text-fg">
+                          Tell us how your business runs.
+                        </p>
+                        <p className="mt-2 text-[0.8125rem] leading-relaxed text-fg-subtle">
+                          A couple of lines is enough. We will recommend the
+                          platform that fits, even if it is not one of these.
+                        </p>
+                        <div className="mt-auto pt-4">
+                          <ButtonLink href="/contact" className="w-full">
+                            Get a recommendation
+                          </ButtonLink>
+                          <div className="mt-3 flex flex-col gap-2">
+                            {/* The index for this panel. Without it /platforms
+                                is reachable only by typing the URL. */}
+                            <Link
+                              href="/platforms"
+                              className="group flex items-center justify-center gap-1.5 text-[0.8125rem] font-medium text-fg-muted transition-colors duration-300 hover:text-accent"
+                            >
+                              View all platforms
+                              <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </Link>
+                            <Link
+                              href="/services"
+                              className="group flex items-center justify-center gap-1.5 text-[0.8125rem] font-medium text-fg-muted transition-colors duration-300 hover:text-accent"
+                            >
+                              Compare our services
+                              <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </Link>
                             <Link
                               href="/our-portfolio"
                               className="group flex items-center justify-center gap-1.5 text-[0.8125rem] font-medium text-fg-muted transition-colors duration-300 hover:text-accent"
@@ -434,6 +726,60 @@ export function Navbar() {
                 />
                 <span className="font-display text-lg font-medium text-fg">
                   {s.navLabel}
+                </span>
+                <ArrowUpRight className="ml-auto size-4 text-fg-faint" />
+              </Link>
+            ))}
+            {FUNNEL_LINKS.map((f, i) => (
+            <Link
+              key={f.href}
+              href={f.href}
+              style={{
+                transitionDelay: menuOpen ? `${120 + (services.length + i) * 45}ms` : "0ms",
+              }}
+              className={cn(
+                "flex items-center gap-4 border-b border-line py-4 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                menuOpen
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-4 opacity-0",
+              )}
+            >
+              <f.icon
+                className="size-5 shrink-0 text-accent-icon"
+                strokeWidth={1.75}
+              />
+              <span className="font-display text-lg font-medium text-fg">
+                {f.navLabel}
+              </span>
+              <ArrowUpRight className="ml-auto size-4 text-fg-faint" />
+            </Link>
+            ))}
+          </div>
+
+          <p className="eyebrow mt-10 mb-5">{PLATFORMS_LABEL}</p>
+          <div className="flex flex-col">
+            {PLATFORM_LINKS.map((f, i) => (
+              <Link
+                key={f.href}
+                href={f.href}
+                style={{
+                  transitionDelay: menuOpen
+                    ? `${120 + (services.length + FUNNEL_LINKS.length + i) * 45}ms`
+                    : "0ms",
+                }}
+                className={cn(
+                  "flex items-center gap-4 border-b border-line py-4 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                  menuOpen
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0",
+                )}
+              >
+                <f.icon
+                  className="size-5 shrink-0 text-accent-icon"
+                  strokeWidth={1.75}
+                />
+                <span className="font-display text-lg font-medium text-fg">
+                  {f.navLabel}
                 </span>
                 <ArrowUpRight className="ml-auto size-4 text-fg-faint" />
               </Link>
