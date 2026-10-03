@@ -22,8 +22,12 @@ import { cn } from "@/lib/utils";
  * the mouse leaves; clicking it keeps it open. On a phone or tablet, which has
  * no hover, it opens and closes with a tap. It never opens by itself.
  *
- * Nothing third-party is loaded: WhatsApp is a plain wa.me link.
+ * Nothing third-party is loaded: WhatsApp is a plain link.
  */
+
+/* api.whatsapp.com directly rather than wa.me, which only 302s here — every
+   page linking to a redirect is flagged by site audits. */
+const WHATSAPP_URL = `https://api.whatsapp.com/send?phone=${site.whatsappHref}`;
 
 type Method = "whatsapp" | "form" | "email" | "copy_email";
 type Gtag = (command: "event", name: string, params: Record<string, string>) => void;
@@ -138,7 +142,7 @@ export function ContactDock() {
   }, [open]);
 
   const whatsappHref = () =>
-    `https://wa.me/${site.whatsappHref}?text=${encodeURIComponent(
+    `${WHATSAPP_URL}&text=${encodeURIComponent(
       `Hi ${site.name}, ${openingLine()} `,
     )}`;
 
@@ -218,7 +222,7 @@ export function ContactDock() {
           <div className="p-2">
             {/* WhatsApp — the primary action, so it carries the tint. */}
             <a
-              href={`https://wa.me/${site.whatsappHref}`}
+              href={WHATSAPP_URL}
               onClick={(e) => {
                 /* Built at click time so the message names the page in view. */
                 e.currentTarget.href = whatsappHref();

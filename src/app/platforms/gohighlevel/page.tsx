@@ -57,7 +57,7 @@ import { openGraph } from "@/lib/site";
    "%s | Onyxera Tech" template. */
 const TITLE = "GoHighLevel CRM and Automation";
 const META_TITLE =
-  "GoHighLevel Setup & Implementation Agency | Custom CRM Automation Onyxera Tech";
+  "GoHighLevel Setup & CRM Automation Agency | Onyxera Tech";
 const DESCRIPTION =
   "Hire a certified GoHighLevel agency to capture leads, automate follow ups, and manage your sales pipeline. Custom CRM, live in 3 to 6 weeks.";
 
