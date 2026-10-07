@@ -151,12 +151,22 @@
         "type": 301
       },
       {
-        "source": "/work/corvid-logistics",
+        "source": "/our-portfolio/corvid-logistics",
         "destination": "/our-portfolio",
         "type": 301
       },
       {
-        "source": "/our-portfolio/corvid-logistics",
+        "source": "/our-portfolio/verity-analytics",
+        "destination": "/our-portfolio",
+        "type": 301
+      },
+      {
+        "source": "/our-portfolio/ardent-coffee",
+        "destination": "/our-portfolio",
+        "type": 301
+      },
+      {
+        "source": "/our-portfolio/solstice-grid-forecasting",
         "destination": "/our-portfolio",
         "type": 301
       },
@@ -186,8 +196,8 @@
         "type": 301
       },
       {
-        "source": "/work/:slug",
-        "destination": "/our-portfolio/:slug",
+        "source": "/work/**",
+        "destination": "/our-portfolio",
         "type": 301
       },
       {
