@@ -165,13 +165,23 @@ export const generalFaqs = [
   },
 ];
 
+/* The contact form's "What do you need?" list: the five services first, then
+   the four platforms the Platforms menu carries, so someone who came for
+   GoHighLevel or Odoo can say so instead of settling for "Not sure yet".
+   Both names are the navigation's own, word for word — the list said "Web
+   Application" and "Website Design" long after the two were folded into
+   development solutions, which is why firebase.json redirects both of their
+   old service routes. */
 export const contactReasons = [
-  "Web Application",
-  "Website Design",
+  "Development Solutions",
   "SEO",
   "Digital Marketing",
   "Automation",
   "Cyber Security",
+  "GoHighLevel (GHL)",
+  "Odoo Business Systems",
+  "Frappe / ERPNext",
+  "Shopify Solutions",
   "Not sure yet",
 ];
 
