@@ -151,6 +151,16 @@
         "type": 301
       },
       {
+        "source": "/work/corvid-logistics",
+        "destination": "/our-portfolio",
+        "type": 301
+      },
+      {
+        "source": "/our-portfolio/corvid-logistics",
+        "destination": "/our-portfolio",
+        "type": 301
+      },
+      {
         "source": "/privacy",
         "destination": "/privacy-policy",
         "type": 301
