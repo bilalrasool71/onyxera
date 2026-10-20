@@ -12,8 +12,8 @@ export const site = {
   salesEmail: "info@onyxeratech.com",
 
   /* Primary contact — used wherever a single number is shown. */
-  phone: "+61 481 317 161",
-  phoneHref: "+61481317161",
+  phone: "+61 431 494 979",
+  phoneHref: "+61431494979",
 
   /* WhatsApp for the floating contact button. `whatsappHref` is the number
      as wa.me expects it: country code first, digits only, no plus. */
@@ -32,8 +32,8 @@ export const site = {
       line1: "95 Reserve Parade",
       line2: "Findon SA 5023",
       country: "Australia",
-      phone: "+61 481 317 161",
-      phoneHref: "+61481317161",
+      phone: "+61 431 494 979",
+      phoneHref: "+61431494979",
       locality: "Findon",
       region: "SA",
       postalCode: "5023",
