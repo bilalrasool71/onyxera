@@ -17,8 +17,8 @@ export const site = {
 
   /* WhatsApp for the floating contact button. `whatsappHref` is the number
      as wa.me expects it: country code first, digits only, no plus. */
-  whatsapp: "+61 430 496 430",
-  whatsappHref: "61430496430",
+  whatsapp: "+61 431 494 979",
+  whatsappHref: "61431494979",
 
   /* Two locations. `primary` is the registered mailing address. */
   /* `kind` is mandated wording, not decoration. Australia is the only
